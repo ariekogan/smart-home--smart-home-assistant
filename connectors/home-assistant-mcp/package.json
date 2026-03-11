@@ -1,0 +1,14 @@
+{
+  "name": "home-assistant-mcp",
+  "version": "0.5.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test:sim": "python3 simulator/fake_ha.py & sleep 1 && node connector/server.js"
+  },
+  "dependencies": {
+    "lgtv2": "^1.6.3",
+    "wake_on_lan": "^1.0.0"
+  }
+}
