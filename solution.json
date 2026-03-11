@@ -100,6 +100,29 @@
       ]
     }
   ],
+  "ui_plugins": [
+    {
+      "id": "mcp:home-assistant-mcp:home-layout-panel",
+      "name": "Home Layout Panel",
+      "version": "1.0.0",
+      "description": "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
+      "type": "ui",
+      "render": {
+        "mode": "adaptive",
+        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+        "reactNative": {
+          "component": "HomeLayoutPanel"
+        }
+      },
+      "capabilities": {
+        "haptics": true
+      },
+      "channels": [
+        "command"
+      ],
+      "commands": []
+    }
+  ],
   "voice": {
     "enabled": true,
     "language": "en",
