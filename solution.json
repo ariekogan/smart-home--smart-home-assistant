@@ -15,7 +15,8 @@
     "admin_roles": [
       "homeowner"
     ],
-    "default_actor_type": "homeowner"
+    "default_actor_type": "homeowner",
+    "default_roles": []
   },
   "skills": [
     {
@@ -50,6 +51,8 @@
       "ui_capable": true
     }
   ],
+  "grants": [],
+  "handoffs": [],
   "routing": {
     "chat": {
       "default_skill": "home-control"
@@ -100,20 +103,5 @@
       ]
     }
   ],
-  "voice": {
-    "enabled": true,
-    "language": "en",
-    "persona": {
-      "name": "Home Assistant",
-      "style": "friendly"
-    },
-    "welcome": "Hey! I'm your smart home assistant. What would you like to do?",
-    "prompt": {
-      "behaviorRules": "Execute device commands immediately without asking for confirmation. The user is the homeowner. Be concise.",
-      "informationGathering": "No information gathering needed."
-    },
-    "verification": {
-      "enabled": false
-    }
-  }
+  "security_contracts": []
 }

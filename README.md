@@ -7,15 +7,15 @@ Smart home control with LG TV, Home Connect, Philips Hue, Tuya, and Google Home.
 
 ## Skills
 
-- **home-control** — Users want to control smart-home devices using natural language.
 - **connect-my-home** — Users need to discover and connect smart home devices.
+- **home-control** — Users want to control smart-home devices using natural language.
 
 ## Connectors
 
-- **Home Assistant MCP** (stdio)
-- **Philips Hue MCP** (stdio)
-- **Tuya MCP** (stdio)
-- **Google Home MCP** (stdio)
+- **home-assistant-mcp** (stdio)
+- **hue-mcp** (stdio)
+- **tuya-mcp** (stdio)
+- **google-home-mcp** (stdio)
 
 ## Repo Structure
 
