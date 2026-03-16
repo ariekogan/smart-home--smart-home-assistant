@@ -897,20 +897,20 @@ async function callTool(name, args = {}) {
       return await syncRooms();
     case "ui.listPlugins":
       return { plugins: [
-        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status" }
+        { id: "home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status" }
       ]};
     case "ui.getPlugin": {
-      const pluginId = args.id || "mcp:home-assistant-mcp:home-layout-panel";
-      if (pluginId !== "mcp:home-assistant-mcp:home-layout-panel" && pluginId !== "home-layout-panel") return { error: `Plugin '${pluginId}' not found` };
+      const pluginId = args.id || "home-layout-panel";
+      if (pluginId !== "home-layout-panel") return { error: `Plugin '${pluginId}' not found` };
       return {
-        id: "mcp:home-assistant-mcp:home-layout-panel",
+        id: "home-layout-panel",
         name: "Home Layout Panel",
         version: "1.0.0",
         description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
         render: {
-          mode: "adaptive",
-          iframeUrl: "/ui/home-layout-panel/1.0.0/index.html",
-          reactNative: { component: "HomeLayoutPanel" },
+          mode: "react-native",
+          component: "HomeLayoutPanel",
+          fallback: { mode: "iframe", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html" },
         },
         channels: ["command"],
         capabilities: { haptics: true, commands: [] }

@@ -2,21 +2,7 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control with LG TV, Home Connect, Philips Hue, Tuya, and Google Home.",
-  "identity": {
-    "actor_types": [
-      {
-        "key": "homeowner",
-        "label": "Homeowner",
-        "description": "Smart home owner",
-        "default_channel": "chat"
-      }
-    ],
-    "admin_roles": [
-      "homeowner"
-    ],
-    "default_actor_type": "homeowner"
-  },
+  "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
   "skills": [
     {
       "id": "connect-my-home",
@@ -50,17 +36,6 @@
       "ui_capable": true
     }
   ],
-  "routing": {
-    "chat": {
-      "default_skill": "home-control"
-    },
-    "dashboard": {
-      "default_skill": "home-control"
-    },
-    "voice": {
-      "default_skill": "home-control"
-    }
-  },
   "platform_connectors": [
     {
       "id": "home-assistant-mcp",
@@ -100,43 +75,29 @@
       ]
     }
   ],
-  "ui_plugins": [
-    {
-      "id": "mcp:home-assistant-mcp:home-layout-panel",
-      "name": "Home Layout Panel",
-      "version": "1.0.0",
-      "description": "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
-      "type": "ui",
-      "render": {
-        "mode": "adaptive",
-        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
-        "reactNative": {
-          "component": "HomeLayoutPanel"
-        }
-      },
-      "capabilities": {
-        "haptics": true
-      },
-      "channels": [
-        "command"
-      ],
-      "commands": []
-    }
-  ],
-  "voice": {
-    "enabled": true,
-    "language": "en",
-    "persona": {
-      "name": "Home Assistant",
-      "style": "friendly"
+  "identity": {
+    "actor_types": [
+      {
+        "key": "homeowner",
+        "label": "Homeowner",
+        "description": "Smart home owner",
+        "default_channel": "chat"
+      }
+    ],
+    "admin_roles": [
+      "homeowner"
+    ],
+    "default_actor_type": "homeowner"
+  },
+  "routing": {
+    "chat": {
+      "default_skill": "home-control"
     },
-    "welcome": "Hey! I'm your smart home assistant. What would you like to do?",
-    "prompt": {
-      "behaviorRules": "Execute device commands immediately without asking for confirmation. The user is the homeowner. Be concise.",
-      "informationGathering": "No information gathering needed."
+    "dashboard": {
+      "default_skill": "home-control"
     },
-    "verification": {
-      "enabled": false
+    "voice": {
+      "default_skill": "home-control"
     }
   }
 }
