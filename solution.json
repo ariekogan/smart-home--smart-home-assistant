@@ -3,19 +3,6 @@
   "name": "Smart Home Assistant",
   "version": "1.0.0",
   "description": "Smart home control.",
-  "identity": {
-    "actor_types": [
-      {
-        "key": "homeowner",
-        "label": "Homeowner",
-        "default_channel": "chat"
-      }
-    ],
-    "admin_roles": [
-      "homeowner"
-    ],
-    "default_actor_type": "homeowner"
-  },
   "skills": [
     {
       "id": "connect-my-home",
@@ -62,35 +49,19 @@
     {
       "id": "home-assistant-mcp",
       "required": true,
-      "ui_capable": true,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "ui_capable": true
     },
     {
       "id": "hue-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     },
     {
       "id": "tuya-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     },
     {
       "id": "google-home-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     }
   ],
   "ui_plugins": [
@@ -101,15 +72,9 @@
       "type": "ui",
       "render": {
         "mode": "adaptive",
-        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
-        "reactNative": {
-          "component": "HomeLayoutPanel"
-        }
+        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html"
       },
       "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
-      "capabilities": {
-        "haptics": true
-      },
       "channels": [
         "command"
       ],
