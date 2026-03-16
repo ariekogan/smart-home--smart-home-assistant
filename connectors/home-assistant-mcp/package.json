@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build:rn": "esbuild rn-src/index.tsx --bundle --format=cjs --platform=neutral --outfile=rn-bundle/index.bundle.js --external:react --external:react-native --external:@adas/plugin-sdk",
+    "build:rn": "esbuild rn-src/index.tsx --bundle --format=cjs --platform=neutral --target=es2015 --outfile=rn-bundle/index.bundle.js --external:react --external:react-native --external:@adas/plugin-sdk",
     "test:sim": "python3 simulator/fake_ha.py & sleep 1 && node connector/server.js"
   },
   "dependencies": {
