@@ -1,8 +1,8 @@
 {
   "id": "connect-my-home",
   "name": "Connect My Home",
-  "description": "Setup and onboarding for smart home providers.",
-  "version": "2.0.0",
+  "description": "Users need to connect smart home providers.",
+  "version": "2.0.1",
   "phase": "TOOL_DEFINITION",
   "ui_capable": false,
   "connectors": [
@@ -12,20 +12,20 @@
     "google-home-mcp"
   ],
   "problem": {
-    "statement": "Users need to connect and configure smart home providers.",
-    "context": "Supports 6 providers with different setup flows.",
+    "statement": "Users need to connect smart home providers.",
+    "context": "Users need to connect smart home providers.",
     "goals": [
-      "Guide connecting each provider",
-      "Check connection status",
-      "Verify connections after setup"
+      "Guide setup",
+      "Check status",
+      "Verify connections"
     ]
   },
   "tools": [
     {
       "id": "tool-ha-config-get",
       "id_status": "permanent",
-      "name": "ha.config.get",
-      "description": "Get HA configuration",
+      "name": "config.get",
+      "description": "Get HA config",
       "inputs": [],
       "output": {
         "type": "object"
@@ -49,7 +49,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.config.get"
+            "description": "Auto-generated example for config.get"
           }
         ]
       },
@@ -60,8 +60,8 @@
     {
       "id": "tool-ha-config-save",
       "id_status": "permanent",
-      "name": "ha.config.save",
-      "description": "Save HA config (URL, token)",
+      "name": "config.save",
+      "description": "Save HA config",
       "inputs": [
         {
           "name": "url",
@@ -101,7 +101,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.config.save"
+            "description": "Auto-generated example for config.save"
           }
         ]
       },
@@ -110,10 +110,10 @@
       }
     },
     {
-      "id": "tool-ha-discovery-status",
+      "id": "tool-ha-disc-status",
       "id_status": "permanent",
-      "name": "ha.discovery.status",
-      "description": "Check all provider connection status",
+      "name": "discovery.status",
+      "description": "Check provider status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -137,7 +137,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.discovery.status"
+            "description": "Auto-generated example for discovery.status"
           }
         ]
       },
@@ -146,9 +146,9 @@
       }
     },
     {
-      "id": "tool-ha-discovery-supported",
+      "id": "tool-ha-disc-supported",
       "id_status": "permanent",
-      "name": "ha.discovery.supported",
+      "name": "discovery.supported",
       "description": "List supported providers",
       "inputs": [],
       "output": {
@@ -178,7 +178,7 @@
               ],
               "total_count": 1
             },
-            "description": "Auto-generated example for ha.discovery.supported"
+            "description": "Auto-generated example for discovery.supported"
           }
         ]
       },
@@ -187,9 +187,9 @@
       }
     },
     {
-      "id": "tool-ha-rooms-list",
+      "id": "tool-ha-rooms",
       "id_status": "permanent",
-      "name": "ha.rooms.list",
+      "name": "rooms.list",
       "description": "List HA rooms",
       "inputs": [],
       "output": {
@@ -219,7 +219,7 @@
               ],
               "total_count": 1
             },
-            "description": "Auto-generated example for ha.rooms.list"
+            "description": "Auto-generated example for rooms.list"
           }
         ]
       },
@@ -228,10 +228,10 @@
       }
     },
     {
-      "id": "tool-ha-rooms-sync",
+      "id": "tool-ha-sync",
       "id_status": "permanent",
-      "name": "ha.rooms.sync",
-      "description": "Sync rooms from HA",
+      "name": "rooms.sync",
+      "description": "Sync HA rooms",
       "inputs": [],
       "output": {
         "type": "object"
@@ -255,7 +255,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.rooms.sync"
+            "description": "Auto-generated example for rooms.sync"
           }
         ]
       },
@@ -264,9 +264,9 @@
       }
     },
     {
-      "id": "tool-ha-entities-list",
+      "id": "tool-ha-entities",
       "id_status": "permanent",
-      "name": "ha.entities.list",
+      "name": "entities.list",
       "description": "List HA entities",
       "inputs": [],
       "output": {
@@ -296,7 +296,7 @@
               ],
               "total_count": 1
             },
-            "description": "Auto-generated example for ha.entities.list"
+            "description": "Auto-generated example for entities.list"
           }
         ]
       },
@@ -305,10 +305,10 @@
       }
     },
     {
-      "id": "tool-ha-tv-discover",
+      "id": "tool-ha-tv",
       "id_status": "permanent",
-      "name": "ha.tv.discover",
-      "description": "Discover LG TV on network",
+      "name": "tv.discover",
+      "description": "Discover LG TV",
       "inputs": [],
       "output": {
         "type": "object"
@@ -332,7 +332,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.tv.discover"
+            "description": "Auto-generated example for tv.discover"
           }
         ]
       },
@@ -341,9 +341,9 @@
       }
     },
     {
-      "id": "tool-ha-hc-auth",
+      "id": "tool-hc-auth",
       "id_status": "permanent",
-      "name": "ha.homeconnect.auth",
+      "name": "homeconnect.auth",
       "description": "Start Home Connect OAuth",
       "inputs": [],
       "output": {
@@ -368,7 +368,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.homeconnect.auth"
+            "description": "Auto-generated example for homeconnect.auth"
           }
         ]
       },
@@ -377,9 +377,9 @@
       }
     },
     {
-      "id": "tool-ha-hc-callback",
+      "id": "tool-hc-callback",
       "id_status": "permanent",
-      "name": "ha.homeconnect.callback",
+      "name": "homeconnect.callback",
       "description": "Complete Home Connect OAuth",
       "inputs": [
         {
@@ -413,7 +413,7 @@
               "success": true,
               "data": {}
             },
-            "description": "Auto-generated example for ha.homeconnect.callback"
+            "description": "Auto-generated example for homeconnect.callback"
           }
         ]
       },
@@ -425,7 +425,7 @@
       "id": "tool-hue-auth",
       "id_status": "permanent",
       "name": "hue.auth",
-      "description": "Start Hue bridge pairing",
+      "description": "Start Hue pairing",
       "inputs": [],
       "output": {
         "type": "object"
@@ -458,7 +458,7 @@
       }
     },
     {
-      "id": "tool-hue-callback",
+      "id": "tool-hue-cb",
       "id_status": "permanent",
       "name": "hue.callback",
       "description": "Complete Hue pairing",
@@ -494,10 +494,10 @@
       }
     },
     {
-      "id": "tool-hue-status",
+      "id": "tool-hue-st",
       "id_status": "permanent",
       "name": "hue.status",
-      "description": "Check Hue connection",
+      "description": "Check Hue status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -530,7 +530,7 @@
       }
     },
     {
-      "id": "tool-hue-devices",
+      "id": "tool-hue-dev",
       "id_status": "permanent",
       "name": "hue.devices",
       "description": "List Hue devices",
@@ -574,7 +574,7 @@
       "id": "tool-tuya-auth",
       "id_status": "permanent",
       "name": "tuya.auth",
-      "description": "Configure Tuya credentials",
+      "description": "Configure Tuya",
       "inputs": [
         {
           "name": "access_id",
@@ -623,7 +623,7 @@
       }
     },
     {
-      "id": "tool-tuya-callback",
+      "id": "tool-tuya-cb",
       "id_status": "permanent",
       "name": "tuya.callback",
       "description": "Complete Tuya auth",
@@ -659,10 +659,10 @@
       }
     },
     {
-      "id": "tool-tuya-status",
+      "id": "tool-tuya-st",
       "id_status": "permanent",
       "name": "tuya.status",
-      "description": "Check Tuya connection",
+      "description": "Check Tuya status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -695,7 +695,7 @@
       }
     },
     {
-      "id": "tool-tuya-devices",
+      "id": "tool-tuya-dev",
       "id_status": "permanent",
       "name": "tuya.devices",
       "description": "List Tuya devices",
@@ -736,10 +736,10 @@
       }
     },
     {
-      "id": "tool-google-auth",
+      "id": "tool-g-auth",
       "id_status": "permanent",
       "name": "google.auth",
-      "description": "Start Google Home OAuth",
+      "description": "Start Google OAuth",
       "inputs": [],
       "output": {
         "type": "object"
@@ -772,7 +772,7 @@
       }
     },
     {
-      "id": "tool-google-callback",
+      "id": "tool-g-cb",
       "id_status": "permanent",
       "name": "google.callback",
       "description": "Complete Google OAuth",
@@ -817,10 +817,10 @@
       }
     },
     {
-      "id": "tool-google-status",
+      "id": "tool-g-st",
       "id_status": "permanent",
       "name": "google.status",
-      "description": "Check Google connection",
+      "description": "Check Google status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -853,10 +853,10 @@
       }
     },
     {
-      "id": "tool-google-devices",
+      "id": "tool-g-dev",
       "id_status": "permanent",
       "name": "google.devices",
-      "description": "List Google/Nest devices",
+      "description": "List Google devices",
       "inputs": [],
       "output": {
         "type": "object"
@@ -897,26 +897,26 @@
   "intents": {
     "supported": [
       {
-        "id": "get_config",
-        "description": "Get HA configuration",
+        "id": "get",
+        "description": "Get HA config",
         "examples": [
-          "Get HA configuration",
-          "I need to get HA configuration",
-          "Can you get HA configuration?",
-          "Please get HA configuration"
+          "Get HA config",
+          "I need to get HA config",
+          "Can you get HA config?",
+          "Please get HA config"
         ],
-        "maps_to_workflow": "get_config_flow"
+        "maps_to_workflow": "get_flow"
       },
       {
-        "id": "save_config",
-        "description": "Save HA config (URL, token)",
+        "id": "save",
+        "description": "Save HA config",
         "examples": [
-          "Save HA config (URL, token)",
-          "I need to save HA config (URL, token)",
-          "Can you save HA config (URL, token)?",
-          "Please save HA config (URL, token)"
+          "Save HA config",
+          "I need to save HA config",
+          "Can you save HA config?",
+          "Please save HA config"
         ],
-        "maps_to_workflow": "save_config_flow",
+        "maps_to_workflow": "save_flow",
         "entities": [
           {
             "name": "url",
@@ -933,18 +933,18 @@
         ]
       },
       {
-        "id": "status_discovery",
-        "description": "Check all provider connection status",
+        "id": "status",
+        "description": "Check provider status",
         "examples": [
-          "Check all provider connection status",
-          "I need to check all provider connection status",
-          "Can you check all provider connection status?",
-          "Please check all provider connection status"
+          "Check provider status",
+          "I need to check provider status",
+          "Can you check provider status?",
+          "Please check provider status"
         ],
-        "maps_to_workflow": "status_discovery_flow"
+        "maps_to_workflow": "status_flow"
       },
       {
-        "id": "supported_discovery",
+        "id": "supported",
         "description": "List supported providers",
         "examples": [
           "List supported providers",
@@ -952,10 +952,10 @@
           "Can you list supported providers?",
           "Please list supported providers"
         ],
-        "maps_to_workflow": "supported_discovery_flow"
+        "maps_to_workflow": "supported_flow"
       },
       {
-        "id": "list_rooms",
+        "id": "list",
         "description": "List HA rooms",
         "examples": [
           "List HA rooms",
@@ -963,21 +963,21 @@
           "Can you list HA rooms?",
           "Please list HA rooms"
         ],
-        "maps_to_workflow": "list_rooms_flow"
+        "maps_to_workflow": "list_flow"
       },
       {
-        "id": "sync_room",
-        "description": "Sync rooms from HA",
+        "id": "sync",
+        "description": "Sync HA rooms",
         "examples": [
-          "Sync rooms from HA",
-          "I need to sync rooms from HA",
-          "Can you sync rooms from HA?",
-          "Please sync rooms from HA"
+          "Sync HA rooms",
+          "I need to sync HA rooms",
+          "Can you sync HA rooms?",
+          "Please sync HA rooms"
         ],
-        "maps_to_workflow": "sync_room_flow"
+        "maps_to_workflow": "sync_flow"
       },
       {
-        "id": "list_entities",
+        "id": "list",
         "description": "List HA entities",
         "examples": [
           "List HA entities",
@@ -985,21 +985,21 @@
           "Can you list HA entities?",
           "Please list HA entities"
         ],
-        "maps_to_workflow": "list_entities_flow"
+        "maps_to_workflow": "list_flow"
       },
       {
-        "id": "discover_tv",
-        "description": "Discover LG TV on network",
+        "id": "discover",
+        "description": "Discover LG TV",
         "examples": [
-          "Discover LG TV on network",
-          "I need to discover LG TV on network",
-          "Can you discover LG TV on network?",
-          "Please discover LG TV on network"
+          "Discover LG TV",
+          "I need to discover LG TV",
+          "Can you discover LG TV?",
+          "Please discover LG TV"
         ],
-        "maps_to_workflow": "discover_tv_flow"
+        "maps_to_workflow": "discover_flow"
       },
       {
-        "id": "auth_homeconnect",
+        "id": "auth",
         "description": "Start Home Connect OAuth",
         "examples": [
           "Start Home Connect OAuth",
@@ -1007,10 +1007,10 @@
           "Can you start Home Connect OAuth?",
           "Please start Home Connect OAuth"
         ],
-        "maps_to_workflow": "auth_homeconnect_flow"
+        "maps_to_workflow": "auth_flow"
       },
       {
-        "id": "callback_homeconnect",
+        "id": "callback",
         "description": "Complete Home Connect OAuth",
         "examples": [
           "Complete Home Connect OAuth",
@@ -1018,7 +1018,7 @@
           "Can you complete Home Connect OAuth?",
           "Please complete Home Connect OAuth"
         ],
-        "maps_to_workflow": "callback_homeconnect_flow",
+        "maps_to_workflow": "callback_flow",
         "entities": [
           {
             "name": "code",
@@ -1030,12 +1030,12 @@
       },
       {
         "id": "auth",
-        "description": "Start Hue bridge pairing",
+        "description": "Start Hue pairing",
         "examples": [
-          "Start Hue bridge pairing",
-          "I need to start Hue bridge pairing",
-          "Can you start Hue bridge pairing?",
-          "Please start Hue bridge pairing"
+          "Start Hue pairing",
+          "I need to start Hue pairing",
+          "Can you start Hue pairing?",
+          "Please start Hue pairing"
         ],
         "maps_to_workflow": "auth_flow"
       },
@@ -1052,12 +1052,12 @@
       },
       {
         "id": "status",
-        "description": "Check Hue connection",
+        "description": "Check Hue status",
         "examples": [
-          "Check Hue connection",
-          "I need to check Hue connection",
-          "Can you check Hue connection?",
-          "Please check Hue connection"
+          "Check Hue status",
+          "I need to check Hue status",
+          "Can you check Hue status?",
+          "Please check Hue status"
         ],
         "maps_to_workflow": "status_flow"
       },
@@ -1074,12 +1074,12 @@
       },
       {
         "id": "auth",
-        "description": "Configure Tuya credentials",
+        "description": "Configure Tuya",
         "examples": [
-          "Configure Tuya credentials",
-          "I need to configure Tuya credentials",
-          "Can you configure Tuya credentials?",
-          "Please configure Tuya credentials"
+          "Configure Tuya",
+          "I need to configure Tuya",
+          "Can you configure Tuya?",
+          "Please configure Tuya"
         ],
         "maps_to_workflow": "auth_flow",
         "entities": [
@@ -1110,12 +1110,12 @@
       },
       {
         "id": "status",
-        "description": "Check Tuya connection",
+        "description": "Check Tuya status",
         "examples": [
-          "Check Tuya connection",
-          "I need to check Tuya connection",
-          "Can you check Tuya connection?",
-          "Please check Tuya connection"
+          "Check Tuya status",
+          "I need to check Tuya status",
+          "Can you check Tuya status?",
+          "Please check Tuya status"
         ],
         "maps_to_workflow": "status_flow"
       },
@@ -1132,12 +1132,12 @@
       },
       {
         "id": "auth",
-        "description": "Start Google Home OAuth",
+        "description": "Start Google OAuth",
         "examples": [
-          "Start Google Home OAuth",
-          "I need to start Google Home OAuth",
-          "Can you start Google Home OAuth?",
-          "Please start Google Home OAuth"
+          "Start Google OAuth",
+          "I need to start Google OAuth",
+          "Can you start Google OAuth?",
+          "Please start Google OAuth"
         ],
         "maps_to_workflow": "auth_flow"
       },
@@ -1162,23 +1162,23 @@
       },
       {
         "id": "status",
-        "description": "Check Google connection",
+        "description": "Check Google status",
         "examples": [
-          "Check Google connection",
-          "I need to check Google connection",
-          "Can you check Google connection?",
-          "Please check Google connection"
+          "Check Google status",
+          "I need to check Google status",
+          "Can you check Google status?",
+          "Please check Google status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "devices",
-        "description": "List Google/Nest devices",
+        "description": "List Google devices",
         "examples": [
-          "List Google/Nest devices",
-          "I need to list Google/Nest devices",
-          "Can you list Google/Nest devices?",
-          "Please list Google/Nest devices"
+          "List Google devices",
+          "I need to list Google devices",
+          "Can you list Google devices?",
+          "Please list Google devices"
         ],
         "maps_to_workflow": "devices_flow"
       }
@@ -1201,122 +1201,122 @@
     },
     "workflows": [
       {
-        "id": "get_config_flow",
-        "name": "Get HA configuration",
-        "description": "Auto-generated workflow for get_config",
-        "trigger": "get_config",
+        "id": "get_flow",
+        "name": "Get HA config",
+        "description": "Auto-generated workflow for get",
+        "trigger": "get",
         "steps": [
-          "ha.config.get"
+          "config.get"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "save_config_flow",
-        "name": "Save HA config (URL, token)",
-        "description": "Auto-generated workflow for save_config",
-        "trigger": "save_config",
+        "id": "save_flow",
+        "name": "Save HA config",
+        "description": "Auto-generated workflow for save",
+        "trigger": "save",
         "steps": [
-          "ha.config.save"
+          "config.save"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "status_discovery_flow",
-        "name": "Check all provider connection status",
-        "description": "Auto-generated workflow for status_discovery",
-        "trigger": "status_discovery",
+        "id": "status_flow",
+        "name": "Check provider status",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
         "steps": [
-          "ha.discovery.status"
+          "discovery.status"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "supported_discovery_flow",
+        "id": "supported_flow",
         "name": "List supported providers",
-        "description": "Auto-generated workflow for supported_discovery",
-        "trigger": "supported_discovery",
+        "description": "Auto-generated workflow for supported",
+        "trigger": "supported",
         "steps": [
-          "ha.discovery.supported"
+          "discovery.supported"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "list_rooms_flow",
+        "id": "list_flow",
         "name": "List HA rooms",
-        "description": "Auto-generated workflow for list_rooms",
-        "trigger": "list_rooms",
+        "description": "Auto-generated workflow for list",
+        "trigger": "list",
         "steps": [
-          "ha.rooms.list"
+          "rooms.list"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "sync_room_flow",
-        "name": "Sync rooms from HA",
-        "description": "Auto-generated workflow for sync_room",
-        "trigger": "sync_room",
+        "id": "sync_flow",
+        "name": "Sync HA rooms",
+        "description": "Auto-generated workflow for sync",
+        "trigger": "sync",
         "steps": [
-          "ha.rooms.sync"
+          "rooms.sync"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "list_entities_flow",
+        "id": "list_flow",
         "name": "List HA entities",
-        "description": "Auto-generated workflow for list_entities",
-        "trigger": "list_entities",
+        "description": "Auto-generated workflow for list",
+        "trigger": "list",
         "steps": [
-          "ha.entities.list"
+          "rooms.list"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
-        "id": "discover_tv_flow",
-        "name": "Discover LG TV on network",
-        "description": "Auto-generated workflow for discover_tv",
-        "trigger": "discover_tv",
+        "id": "discover_flow",
+        "name": "Discover LG TV",
+        "description": "Auto-generated workflow for discover",
+        "trigger": "discover",
         "steps": [
-          "ha.tv.discover"
-        ],
-        "required": false,
-        "on_deviation": "warn"
-      },
-      {
-        "id": "auth_homeconnect_flow",
-        "name": "Start Home Connect OAuth",
-        "description": "Auto-generated workflow for auth_homeconnect",
-        "trigger": "auth_homeconnect",
-        "steps": [
-          "ha.homeconnect.auth"
-        ],
-        "required": false,
-        "on_deviation": "warn"
-      },
-      {
-        "id": "callback_homeconnect_flow",
-        "name": "Complete Home Connect OAuth",
-        "description": "Auto-generated workflow for callback_homeconnect",
-        "trigger": "callback_homeconnect",
-        "steps": [
-          "ha.homeconnect.callback"
+          "tv.discover"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
         "id": "auth_flow",
-        "name": "Start Hue bridge pairing",
+        "name": "Start Home Connect OAuth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
-          "hue.auth"
+          "homeconnect.auth"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "callback_flow",
+        "name": "Complete Home Connect OAuth",
+        "description": "Auto-generated workflow for callback",
+        "trigger": "callback",
+        "steps": [
+          "homeconnect.callback"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "auth_flow",
+        "name": "Start Hue pairing",
+        "description": "Auto-generated workflow for auth",
+        "trigger": "auth",
+        "steps": [
+          "homeconnect.auth"
         ],
         "required": false,
         "on_deviation": "warn"
@@ -1327,18 +1327,18 @@
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
-          "hue.callback"
+          "homeconnect.callback"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
         "id": "status_flow",
-        "name": "Check Hue connection",
+        "name": "Check Hue status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
-          "hue.status"
+          "discovery.status"
         ],
         "required": false,
         "on_deviation": "warn"
@@ -1356,11 +1356,11 @@
       },
       {
         "id": "auth_flow",
-        "name": "Configure Tuya credentials",
+        "name": "Configure Tuya",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
-          "hue.auth"
+          "homeconnect.auth"
         ],
         "required": false,
         "on_deviation": "warn"
@@ -1371,18 +1371,18 @@
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
-          "hue.callback"
+          "homeconnect.callback"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
         "id": "status_flow",
-        "name": "Check Tuya connection",
+        "name": "Check Tuya status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
-          "hue.status"
+          "discovery.status"
         ],
         "required": false,
         "on_deviation": "warn"
@@ -1400,11 +1400,11 @@
       },
       {
         "id": "auth_flow",
-        "name": "Start Google Home OAuth",
+        "name": "Start Google OAuth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
-          "hue.auth"
+          "homeconnect.auth"
         ],
         "required": false,
         "on_deviation": "warn"
@@ -1415,25 +1415,25 @@
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
-          "hue.callback"
+          "homeconnect.callback"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
         "id": "status_flow",
-        "name": "Check Google connection",
+        "name": "Check Google status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
-          "hue.status"
+          "discovery.status"
         ],
         "required": false,
         "on_deviation": "warn"
       },
       {
         "id": "devices_flow",
-        "name": "List Google/Nest devices",
+        "name": "List Google devices",
         "description": "Auto-generated workflow for devices",
         "trigger": "devices",
         "steps": [
@@ -1451,122 +1451,122 @@
   },
   "scenarios": [
     {
-      "id": "get_config",
-      "title": "Get HA configuration",
-      "description": "Test scenario for get config",
+      "id": "get",
+      "title": "Get HA config",
+      "description": "Test scenario for get",
       "steps": [
-        "User says: \"Get HA configuration\"",
-        "Agent calls ha.config.get — get ha configuration",
+        "User says: \"Get HA config\"",
+        "Agent calls config.get — get ha config",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for get config is handled successfully."
+      "expected_outcome": "User request for get is handled successfully."
     },
     {
-      "id": "save_config",
-      "title": "Save HA config (URL, token)",
-      "description": "Test scenario for save config",
+      "id": "save",
+      "title": "Save HA config",
+      "description": "Test scenario for save",
       "steps": [
-        "User says: \"Save HA config (URL, token)\"",
-        "Agent calls ha.config.save — save ha config (url, token)",
+        "User says: \"Save HA config\"",
+        "Agent calls config.save — save ha config",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for save config is handled successfully."
+      "expected_outcome": "User request for save is handled successfully."
     },
     {
-      "id": "status_discovery",
-      "title": "Check all provider connection status",
-      "description": "Test scenario for status discovery",
+      "id": "status",
+      "title": "Check provider status",
+      "description": "Test scenario for status",
       "steps": [
-        "User says: \"Check all provider connection status\"",
-        "Agent calls ha.discovery.status — check all provider connection status",
+        "User says: \"Check provider status\"",
+        "Agent calls discovery.status — check provider status",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for status discovery is handled successfully."
+      "expected_outcome": "User request for status is handled successfully."
     },
     {
-      "id": "supported_discovery",
+      "id": "supported",
       "title": "List supported providers",
-      "description": "Test scenario for supported discovery",
+      "description": "Test scenario for supported",
       "steps": [
         "User says: \"List supported providers\"",
-        "Agent calls ha.discovery.supported — list supported providers",
+        "Agent calls discovery.supported — list supported providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for supported discovery is handled successfully."
+      "expected_outcome": "User request for supported is handled successfully."
     },
     {
-      "id": "list_rooms",
+      "id": "list",
       "title": "List HA rooms",
-      "description": "Test scenario for list rooms",
+      "description": "Test scenario for list",
       "steps": [
         "User says: \"List HA rooms\"",
-        "Agent calls ha.rooms.list — list ha rooms",
+        "Agent calls rooms.list — list ha rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for list rooms is handled successfully."
+      "expected_outcome": "User request for list is handled successfully."
     },
     {
-      "id": "sync_room",
-      "title": "Sync rooms from HA",
-      "description": "Test scenario for sync room",
+      "id": "sync",
+      "title": "Sync HA rooms",
+      "description": "Test scenario for sync",
       "steps": [
-        "User says: \"Sync rooms from HA\"",
-        "Agent calls ha.rooms.sync — sync rooms from ha",
+        "User says: \"Sync HA rooms\"",
+        "Agent calls rooms.sync — sync ha rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for sync room is handled successfully."
+      "expected_outcome": "User request for sync is handled successfully."
     },
     {
-      "id": "list_entities",
+      "id": "list",
       "title": "List HA entities",
-      "description": "Test scenario for list entities",
+      "description": "Test scenario for list",
       "steps": [
         "User says: \"List HA entities\"",
-        "Agent calls ha.entities.list — list ha entities",
+        "Agent calls rooms.list — list ha rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for list entities is handled successfully."
+      "expected_outcome": "User request for list is handled successfully."
     },
     {
-      "id": "discover_tv",
-      "title": "Discover LG TV on network",
-      "description": "Test scenario for discover tv",
+      "id": "discover",
+      "title": "Discover LG TV",
+      "description": "Test scenario for discover",
       "steps": [
-        "User says: \"Discover LG TV on network\"",
-        "Agent calls ha.tv.discover — discover lg tv on network",
+        "User says: \"Discover LG TV\"",
+        "Agent calls tv.discover — discover lg tv",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "User request for discover tv is handled successfully."
-    },
-    {
-      "id": "auth_homeconnect",
-      "title": "Start Home Connect OAuth",
-      "description": "Test scenario for auth homeconnect",
-      "steps": [
-        "User says: \"Start Home Connect OAuth\"",
-        "Agent calls ha.homeconnect.auth — start home connect oauth",
-        "Agent presents results to the user"
-      ],
-      "expected_outcome": "User request for auth homeconnect is handled successfully."
-    },
-    {
-      "id": "callback_homeconnect",
-      "title": "Complete Home Connect OAuth",
-      "description": "Test scenario for callback homeconnect",
-      "steps": [
-        "User says: \"Complete Home Connect OAuth\"",
-        "Agent calls ha.homeconnect.callback — complete home connect oauth",
-        "Agent presents results to the user"
-      ],
-      "expected_outcome": "User request for callback homeconnect is handled successfully."
+      "expected_outcome": "User request for discover is handled successfully."
     },
     {
       "id": "auth",
-      "title": "Start Hue bridge pairing",
+      "title": "Start Home Connect OAuth",
       "description": "Test scenario for auth",
       "steps": [
-        "User says: \"Start Hue bridge pairing\"",
-        "Agent calls hue.auth — start hue bridge pairing",
+        "User says: \"Start Home Connect OAuth\"",
+        "Agent calls homeconnect.auth — start home connect oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "User request for auth is handled successfully."
+    },
+    {
+      "id": "callback",
+      "title": "Complete Home Connect OAuth",
+      "description": "Test scenario for callback",
+      "steps": [
+        "User says: \"Complete Home Connect OAuth\"",
+        "Agent calls homeconnect.callback — complete home connect oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "User request for callback is handled successfully."
+    },
+    {
+      "id": "auth",
+      "title": "Start Hue pairing",
+      "description": "Test scenario for auth",
+      "steps": [
+        "User says: \"Start Hue pairing\"",
+        "Agent calls homeconnect.auth — start home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for auth is handled successfully."
@@ -1577,18 +1577,18 @@
       "description": "Test scenario for callback",
       "steps": [
         "User says: \"Complete Hue pairing\"",
-        "Agent calls hue.callback — complete hue pairing",
+        "Agent calls homeconnect.callback — complete home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for callback is handled successfully."
     },
     {
       "id": "status",
-      "title": "Check Hue connection",
+      "title": "Check Hue status",
       "description": "Test scenario for status",
       "steps": [
-        "User says: \"Check Hue connection\"",
-        "Agent calls hue.status — check hue connection",
+        "User says: \"Check Hue status\"",
+        "Agent calls discovery.status — check provider status",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for status is handled successfully."
@@ -1606,11 +1606,11 @@
     },
     {
       "id": "auth",
-      "title": "Configure Tuya credentials",
+      "title": "Configure Tuya",
       "description": "Test scenario for auth",
       "steps": [
-        "User says: \"Configure Tuya credentials\"",
-        "Agent calls hue.auth — start hue bridge pairing",
+        "User says: \"Configure Tuya\"",
+        "Agent calls homeconnect.auth — start home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for auth is handled successfully."
@@ -1621,18 +1621,18 @@
       "description": "Test scenario for callback",
       "steps": [
         "User says: \"Complete Tuya auth\"",
-        "Agent calls hue.callback — complete hue pairing",
+        "Agent calls homeconnect.callback — complete home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for callback is handled successfully."
     },
     {
       "id": "status",
-      "title": "Check Tuya connection",
+      "title": "Check Tuya status",
       "description": "Test scenario for status",
       "steps": [
-        "User says: \"Check Tuya connection\"",
-        "Agent calls hue.status — check hue connection",
+        "User says: \"Check Tuya status\"",
+        "Agent calls discovery.status — check provider status",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for status is handled successfully."
@@ -1650,11 +1650,11 @@
     },
     {
       "id": "auth",
-      "title": "Start Google Home OAuth",
+      "title": "Start Google OAuth",
       "description": "Test scenario for auth",
       "steps": [
-        "User says: \"Start Google Home OAuth\"",
-        "Agent calls hue.auth — start hue bridge pairing",
+        "User says: \"Start Google OAuth\"",
+        "Agent calls homeconnect.auth — start home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for auth is handled successfully."
@@ -1665,28 +1665,28 @@
       "description": "Test scenario for callback",
       "steps": [
         "User says: \"Complete Google OAuth\"",
-        "Agent calls hue.callback — complete hue pairing",
+        "Agent calls homeconnect.callback — complete home connect oauth",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for callback is handled successfully."
     },
     {
       "id": "status",
-      "title": "Check Google connection",
+      "title": "Check Google status",
       "description": "Test scenario for status",
       "steps": [
-        "User says: \"Check Google connection\"",
-        "Agent calls hue.status — check hue connection",
+        "User says: \"Check Google status\"",
+        "Agent calls discovery.status — check provider status",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for status is handled successfully."
     },
     {
       "id": "devices",
-      "title": "List Google/Nest devices",
+      "title": "List Google devices",
       "description": "Test scenario for devices",
       "steps": [
-        "User says: \"List Google/Nest devices\"",
+        "User says: \"List Google devices\"",
         "Agent calls hue.devices — list hue devices",
         "Agent presents results to the user"
       ],
@@ -1695,12 +1695,7 @@
   ],
   "role": {
     "name": "Setup Assistant",
-    "persona": "Guide users through connecting providers step-by-step.",
-    "goals": [
-      "Help connect all providers",
-      "Verify connections",
-      "Sync rooms after connecting"
-    ],
+    "persona": "Guide users through provider setup step-by-step.",
     "communication_style": {
       "tone": "friendly",
       "verbosity": "concise"
@@ -1710,8 +1705,7 @@
     "model": "claude-sonnet-4-20250514",
     "temperature": 0.3,
     "rv2": {
-      "max_iterations": 15,
-      "iteration_timeout_ms": 30000
+      "max_iterations": 15
     },
     "autonomy": {
       "level": "autonomous"

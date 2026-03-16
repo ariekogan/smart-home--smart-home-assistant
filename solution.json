@@ -2,13 +2,12 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
+  "description": "Smart home control.",
   "skills": [
     {
       "id": "connect-my-home",
       "name": "Connect My Home",
       "role": "gateway",
-      "description": "Setup and onboarding.",
       "entry_channels": [],
       "connectors": [
         "home-assistant-mcp",
@@ -21,7 +20,6 @@
       "id": "home-control",
       "name": "Home Control",
       "role": "worker",
-      "description": "Device control.",
       "entry_channels": [
         "chat",
         "dashboard",
@@ -40,17 +38,15 @@
     {
       "id": "home-assistant-mcp",
       "required": true,
-      "description": "Home Assistant MCP with LG TV and Home Connect",
+      "ui_capable": true,
       "used_by": [
         "connect-my-home",
         "home-control"
-      ],
-      "ui_capable": true
+      ]
     },
     {
       "id": "hue-mcp",
       "required": false,
-      "description": "Philips Hue Bridge connector",
       "used_by": [
         "connect-my-home",
         "home-control"
@@ -59,7 +55,6 @@
     {
       "id": "tuya-mcp",
       "required": false,
-      "description": "Tuya/Smart Life IoT connector",
       "used_by": [
         "connect-my-home",
         "home-control"
@@ -68,7 +63,6 @@
     {
       "id": "google-home-mcp",
       "required": false,
-      "description": "Google Home/Nest SDM connector",
       "used_by": [
         "connect-my-home",
         "home-control"
@@ -80,7 +74,6 @@
       {
         "key": "homeowner",
         "label": "Homeowner",
-        "description": "Smart home owner",
         "default_channel": "chat"
       }
     ],
