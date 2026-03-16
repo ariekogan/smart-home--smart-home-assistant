@@ -11,13 +11,6 @@
     "tuya-mcp",
     "google-home-mcp"
   ],
-  "problem": {
-    "statement": "Users need to connect and configure their smart home providers.",
-    "context": "Supports 6 providers.",
-    "goals": [
-      "Guide users through connecting each provider"
-    ]
-  },
   "tools": [
     {
       "id": "tool-ha-config-get",
@@ -111,7 +104,7 @@
       "id": "tool-ha-discovery-status",
       "id_status": "permanent",
       "name": "discovery.status",
-      "description": "Check all provider status",
+      "description": "Check all providers",
       "inputs": [],
       "output": {
         "type": "object"
@@ -147,7 +140,7 @@
       "id": "tool-ha-discovery-supported",
       "id_status": "permanent",
       "name": "discovery.supported",
-      "description": "List supported providers",
+      "description": "List providers",
       "inputs": [],
       "output": {
         "type": "object"
@@ -188,7 +181,7 @@
       "id": "tool-ha-rooms-list",
       "id_status": "permanent",
       "name": "rooms.list",
-      "description": "List HA rooms",
+      "description": "List rooms",
       "inputs": [],
       "output": {
         "type": "object"
@@ -229,7 +222,7 @@
       "id": "tool-ha-rooms-sync",
       "id_status": "permanent",
       "name": "rooms.sync",
-      "description": "Sync HA rooms",
+      "description": "Sync rooms",
       "inputs": [],
       "output": {
         "type": "object"
@@ -265,7 +258,7 @@
       "id": "tool-ha-entities-list",
       "id_status": "permanent",
       "name": "entities.list",
-      "description": "List HA entities",
+      "description": "List entities",
       "inputs": [],
       "output": {
         "type": "object"
@@ -306,7 +299,7 @@
       "id": "tool-ha-tv-discover",
       "id_status": "permanent",
       "name": "tv.discover",
-      "description": "Discover LG TV",
+      "description": "Discover TV",
       "inputs": [],
       "output": {
         "type": "object"
@@ -342,7 +335,7 @@
       "id": "tool-ha-hc-auth",
       "id_status": "permanent",
       "name": "homeconnect.auth",
-      "description": "Start Home Connect OAuth",
+      "description": "HC OAuth",
       "inputs": [],
       "output": {
         "type": "object"
@@ -378,7 +371,7 @@
       "id": "tool-ha-hc-callback",
       "id_status": "permanent",
       "name": "homeconnect.callback",
-      "description": "Complete Home Connect OAuth",
+      "description": "HC callback",
       "inputs": [
         {
           "name": "code",
@@ -423,7 +416,7 @@
       "id": "tool-hue-auth",
       "id_status": "permanent",
       "name": "hue.auth",
-      "description": "Start Hue pairing",
+      "description": "Hue pairing",
       "inputs": [],
       "output": {
         "type": "object"
@@ -459,7 +452,7 @@
       "id": "tool-hue-callback",
       "id_status": "permanent",
       "name": "hue.callback",
-      "description": "Complete Hue pairing",
+      "description": "Hue callback",
       "inputs": [],
       "output": {
         "type": "object"
@@ -495,7 +488,7 @@
       "id": "tool-hue-status",
       "id_status": "permanent",
       "name": "hue.status",
-      "description": "Check Hue status",
+      "description": "Hue status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -531,7 +524,7 @@
       "id": "tool-hue-devices",
       "id_status": "permanent",
       "name": "hue.devices",
-      "description": "List Hue devices",
+      "description": "Hue devices",
       "inputs": [],
       "output": {
         "type": "object"
@@ -552,13 +545,8 @@
             "id": "tool-hue-devices-auto",
             "input": {},
             "output": {
-              "results": [
-                {
-                  "id": 1,
-                  "name": "Example item"
-                }
-              ],
-              "total_count": 1
+              "success": true,
+              "data": {}
             },
             "description": "Auto-generated example for hue.devices"
           }
@@ -572,7 +560,7 @@
       "id": "tool-tuya-auth",
       "id_status": "permanent",
       "name": "tuya.auth",
-      "description": "Configure Tuya credentials",
+      "description": "Tuya auth",
       "inputs": [
         {
           "name": "access_id",
@@ -624,7 +612,7 @@
       "id": "tool-tuya-callback",
       "id_status": "permanent",
       "name": "tuya.callback",
-      "description": "Complete Tuya auth",
+      "description": "Tuya callback",
       "inputs": [],
       "output": {
         "type": "object"
@@ -660,7 +648,7 @@
       "id": "tool-tuya-status",
       "id_status": "permanent",
       "name": "tuya.status",
-      "description": "Check Tuya status",
+      "description": "Tuya status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -696,7 +684,7 @@
       "id": "tool-tuya-devices",
       "id_status": "permanent",
       "name": "tuya.devices",
-      "description": "List Tuya devices",
+      "description": "Tuya devices",
       "inputs": [],
       "output": {
         "type": "object"
@@ -717,13 +705,8 @@
             "id": "tool-tuya-devices-auto",
             "input": {},
             "output": {
-              "results": [
-                {
-                  "id": 1,
-                  "name": "Example item"
-                }
-              ],
-              "total_count": 1
+              "success": true,
+              "data": {}
             },
             "description": "Auto-generated example for tuya.devices"
           }
@@ -737,7 +720,7 @@
       "id": "tool-google-auth",
       "id_status": "permanent",
       "name": "google.auth",
-      "description": "Start Google OAuth",
+      "description": "Google OAuth",
       "inputs": [],
       "output": {
         "type": "object"
@@ -773,7 +756,7 @@
       "id": "tool-google-callback",
       "id_status": "permanent",
       "name": "google.callback",
-      "description": "Complete Google OAuth",
+      "description": "Google callback",
       "inputs": [
         {
           "name": "code",
@@ -818,7 +801,7 @@
       "id": "tool-google-status",
       "id_status": "permanent",
       "name": "google.status",
-      "description": "Check Google status",
+      "description": "Google status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -854,7 +837,7 @@
       "id": "tool-google-devices",
       "id_status": "permanent",
       "name": "google.devices",
-      "description": "List Google/Nest devices",
+      "description": "Google devices",
       "inputs": [],
       "output": {
         "type": "object"
@@ -875,13 +858,8 @@
             "id": "tool-google-devices-auto",
             "input": {},
             "output": {
-              "results": [
-                {
-                  "id": 1,
-                  "name": "Example item"
-                }
-              ],
-              "total_count": 1
+              "success": true,
+              "data": {}
             },
             "description": "Auto-generated example for google.devices"
           }
@@ -895,7 +873,7 @@
       "id": "tool-wa-auth",
       "id_status": "permanent",
       "name": "whatsapp.auth",
-      "description": "Save WhatsApp credentials",
+      "description": "WhatsApp auth",
       "inputs": [
         {
           "name": "phone_number_id",
@@ -953,7 +931,7 @@
       "id": "tool-wa-status",
       "id_status": "permanent",
       "name": "whatsapp.status",
-      "description": "Check WhatsApp status",
+      "description": "WhatsApp status",
       "inputs": [],
       "output": {
         "type": "object"
@@ -989,7 +967,7 @@
       "id": "tool-wa-test",
       "id_status": "permanent",
       "name": "whatsapp.test",
-      "description": "Send WhatsApp test",
+      "description": "WhatsApp test",
       "inputs": [
         {
           "name": "to",
@@ -1034,7 +1012,7 @@
       "id": "tool-wa-disconnect",
       "id_status": "permanent",
       "name": "whatsapp.disconnect",
-      "description": "Remove WhatsApp credentials",
+      "description": "WhatsApp disconnect",
       "inputs": [],
       "output": {
         "type": "object"
@@ -1056,7 +1034,7 @@
             "input": {},
             "output": {
               "success": true,
-              "message": "Operation completed successfully."
+              "data": {}
             },
             "description": "Auto-generated example for whatsapp.disconnect"
           }
@@ -1107,89 +1085,89 @@
       },
       {
         "id": "status",
-        "description": "Check all provider status",
+        "description": "Check all providers",
         "examples": [
-          "Check all provider status",
-          "I need to check all provider status",
-          "Can you check all provider status?",
-          "Please check all provider status"
+          "Check all providers",
+          "I need to check all providers",
+          "Can you check all providers?",
+          "Please check all providers"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "supported",
-        "description": "List supported providers",
+        "description": "List providers",
         "examples": [
-          "List supported providers",
-          "I need to list supported providers",
-          "Can you list supported providers?",
-          "Please list supported providers"
+          "List providers",
+          "I need to list providers",
+          "Can you list providers?",
+          "Please list providers"
         ],
         "maps_to_workflow": "supported_flow"
       },
       {
         "id": "list",
-        "description": "List HA rooms",
+        "description": "List rooms",
         "examples": [
-          "List HA rooms",
-          "I need to list HA rooms",
-          "Can you list HA rooms?",
-          "Please list HA rooms"
+          "List rooms",
+          "I need to list rooms",
+          "Can you list rooms?",
+          "Please list rooms"
         ],
         "maps_to_workflow": "list_flow"
       },
       {
         "id": "sync",
-        "description": "Sync HA rooms",
+        "description": "Sync rooms",
         "examples": [
-          "Sync HA rooms",
-          "I need to sync HA rooms",
-          "Can you sync HA rooms?",
-          "Please sync HA rooms"
+          "Sync rooms",
+          "I need to sync rooms",
+          "Can you sync rooms?",
+          "Please sync rooms"
         ],
         "maps_to_workflow": "sync_flow"
       },
       {
         "id": "list",
-        "description": "List HA entities",
+        "description": "List entities",
         "examples": [
-          "List HA entities",
-          "I need to list HA entities",
-          "Can you list HA entities?",
-          "Please list HA entities"
+          "List entities",
+          "I need to list entities",
+          "Can you list entities?",
+          "Please list entities"
         ],
         "maps_to_workflow": "list_flow"
       },
       {
         "id": "discover",
-        "description": "Discover LG TV",
+        "description": "Discover TV",
         "examples": [
-          "Discover LG TV",
-          "I need to discover LG TV",
-          "Can you discover LG TV?",
-          "Please discover LG TV"
+          "Discover TV",
+          "I need to discover TV",
+          "Can you discover TV?",
+          "Please discover TV"
         ],
         "maps_to_workflow": "discover_flow"
       },
       {
         "id": "auth",
-        "description": "Start Home Connect OAuth",
+        "description": "HC OAuth",
         "examples": [
-          "Start Home Connect OAuth",
-          "I need to start Home Connect OAuth",
-          "Can you start Home Connect OAuth?",
-          "Please start Home Connect OAuth"
+          "HC OAuth",
+          "I need to hC OAuth",
+          "Can you hC OAuth?",
+          "Please hC OAuth"
         ],
         "maps_to_workflow": "auth_flow"
       },
       {
         "id": "callback",
-        "description": "Complete Home Connect OAuth",
+        "description": "HC callback",
         "examples": [
-          "Complete Home Connect OAuth",
-          "I need to complete Home Connect OAuth",
-          "Can you complete Home Connect OAuth?",
-          "Please complete Home Connect OAuth"
+          "HC callback",
+          "I need to hC callback",
+          "Can you hC callback?",
+          "Please hC callback"
         ],
         "maps_to_workflow": "callback_flow",
         "entities": [
@@ -1203,56 +1181,56 @@
       },
       {
         "id": "auth",
-        "description": "Start Hue pairing",
+        "description": "Hue pairing",
         "examples": [
-          "Start Hue pairing",
-          "I need to start Hue pairing",
-          "Can you start Hue pairing?",
-          "Please start Hue pairing"
+          "Hue pairing",
+          "I need to hue pairing",
+          "Can you hue pairing?",
+          "Please hue pairing"
         ],
         "maps_to_workflow": "auth_flow"
       },
       {
         "id": "callback",
-        "description": "Complete Hue pairing",
+        "description": "Hue callback",
         "examples": [
-          "Complete Hue pairing",
-          "I need to complete Hue pairing",
-          "Can you complete Hue pairing?",
-          "Please complete Hue pairing"
+          "Hue callback",
+          "I need to hue callback",
+          "Can you hue callback?",
+          "Please hue callback"
         ],
         "maps_to_workflow": "callback_flow"
       },
       {
         "id": "status",
-        "description": "Check Hue status",
+        "description": "Hue status",
         "examples": [
-          "Check Hue status",
-          "I need to check Hue status",
-          "Can you check Hue status?",
-          "Please check Hue status"
+          "Hue status",
+          "I need to hue status",
+          "Can you hue status?",
+          "Please hue status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "devices",
-        "description": "List Hue devices",
+        "description": "Hue devices",
         "examples": [
-          "List Hue devices",
-          "I need to list Hue devices",
-          "Can you list Hue devices?",
-          "Please list Hue devices"
+          "Hue devices",
+          "I need to hue devices",
+          "Can you hue devices?",
+          "Please hue devices"
         ],
         "maps_to_workflow": "devices_flow"
       },
       {
         "id": "auth",
-        "description": "Configure Tuya credentials",
+        "description": "Tuya auth",
         "examples": [
-          "Configure Tuya credentials",
-          "I need to configure Tuya credentials",
-          "Can you configure Tuya credentials?",
-          "Please configure Tuya credentials"
+          "Tuya auth",
+          "I need to tuya auth",
+          "Can you tuya auth?",
+          "Please tuya auth"
         ],
         "maps_to_workflow": "auth_flow",
         "entities": [
@@ -1272,56 +1250,56 @@
       },
       {
         "id": "callback",
-        "description": "Complete Tuya auth",
+        "description": "Tuya callback",
         "examples": [
-          "Complete Tuya auth",
-          "I need to complete Tuya auth",
-          "Can you complete Tuya auth?",
-          "Please complete Tuya auth"
+          "Tuya callback",
+          "I need to tuya callback",
+          "Can you tuya callback?",
+          "Please tuya callback"
         ],
         "maps_to_workflow": "callback_flow"
       },
       {
         "id": "status",
-        "description": "Check Tuya status",
+        "description": "Tuya status",
         "examples": [
-          "Check Tuya status",
-          "I need to check Tuya status",
-          "Can you check Tuya status?",
-          "Please check Tuya status"
+          "Tuya status",
+          "I need to tuya status",
+          "Can you tuya status?",
+          "Please tuya status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "devices",
-        "description": "List Tuya devices",
+        "description": "Tuya devices",
         "examples": [
-          "List Tuya devices",
-          "I need to list Tuya devices",
-          "Can you list Tuya devices?",
-          "Please list Tuya devices"
+          "Tuya devices",
+          "I need to tuya devices",
+          "Can you tuya devices?",
+          "Please tuya devices"
         ],
         "maps_to_workflow": "devices_flow"
       },
       {
         "id": "auth",
-        "description": "Start Google OAuth",
+        "description": "Google OAuth",
         "examples": [
-          "Start Google OAuth",
-          "I need to start Google OAuth",
-          "Can you start Google OAuth?",
-          "Please start Google OAuth"
+          "Google OAuth",
+          "I need to google OAuth",
+          "Can you google OAuth?",
+          "Please google OAuth"
         ],
         "maps_to_workflow": "auth_flow"
       },
       {
         "id": "callback",
-        "description": "Complete Google OAuth",
+        "description": "Google callback",
         "examples": [
-          "Complete Google OAuth",
-          "I need to complete Google OAuth",
-          "Can you complete Google OAuth?",
-          "Please complete Google OAuth"
+          "Google callback",
+          "I need to google callback",
+          "Can you google callback?",
+          "Please google callback"
         ],
         "maps_to_workflow": "callback_flow",
         "entities": [
@@ -1335,34 +1313,34 @@
       },
       {
         "id": "status",
-        "description": "Check Google status",
+        "description": "Google status",
         "examples": [
-          "Check Google status",
-          "I need to check Google status",
-          "Can you check Google status?",
-          "Please check Google status"
+          "Google status",
+          "I need to google status",
+          "Can you google status?",
+          "Please google status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "devices",
-        "description": "List Google/Nest devices",
+        "description": "Google devices",
         "examples": [
-          "List Google/Nest devices",
-          "I need to list Google/Nest devices",
-          "Can you list Google/Nest devices?",
-          "Please list Google/Nest devices"
+          "Google devices",
+          "I need to google devices",
+          "Can you google devices?",
+          "Please google devices"
         ],
         "maps_to_workflow": "devices_flow"
       },
       {
         "id": "auth",
-        "description": "Save WhatsApp credentials",
+        "description": "WhatsApp auth",
         "examples": [
-          "Save WhatsApp credentials",
-          "I need to save WhatsApp credentials",
-          "Can you save WhatsApp credentials?",
-          "Please save WhatsApp credentials"
+          "WhatsApp auth",
+          "I need to whatsApp auth",
+          "Can you whatsApp auth?",
+          "Please whatsApp auth"
         ],
         "maps_to_workflow": "auth_flow",
         "entities": [
@@ -1382,23 +1360,23 @@
       },
       {
         "id": "status",
-        "description": "Check WhatsApp status",
+        "description": "WhatsApp status",
         "examples": [
-          "Check WhatsApp status",
-          "I need to check WhatsApp status",
-          "Can you check WhatsApp status?",
-          "Please check WhatsApp status"
+          "WhatsApp status",
+          "I need to whatsApp status",
+          "Can you whatsApp status?",
+          "Please whatsApp status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "test",
-        "description": "Send WhatsApp test",
+        "description": "WhatsApp test",
         "examples": [
-          "Send WhatsApp test",
-          "I need to send WhatsApp test",
-          "Can you send WhatsApp test?",
-          "Please send WhatsApp test"
+          "WhatsApp test",
+          "I need to whatsApp test",
+          "Can you whatsApp test?",
+          "Please whatsApp test"
         ],
         "maps_to_workflow": "test_flow",
         "entities": [
@@ -1412,12 +1390,12 @@
       },
       {
         "id": "disconnect",
-        "description": "Remove WhatsApp credentials",
+        "description": "WhatsApp disconnect",
         "examples": [
-          "Remove WhatsApp credentials",
-          "I need to remove WhatsApp credentials",
-          "Can you remove WhatsApp credentials?",
-          "Please remove WhatsApp credentials"
+          "WhatsApp disconnect",
+          "I need to whatsApp disconnect",
+          "Can you whatsApp disconnect?",
+          "Please whatsApp disconnect"
         ],
         "maps_to_workflow": "disconnect_flow"
       }
@@ -1463,7 +1441,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check all provider status",
+        "name": "Check all providers",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1474,7 +1452,7 @@
       },
       {
         "id": "supported_flow",
-        "name": "List supported providers",
+        "name": "List providers",
         "description": "Auto-generated workflow for supported",
         "trigger": "supported",
         "steps": [
@@ -1485,7 +1463,7 @@
       },
       {
         "id": "list_flow",
-        "name": "List HA rooms",
+        "name": "List rooms",
         "description": "Auto-generated workflow for list",
         "trigger": "list",
         "steps": [
@@ -1496,7 +1474,7 @@
       },
       {
         "id": "sync_flow",
-        "name": "Sync HA rooms",
+        "name": "Sync rooms",
         "description": "Auto-generated workflow for sync",
         "trigger": "sync",
         "steps": [
@@ -1507,7 +1485,7 @@
       },
       {
         "id": "list_flow",
-        "name": "List HA entities",
+        "name": "List entities",
         "description": "Auto-generated workflow for list",
         "trigger": "list",
         "steps": [
@@ -1518,7 +1496,7 @@
       },
       {
         "id": "discover_flow",
-        "name": "Discover LG TV",
+        "name": "Discover TV",
         "description": "Auto-generated workflow for discover",
         "trigger": "discover",
         "steps": [
@@ -1529,7 +1507,7 @@
       },
       {
         "id": "auth_flow",
-        "name": "Start Home Connect OAuth",
+        "name": "HC OAuth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
@@ -1540,7 +1518,7 @@
       },
       {
         "id": "callback_flow",
-        "name": "Complete Home Connect OAuth",
+        "name": "HC callback",
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
@@ -1551,7 +1529,7 @@
       },
       {
         "id": "auth_flow",
-        "name": "Start Hue pairing",
+        "name": "Hue pairing",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
@@ -1562,7 +1540,7 @@
       },
       {
         "id": "callback_flow",
-        "name": "Complete Hue pairing",
+        "name": "Hue callback",
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
@@ -1573,7 +1551,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check Hue status",
+        "name": "Hue status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1584,7 +1562,7 @@
       },
       {
         "id": "devices_flow",
-        "name": "List Hue devices",
+        "name": "Hue devices",
         "description": "Auto-generated workflow for devices",
         "trigger": "devices",
         "steps": [
@@ -1595,7 +1573,7 @@
       },
       {
         "id": "auth_flow",
-        "name": "Configure Tuya credentials",
+        "name": "Tuya auth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
@@ -1606,7 +1584,7 @@
       },
       {
         "id": "callback_flow",
-        "name": "Complete Tuya auth",
+        "name": "Tuya callback",
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
@@ -1617,7 +1595,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check Tuya status",
+        "name": "Tuya status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1628,7 +1606,7 @@
       },
       {
         "id": "devices_flow",
-        "name": "List Tuya devices",
+        "name": "Tuya devices",
         "description": "Auto-generated workflow for devices",
         "trigger": "devices",
         "steps": [
@@ -1639,7 +1617,7 @@
       },
       {
         "id": "auth_flow",
-        "name": "Start Google OAuth",
+        "name": "Google OAuth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
@@ -1650,7 +1628,7 @@
       },
       {
         "id": "callback_flow",
-        "name": "Complete Google OAuth",
+        "name": "Google callback",
         "description": "Auto-generated workflow for callback",
         "trigger": "callback",
         "steps": [
@@ -1661,7 +1639,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check Google status",
+        "name": "Google status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1672,7 +1650,7 @@
       },
       {
         "id": "devices_flow",
-        "name": "List Google/Nest devices",
+        "name": "Google devices",
         "description": "Auto-generated workflow for devices",
         "trigger": "devices",
         "steps": [
@@ -1683,7 +1661,7 @@
       },
       {
         "id": "auth_flow",
-        "name": "Save WhatsApp credentials",
+        "name": "WhatsApp auth",
         "description": "Auto-generated workflow for auth",
         "trigger": "auth",
         "steps": [
@@ -1694,7 +1672,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check WhatsApp status",
+        "name": "WhatsApp status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1705,7 +1683,7 @@
       },
       {
         "id": "test_flow",
-        "name": "Send WhatsApp test",
+        "name": "WhatsApp test",
         "description": "Auto-generated workflow for test",
         "trigger": "test",
         "steps": [
@@ -1716,7 +1694,7 @@
       },
       {
         "id": "disconnect_flow",
-        "name": "Remove WhatsApp credentials",
+        "name": "WhatsApp disconnect",
         "description": "Auto-generated workflow for disconnect",
         "trigger": "disconnect",
         "steps": [
@@ -1757,274 +1735,275 @@
     },
     {
       "id": "status",
-      "title": "Check all provider status",
-      "description": "User triggers \"Check all provider status\" (e.g. \"Check all provider status\") and the agent handles it end-to-end.",
+      "title": "Check all providers",
+      "description": "User triggers \"Check all providers\" (e.g. \"Check all providers\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check all provider status\"",
-        "Agent calls discovery.status — check all provider status",
+        "User says: \"Check all providers\"",
+        "Agent calls discovery.status — check all providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check all provider status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Check all providers\" request and presents the result."
     },
     {
       "id": "supported",
-      "title": "List supported providers",
-      "description": "User triggers \"List supported providers\" (e.g. \"List supported providers\") and the agent handles it end-to-end.",
+      "title": "List providers",
+      "description": "User triggers \"List providers\" (e.g. \"List providers\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List supported providers\"",
-        "Agent calls discovery.supported — list supported providers",
+        "User says: \"List providers\"",
+        "Agent calls discovery.supported — list providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List supported providers\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List providers\" request and presents the result."
     },
     {
       "id": "list",
-      "title": "List HA rooms",
-      "description": "User triggers \"List HA rooms\" (e.g. \"List HA rooms\") and the agent handles it end-to-end.",
+      "title": "List rooms",
+      "description": "User triggers \"List rooms\" (e.g. \"List rooms\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List HA rooms\"",
-        "Agent calls rooms.list — list ha rooms",
+        "User says: \"List rooms\"",
+        "Agent calls rooms.list — list rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List HA rooms\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List rooms\" request and presents the result."
     },
     {
       "id": "sync",
-      "title": "Sync HA rooms",
-      "description": "User triggers \"Sync HA rooms\" (e.g. \"Sync HA rooms\") and the agent handles it end-to-end.",
+      "title": "Sync rooms",
+      "description": "User triggers \"Sync rooms\" (e.g. \"Sync rooms\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Sync HA rooms\"",
-        "Agent calls rooms.sync — sync ha rooms",
+        "User says: \"Sync rooms\"",
+        "Agent calls rooms.sync — sync rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Sync HA rooms\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Sync rooms\" request and presents the result."
     },
     {
       "id": "list",
-      "title": "List HA entities",
-      "description": "User triggers \"List HA entities\" (e.g. \"List HA entities\") and the agent handles it end-to-end.",
+      "title": "List entities",
+      "description": "User triggers \"List entities\" (e.g. \"List entities\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List HA entities\"",
-        "Agent calls rooms.list — list ha rooms",
+        "User says: \"List entities\"",
+        "Agent calls rooms.list — list rooms",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List HA entities\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List entities\" request and presents the result."
     },
     {
       "id": "discover",
-      "title": "Discover LG TV",
-      "description": "User triggers \"Discover LG TV\" (e.g. \"Discover LG TV\") and the agent handles it end-to-end.",
+      "title": "Discover TV",
+      "description": "User triggers \"Discover TV\" (e.g. \"Discover TV\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Discover LG TV\"",
-        "Agent calls tv.discover — discover lg tv",
+        "User says: \"Discover TV\"",
+        "Agent calls tv.discover — discover tv",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Discover LG TV\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Discover TV\" request and presents the result."
     },
     {
       "id": "auth",
-      "title": "Start Home Connect OAuth",
-      "description": "User triggers \"Start Home Connect OAuth\" (e.g. \"Start Home Connect OAuth\") and the agent handles it end-to-end.",
+      "title": "HC OAuth",
+      "description": "User triggers \"HC OAuth\" (e.g. \"HC OAuth\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Start Home Connect OAuth\"",
-        "Agent calls homeconnect.auth — start home connect oauth",
+        "User says: \"HC OAuth\"",
+        "Agent calls homeconnect.auth — hc oauth",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Start Home Connect OAuth\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"HC OAuth\" request and presents the result."
     },
     {
       "id": "callback",
-      "title": "Complete Home Connect OAuth",
-      "description": "User triggers \"Complete Home Connect OAuth\" (e.g. \"Complete Home Connect OAuth\") and the agent handles it end-to-end.",
+      "title": "HC callback",
+      "description": "User triggers \"HC callback\" (e.g. \"HC callback\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Complete Home Connect OAuth\"",
-        "Agent calls homeconnect.callback — complete home connect oauth",
+        "User says: \"HC callback\"",
+        "Agent calls homeconnect.callback — hc callback",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Complete Home Connect OAuth\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"HC callback\" request and presents the result."
     },
     {
       "id": "auth",
-      "title": "Start Hue pairing",
-      "description": "User triggers \"Start Hue pairing\" (e.g. \"Start Hue pairing\") and the agent handles it end-to-end.",
+      "title": "Hue pairing",
+      "description": "User triggers \"Hue pairing\" (e.g. \"Hue pairing\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Start Hue pairing\"",
-        "Agent calls homeconnect.auth — start home connect oauth",
+        "User says: \"Hue pairing\"",
+        "Agent calls homeconnect.auth — hc oauth",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Start Hue pairing\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Hue pairing\" request and presents the result."
     },
     {
       "id": "callback",
-      "title": "Complete Hue pairing",
-      "description": "User triggers \"Complete Hue pairing\" (e.g. \"Complete Hue pairing\") and the agent handles it end-to-end.",
+      "title": "Hue callback",
+      "description": "User triggers \"Hue callback\" (e.g. \"Hue callback\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Complete Hue pairing\"",
-        "Agent calls homeconnect.callback — complete home connect oauth",
+        "User says: \"Hue callback\"",
+        "Agent calls homeconnect.callback — hc callback",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Complete Hue pairing\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Hue callback\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Check Hue status",
-      "description": "User triggers \"Check Hue status\" (e.g. \"Check Hue status\") and the agent handles it end-to-end.",
+      "title": "Hue status",
+      "description": "User triggers \"Hue status\" (e.g. \"Hue status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check Hue status\"",
-        "Agent calls discovery.status — check all provider status",
+        "User says: \"Hue status\"",
+        "Agent calls discovery.status — check all providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check Hue status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Hue status\" request and presents the result."
     },
     {
       "id": "devices",
-      "title": "List Hue devices",
-      "description": "User triggers \"List Hue devices\" (e.g. \"List Hue devices\") and the agent handles it end-to-end.",
+      "title": "Hue devices",
+      "description": "User triggers \"Hue devices\" (e.g. \"Hue devices\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List Hue devices\"",
-        "Agent calls hue.devices — list hue devices",
+        "User says: \"Hue devices\"",
+        "Agent calls hue.devices — hue devices",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List Hue devices\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Hue devices\" request and presents the result."
     },
     {
       "id": "auth",
-      "title": "Configure Tuya credentials",
-      "description": "User triggers \"Configure Tuya credentials\" (e.g. \"Configure Tuya credentials\") and the agent handles it end-to-end.",
+      "title": "Tuya auth",
+      "description": "User triggers \"Tuya auth\" (e.g. \"Tuya auth\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Configure Tuya credentials\"",
-        "Agent calls homeconnect.auth — start home connect oauth",
+        "User says: \"Tuya auth\"",
+        "Agent calls homeconnect.auth — hc oauth",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Configure Tuya credentials\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Tuya auth\" request and presents the result."
     },
     {
       "id": "callback",
-      "title": "Complete Tuya auth",
-      "description": "User triggers \"Complete Tuya auth\" (e.g. \"Complete Tuya auth\") and the agent handles it end-to-end.",
+      "title": "Tuya callback",
+      "description": "User triggers \"Tuya callback\" (e.g. \"Tuya callback\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Complete Tuya auth\"",
-        "Agent calls homeconnect.callback — complete home connect oauth",
+        "User says: \"Tuya callback\"",
+        "Agent calls homeconnect.callback — hc callback",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Complete Tuya auth\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Tuya callback\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Check Tuya status",
-      "description": "User triggers \"Check Tuya status\" (e.g. \"Check Tuya status\") and the agent handles it end-to-end.",
+      "title": "Tuya status",
+      "description": "User triggers \"Tuya status\" (e.g. \"Tuya status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check Tuya status\"",
-        "Agent calls discovery.status — check all provider status",
+        "User says: \"Tuya status\"",
+        "Agent calls discovery.status — check all providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check Tuya status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Tuya status\" request and presents the result."
     },
     {
       "id": "devices",
-      "title": "List Tuya devices",
-      "description": "User triggers \"List Tuya devices\" (e.g. \"List Tuya devices\") and the agent handles it end-to-end.",
+      "title": "Tuya devices",
+      "description": "User triggers \"Tuya devices\" (e.g. \"Tuya devices\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List Tuya devices\"",
-        "Agent calls hue.devices — list hue devices",
+        "User says: \"Tuya devices\"",
+        "Agent calls hue.devices — hue devices",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List Tuya devices\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Tuya devices\" request and presents the result."
     },
     {
       "id": "auth",
-      "title": "Start Google OAuth",
-      "description": "User triggers \"Start Google OAuth\" (e.g. \"Start Google OAuth\") and the agent handles it end-to-end.",
+      "title": "Google OAuth",
+      "description": "User triggers \"Google OAuth\" (e.g. \"Google OAuth\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Start Google OAuth\"",
-        "Agent calls homeconnect.auth — start home connect oauth",
+        "User says: \"Google OAuth\"",
+        "Agent calls homeconnect.auth — hc oauth",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Start Google OAuth\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Google OAuth\" request and presents the result."
     },
     {
       "id": "callback",
-      "title": "Complete Google OAuth",
-      "description": "User triggers \"Complete Google OAuth\" (e.g. \"Complete Google OAuth\") and the agent handles it end-to-end.",
+      "title": "Google callback",
+      "description": "User triggers \"Google callback\" (e.g. \"Google callback\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Complete Google OAuth\"",
-        "Agent calls homeconnect.callback — complete home connect oauth",
+        "User says: \"Google callback\"",
+        "Agent calls homeconnect.callback — hc callback",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Complete Google OAuth\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Google callback\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Check Google status",
-      "description": "User triggers \"Check Google status\" (e.g. \"Check Google status\") and the agent handles it end-to-end.",
+      "title": "Google status",
+      "description": "User triggers \"Google status\" (e.g. \"Google status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check Google status\"",
-        "Agent calls discovery.status — check all provider status",
+        "User says: \"Google status\"",
+        "Agent calls discovery.status — check all providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check Google status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Google status\" request and presents the result."
     },
     {
       "id": "devices",
-      "title": "List Google/Nest devices",
-      "description": "User triggers \"List Google/Nest devices\" (e.g. \"List Google/Nest devices\") and the agent handles it end-to-end.",
+      "title": "Google devices",
+      "description": "User triggers \"Google devices\" (e.g. \"Google devices\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List Google/Nest devices\"",
-        "Agent calls hue.devices — list hue devices",
+        "User says: \"Google devices\"",
+        "Agent calls hue.devices — hue devices",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List Google/Nest devices\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Google devices\" request and presents the result."
     },
     {
       "id": "auth",
-      "title": "Save WhatsApp credentials",
-      "description": "User triggers \"Save WhatsApp credentials\" (e.g. \"Save WhatsApp credentials\") and the agent handles it end-to-end.",
+      "title": "WhatsApp auth",
+      "description": "User triggers \"WhatsApp auth\" (e.g. \"WhatsApp auth\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Save WhatsApp credentials\"",
-        "Agent calls homeconnect.auth — start home connect oauth",
+        "User says: \"WhatsApp auth\"",
+        "Agent calls homeconnect.auth — hc oauth",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Save WhatsApp credentials\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"WhatsApp auth\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Check WhatsApp status",
-      "description": "User triggers \"Check WhatsApp status\" (e.g. \"Check WhatsApp status\") and the agent handles it end-to-end.",
+      "title": "WhatsApp status",
+      "description": "User triggers \"WhatsApp status\" (e.g. \"WhatsApp status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check WhatsApp status\"",
-        "Agent calls discovery.status — check all provider status",
+        "User says: \"WhatsApp status\"",
+        "Agent calls discovery.status — check all providers",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check WhatsApp status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"WhatsApp status\" request and presents the result."
     },
     {
       "id": "test",
-      "title": "Send WhatsApp test",
-      "description": "User triggers \"Send WhatsApp test\" (e.g. \"Send WhatsApp test\") and the agent handles it end-to-end.",
+      "title": "WhatsApp test",
+      "description": "User triggers \"WhatsApp test\" (e.g. \"WhatsApp test\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Send WhatsApp test\"",
-        "Agent calls whatsapp.test — send whatsapp test",
+        "User says: \"WhatsApp test\"",
+        "Agent calls whatsapp.test — whatsapp test",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Send WhatsApp test\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"WhatsApp test\" request and presents the result."
     },
     {
       "id": "disconnect",
-      "title": "Remove WhatsApp credentials",
-      "description": "User triggers \"Remove WhatsApp credentials\" (e.g. \"Remove WhatsApp credentials\") and the agent handles it end-to-end.",
+      "title": "WhatsApp disconnect",
+      "description": "User triggers \"WhatsApp disconnect\" (e.g. \"WhatsApp disconnect\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Remove WhatsApp credentials\"",
-        "Agent calls whatsapp.disconnect — remove whatsapp credentials",
+        "User says: \"WhatsApp disconnect\"",
+        "Agent calls whatsapp.disconnect — whatsapp disconnect",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Remove WhatsApp credentials\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"WhatsApp disconnect\" request and presents the result."
     }
   ],
   "role": {
     "name": "Setup Assistant",
-    "persona": "Guide users through connecting smart home providers step-by-step.",
+    "persona": "You guide users through connecting providers.",
     "goals": [
-      "Help users connect all providers"
+      "Connect providers",
+      "Verify connections"
     ],
     "communication_style": {
       "tone": "friendly",
