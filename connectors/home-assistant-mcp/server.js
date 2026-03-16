@@ -2,10 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
-import { createRequire } from "node:module";
 import { DatabaseSync } from "node:sqlite";
 
-const require = createRequire(import.meta.url);
 
 const HA_URL = process.env.HA_URL;
 const HA_TOKEN = process.env.HA_TOKEN;
@@ -419,7 +417,7 @@ async function callTVService(service, serviceData = {}) {
     case "turn_on": {
       if (tvConnected) return [{ entity_id: TV_ENTITY_ID, state: "on" }];
       if (LG_TV_MAC) {
-        const wol = require("wake_on_lan");
+        const wol = (await import("wake_on_lan")).default;
         // Send WoL with directed broadcast (works from Docker containers)
         const subnet = LG_TV_IP ? LG_TV_IP.replace(/\.\d+$/, ".255") : "255.255.255.255";
         for (let i = 0; i < 3; i++) {
@@ -508,7 +506,7 @@ function registerTVEntity(tvInfo = {}) {
 async function connectTV(ip) {
   if (tvReconnecting) return;
   tvReconnecting = true;
-  const lgtv2 = require("lgtv2");
+  const lgtv2 = (await import("lgtv2")).default;
 
   return new Promise((resolve, reject) => {
     const client = lgtv2({
@@ -902,10 +900,10 @@ async function callTool(name, args = {}) {
         { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "iframe", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html" } }
       ]};
     case "ui.getPlugin": {
-      const pluginId = args.id || "mcp:home-assistant-mcp:home-layout-panel";
-      if (pluginId !== "mcp:home-assistant-mcp:home-layout-panel" && pluginId !== "home-layout-panel") return { error: `Plugin '${pluginId}' not found` };
+      const pluginId = args.id || "home-layout-panel";
+      if (pluginId !== "home-layout-panel") return { error: `Plugin '${pluginId}' not found` };
       return {
-        id: "mcp:home-assistant-mcp:home-layout-panel",
+        id: "home-layout-panel",
         name: "Home Layout Panel",
         version: "1.0.0",
         description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
