@@ -1,10 +1,8 @@
 {
   "id": "connect-my-home",
   "name": "Connect My Home",
-  "description": "Setup smart home providers.",
+  "description": "Setup and onboarding for smart home providers \u2014 Home Assistant, Philips Hue, Tuya, Google Home, LG TV, Bosch Home Connect.",
   "version": "2.0.0",
-  "phase": "TOOL_DEFINITION",
-  "ui_capable": false,
   "connectors": [
     "home-assistant-mcp",
     "hue-mcp",
@@ -12,56 +10,477 @@
     "google-home-mcp"
   ],
   "problem": {
-    "statement": "Setup smart home providers.",
-    "context": "Setup smart home providers.",
-    "goals": []
+    "statement": "Users need to connect and configure their smart home providers before they can control devices.",
+    "context": "Supports 6 providers, each with different setup: HA needs URL+token, Hue needs bridge pairing, Tuya needs API keys, Google needs OAuth, Home Connect needs OAuth, LG TV needs network discovery.",
+    "goals": [
+      "Guide users through connecting each provider step-by-step",
+      "Check connection status of all providers",
+      "Verify connections work after setup",
+      "Sync rooms and devices after connecting"
+    ]
   },
-  "tools": [],
-  "intents": {
-    "supported": [],
-    "thresholds": {
-      "accept": 0.85,
-      "clarify": 0.6,
-      "reject": 0.4
+  "tools": [
+    {
+      "id": "tool-ha-config-get",
+      "name": "config.get",
+      "description": "Get current Home Assistant configuration and connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Current HA config"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "config.get"
+      },
+      "policy": {
+        "allowed": "always"
+      }
     },
-    "out_of_domain": {
-      "action": "redirect",
-      "message": "This request is outside my capabilities.",
-      "suggest_domains": []
-    }
-  },
-  "policy": {
-    "guardrails": {
-      "never": [],
-      "always": []
+    {
+      "id": "tool-ha-config-save",
+      "name": "config.save",
+      "description": "Save Home Assistant configuration (URL and long-lived access token)",
+      "inputs": [
+        {
+          "name": "url",
+          "type": "string",
+          "required": true,
+          "description": "HA URL (e.g., http://homeassistant.local:8123)"
+        },
+        {
+          "name": "token",
+          "type": "string",
+          "required": true,
+          "description": "Long-lived access token"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Save result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "config.save"
+      },
+      "policy": {
+        "allowed": "always"
+      }
     },
-    "workflows": [],
-    "approvals": [],
-    "escalation": {
-      "enabled": false,
-      "conditions": []
+    {
+      "id": "tool-ha-discovery-status",
+      "name": "discovery.status",
+      "description": "Check connection status for all providers",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Provider status map"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "discovery.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-discovery-supported",
+      "name": "discovery.supported",
+      "description": "List all supported providers and their setup requirements",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Supported providers"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "discovery.supported"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-rooms-list",
+      "name": "rooms.list",
+      "description": "List rooms from Home Assistant (to verify connection)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Rooms list"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "rooms.list"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-rooms-sync",
+      "name": "rooms.sync",
+      "description": "Sync rooms and devices from Home Assistant",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Sync result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "rooms.sync"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-entities-list",
+      "name": "entities.list",
+      "description": "List entities from Home Assistant (to verify connection)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Entities list"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "entities.list"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-tv-discover",
+      "name": "tv.discover",
+      "description": "Discover LG TV on the local network",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "TV discovery result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "tv.discover"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-auth",
+      "name": "homeconnect.auth",
+      "description": "Start Bosch Home Connect OAuth flow",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "OAuth URL to visit"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.auth"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-callback",
+      "name": "homeconnect.callback",
+      "description": "Complete Home Connect OAuth with authorization code",
+      "inputs": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "OAuth authorization code"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Auth result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.callback"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-auth",
+      "name": "hue.auth",
+      "description": "Start Philips Hue bridge pairing (user must press bridge button)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Pairing instructions"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.auth"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-callback",
+      "name": "hue.callback",
+      "description": "Complete Hue bridge pairing after button press",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Pairing result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.callback"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-status",
+      "name": "hue.status",
+      "description": "Check Hue bridge connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-devices",
+      "name": "hue.devices",
+      "description": "List Hue devices (to verify connection)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Hue devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-auth",
+      "name": "tuya.auth",
+      "description": "Configure Tuya Cloud API credentials",
+      "inputs": [
+        {
+          "name": "access_id",
+          "type": "string",
+          "required": true,
+          "description": "Tuya access ID"
+        },
+        {
+          "name": "access_secret",
+          "type": "string",
+          "required": true,
+          "description": "Tuya access secret"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Auth result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.auth"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-callback",
+      "name": "tuya.callback",
+      "description": "Complete Tuya authentication",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Callback result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.callback"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-status",
+      "name": "tuya.status",
+      "description": "Check Tuya connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-devices",
+      "name": "tuya.devices",
+      "description": "List Tuya devices (to verify connection)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Tuya devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-auth",
+      "name": "google.auth",
+      "description": "Start Google Home OAuth flow",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "OAuth URL"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.auth"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-callback",
+      "name": "google.callback",
+      "description": "Complete Google Home OAuth with authorization code",
+      "inputs": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true,
+          "description": "OAuth authorization code"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Auth result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.callback"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-status",
+      "name": "google.status",
+      "description": "Check Google Home connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-devices",
+      "name": "google.devices",
+      "description": "List Google/Nest devices (to verify connection)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Google devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
     }
-  },
-  "scenarios": [],
+  ],
   "role": {
     "name": "Setup Assistant",
-    "persona": "Guide users through setup."
+    "persona": "You guide users through connecting their smart home providers step-by-step. You check status first, then walk through setup one step at a time. You verify connections work after completing setup.",
+    "goals": [
+      "Help users connect all their smart home providers",
+      "Verify each connection works after setup",
+      "Sync rooms and devices after connecting"
+    ],
+    "communication_style": {
+      "tone": "friendly",
+      "verbosity": "concise"
+    }
   },
   "engine": {
     "model": "claude-sonnet-4-20250514",
-    "temperature": 0.3
-  },
-  "grant_mappings": [],
-  "access_policy": {
-    "rules": [
-      {
-        "tools": [
-          "*"
-        ],
-        "effect": "allow"
-      }
-    ]
-  },
-  "response_filters": [],
-  "triggers": []
+    "temperature": 0.3,
+    "rv2": {
+      "max_iterations": 15,
+      "iteration_timeout_ms": 30000,
+      "allow_parallel_tools": false,
+      "on_max_iterations": "fail"
+    },
+    "autonomy": {
+      "level": "autonomous"
+    }
+  }
 }

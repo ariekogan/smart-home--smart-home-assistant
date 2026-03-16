@@ -1,10 +1,8 @@
 {
   "id": "home-control",
   "name": "Home Control",
-  "description": "Control smart home devices via natural language.",
+  "description": "Control smart home devices via natural language. Supports Home Assistant, Philips Hue, Tuya/Smart Life, Google Home/Nest, LG TV, and Bosch Home Connect.",
   "version": "2.0.0",
-  "phase": "TOOL_DEFINITION",
-  "ui_capable": false,
   "connectors": [
     "home-assistant-mcp",
     "hue-mcp",
@@ -12,56 +10,764 @@
     "google-home-mcp"
   ],
   "problem": {
-    "statement": "Control smart home devices via natural language.",
-    "context": "Control smart home devices via natural language.",
-    "goals": []
+    "statement": "Users want to control all their smart home devices using natural language across multiple providers.",
+    "context": "Home has 6 providers: Home Assistant (core hub), Philips Hue (lights), Tuya/Smart Life (IoT), Google Home/Nest (thermostats), LG TV (WebOS), Bosch Home Connect (oven).",
+    "goals": [
+      "Control any device with natural language",
+      "Query device states across all providers",
+      "List rooms and devices",
+      "Execute commands immediately without confirmations"
+    ]
   },
-  "tools": [],
-  "intents": {
-    "supported": [],
-    "thresholds": {
-      "accept": 0.85,
-      "clarify": 0.6,
-      "reject": 0.4
+  "tools": [
+    {
+      "id": "tool-ha-rooms-list",
+      "name": "rooms.list",
+      "description": "List all rooms/areas from Home Assistant with their devices",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Rooms with device lists"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "rooms.list"
+      },
+      "policy": {
+        "allowed": "always"
+      }
     },
-    "out_of_domain": {
-      "action": "redirect",
-      "message": "This request is outside my capabilities.",
-      "suggest_domains": []
+    {
+      "id": "tool-ha-rooms-sync",
+      "name": "rooms.sync",
+      "description": "Sync rooms from Home Assistant to refresh room/device mapping",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Sync result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "rooms.sync"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-entities-list",
+      "name": "entities.list",
+      "description": "List all entities (devices) from Home Assistant, optionally filtered by domain (light, switch, climate, sensor, etc.)",
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "string",
+          "required": false,
+          "description": "Filter by domain (light, switch, climate, fan, lock, etc.)"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Array of entities with entity_id, state, and attributes"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "entities.list"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-entity-state",
+      "name": "entity.state",
+      "description": "Get current state of a specific Home Assistant entity by entity_id",
+      "inputs": [
+        {
+          "name": "entity_id",
+          "type": "string",
+          "required": true,
+          "description": "Entity ID (e.g., light.living_room)"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Entity state with attributes"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "entity.state"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-services-call",
+      "name": "services.call",
+      "description": "Call a Home Assistant service to control a device (turn_on, turn_off, toggle, set_temperature, etc.)",
+      "inputs": [
+        {
+          "name": "domain",
+          "type": "string",
+          "required": true,
+          "description": "Service domain (light, switch, climate, fan, lock, etc.)"
+        },
+        {
+          "name": "service",
+          "type": "string",
+          "required": true,
+          "description": "Service name (turn_on, turn_off, toggle, set_temperature, etc.)"
+        },
+        {
+          "name": "entity_id",
+          "type": "string",
+          "required": true,
+          "description": "Target entity ID"
+        },
+        {
+          "name": "service_data",
+          "type": "object",
+          "required": false,
+          "description": "Additional service data (brightness, temperature, etc.)"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Service call result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "services.call"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-tv-discover",
+      "name": "tv.discover",
+      "description": "Discover LG TV on the local network via WebOS SSAP protocol",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "TV discovery result with IP, model, status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "tv.discover"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-tv-apps",
+      "name": "tv.apps",
+      "description": "List installed apps on LG TV (Netflix, YouTube, etc.)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of installed TV apps"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "tv.apps"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-tv-inputs",
+      "name": "tv.inputs",
+      "description": "List available inputs on LG TV (HDMI1, HDMI2, etc.)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of TV inputs"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "tv.inputs"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-appliances",
+      "name": "homeconnect.appliances",
+      "description": "List Bosch Home Connect appliances (ovens, dishwashers)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of appliances"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.appliances"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-status",
+      "name": "homeconnect.status",
+      "description": "Get status of a Home Connect appliance",
+      "inputs": [
+        {
+          "name": "haId",
+          "type": "string",
+          "required": true,
+          "description": "Appliance haId"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Appliance status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-programs",
+      "name": "homeconnect.programs",
+      "description": "List available programs for a Home Connect appliance",
+      "inputs": [
+        {
+          "name": "haId",
+          "type": "string",
+          "required": true,
+          "description": "Appliance haId"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Available programs"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.programs"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-start",
+      "name": "homeconnect.start_program",
+      "description": "Start a program on a Home Connect appliance (e.g., preheat oven to 180C)",
+      "inputs": [
+        {
+          "name": "haId",
+          "type": "string",
+          "required": true,
+          "description": "Appliance haId"
+        },
+        {
+          "name": "programKey",
+          "type": "string",
+          "required": true,
+          "description": "Program key"
+        },
+        {
+          "name": "options",
+          "type": "object",
+          "required": false,
+          "description": "Program options (temperature, duration, etc.)"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Start result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.start_program"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-hc-stop",
+      "name": "homeconnect.stop_program",
+      "description": "Stop the running program on a Home Connect appliance",
+      "inputs": [
+        {
+          "name": "haId",
+          "type": "string",
+          "required": true,
+          "description": "Appliance haId"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Stop result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "homeconnect.stop_program"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-ha-discovery",
+      "name": "discovery.status",
+      "description": "Check discovery/connection status for all smart home providers",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Provider status map"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "discovery.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-rooms",
+      "name": "hue.rooms",
+      "description": "List all rooms from Philips Hue bridge with their lights",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Hue rooms with lights"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.rooms"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-devices",
+      "name": "hue.devices",
+      "description": "List all Philips Hue devices (lights, sensors, switches)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of Hue devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-state",
+      "name": "hue.state",
+      "description": "Get state of a Hue device (on/off, brightness, color)",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Hue device ID"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Device state"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.state"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-command",
+      "name": "hue.command",
+      "description": "Send a command to a Hue device (turn on/off, set brightness 0-100, set color)",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Hue device ID"
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "required": true,
+          "description": "Command: on, off, brightness, color"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "description": "Value for the action (brightness %, color name, etc.)"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Command result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.command"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-scenes",
+      "name": "hue.scenes",
+      "description": "List all Hue scenes",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of scenes"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.scenes"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-activate-scene",
+      "name": "hue.activate_scene",
+      "description": "Activate a Hue scene by ID",
+      "inputs": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "description": "Scene ID"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Activation result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.activate_scene"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-hue-status",
+      "name": "hue.status",
+      "description": "Check Philips Hue bridge connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "hue-mcp",
+        "mcp_tool": "hue.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-devices",
+      "name": "tuya.devices",
+      "description": "List all Tuya/Smart Life devices",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of Tuya devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-state",
+      "name": "tuya.state",
+      "description": "Get current state of a Tuya device",
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "description": "Tuya device ID"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Device state"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.state"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-command",
+      "name": "tuya.command",
+      "description": "Send a command to a Tuya device (turn on/off, set value)",
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "description": "Tuya device ID"
+        },
+        {
+          "name": "commands",
+          "type": "object",
+          "required": true,
+          "description": "Command object with code and value"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Command result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.command"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-functions",
+      "name": "tuya.device_functions",
+      "description": "List available functions/capabilities for a Tuya device",
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "description": "Tuya device ID"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Device functions"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.device_functions"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-tuya-status",
+      "name": "tuya.status",
+      "description": "Check Tuya Cloud API connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "tuya-mcp",
+        "mcp_tool": "tuya.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-devices",
+      "name": "google.devices",
+      "description": "List all Google Home/Nest devices (thermostats, cameras, displays)",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Array of Google/Nest devices"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.devices"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-state",
+      "name": "google.state",
+      "description": "Get current state of a Google/Nest device",
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "description": "Google device ID"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Device state"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.state"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-command",
+      "name": "google.command",
+      "description": "Send a command to a Google/Nest device (set thermostat temperature, etc.)",
+      "inputs": [
+        {
+          "name": "device_id",
+          "type": "string",
+          "required": true,
+          "description": "Google device ID"
+        },
+        {
+          "name": "command",
+          "type": "string",
+          "required": true,
+          "description": "Command name"
+        },
+        {
+          "name": "params",
+          "type": "object",
+          "required": false,
+          "description": "Command parameters"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Command result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.command"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    },
+    {
+      "id": "tool-google-status",
+      "name": "google.status",
+      "description": "Check Google Home SDM API connection status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Connection status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "google-home-mcp",
+        "mcp_tool": "google.status"
+      },
+      "policy": {
+        "allowed": "always"
+      }
+    }
+  ],
+  "role": {
+    "name": "Smart Home Controller",
+    "persona": "You are a smart home assistant that controls devices across multiple providers. You execute commands immediately and report results concisely. You know which provider to use for each device type.",
+    "goals": [
+      "Execute device commands immediately",
+      "Query device states accurately",
+      "Route to the correct provider automatically"
+    ],
+    "limitations": [
+      "Cannot control devices from disconnected providers",
+      "Cannot modify provider credentials (use connect-my-home skill for that)"
+    ],
+    "communication_style": {
+      "tone": "casual",
+      "verbosity": "concise"
     }
   },
   "policy": {
     "guardrails": {
-      "never": [],
-      "always": []
-    },
-    "workflows": [],
-    "approvals": [],
-    "escalation": {
-      "enabled": false,
-      "conditions": []
+      "never": [
+        "Ask for confirmation before executing light, switch, climate, or fan commands",
+        "Retry a failed provider more than once"
+      ],
+      "always": [
+        "Execute device commands immediately when asked",
+        "Report the result after executing a command",
+        "Suggest connecting a provider if it returns a not-connected error",
+        "For lock, garage, and alarm domains, ask user to confirm before executing"
+      ]
     }
-  },
-  "scenarios": [],
-  "role": {
-    "name": "Smart Home Controller",
-    "persona": "Smart home assistant."
   },
   "engine": {
     "model": "claude-sonnet-4-20250514",
-    "temperature": 0.3
-  },
-  "grant_mappings": [],
-  "access_policy": {
-    "rules": [
-      {
-        "tools": [
-          "*"
-        ],
-        "effect": "allow"
-      }
-    ]
-  },
-  "response_filters": [],
-  "triggers": []
+    "temperature": 0.3,
+    "rv2": {
+      "max_iterations": 12,
+      "iteration_timeout_ms": 30000,
+      "allow_parallel_tools": true,
+      "on_max_iterations": "fail"
+    },
+    "autonomy": {
+      "level": "autonomous"
+    }
+  }
 }
