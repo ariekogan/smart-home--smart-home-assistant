@@ -4,17 +4,9 @@
   "version": "1.0.0",
   "description": "Smart home control.",
   "identity": {
-    "actor_types": [
-      {
-        "key": "homeowner",
-        "label": "Homeowner",
-        "default_channel": "chat"
-      }
-    ],
-    "admin_roles": [
-      "homeowner"
-    ],
-    "default_actor_type": "homeowner",
+    "actor_types": [],
+    "admin_roles": [],
+    "default_actor_type": "",
     "default_roles": []
   },
   "skills": [
@@ -65,35 +57,19 @@
     {
       "id": "home-assistant-mcp",
       "required": true,
-      "ui_capable": true,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "ui_capable": true
     },
     {
       "id": "hue-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     },
     {
       "id": "tuya-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     },
     {
       "id": "google-home-mcp",
-      "required": false,
-      "used_by": [
-        "connect-my-home",
-        "home-control"
-      ]
+      "required": false
     }
   ],
   "security_contracts": []
