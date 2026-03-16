@@ -193,7 +193,10 @@ const TOOLS = [
   { name: "tuya.device_functions", description: "Get available functions/commands for a Tuya device with value ranges",
     inputSchema: { type: "object", properties: { device_id: { type: "string" } }, required: ["device_id"] } },
   { name: "tuya.categories", description: "List known Tuya device categories and their types" },
-  { name: "tuya.status", description: "Get Tuya platform connection status" }
+  { name: "tuya.status", description: "Get Tuya platform connection status" },
+  { name: "ui.listPlugins", description: "List available UI plugins for this connector" },
+  { name: "ui.getPlugin", description: "Get UI plugin details by ID",
+    inputSchema: { type: "object", properties: { plugin_id: { type: "string" } }, required: ["plugin_id"] } }
 ];
 
 async function callTool(name, args) {
@@ -296,6 +299,9 @@ async function callTool(name, args) {
         token_expired: expired
       };
     }
+
+    case "ui.listPlugins": return { plugins: [] };
+    case "ui.getPlugin": return { error: "No UI plugins available in this connector" };
 
     default: throw new Error(`Unknown tool: ${name}`);
   }

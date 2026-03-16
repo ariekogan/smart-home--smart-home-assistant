@@ -92,5 +92,28 @@
         "home-control"
       ]
     }
+  ],
+  "ui_plugins": [
+    {
+      "id": "mcp:home-assistant-mcp:home-layout-panel",
+      "name": "Home Layout Panel",
+      "version": "1.0.0",
+      "type": "ui",
+      "render": {
+        "mode": "adaptive",
+        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+        "reactNative": {
+          "component": "HomeLayoutPanel"
+        }
+      },
+      "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+      "capabilities": {
+        "haptics": true
+      },
+      "channels": [
+        "command"
+      ],
+      "commands": []
+    }
   ]
 }

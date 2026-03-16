@@ -154,7 +154,10 @@ const TOOLS = [
   { name: "hue.activate_scene", description: "Activate a Hue scene by ID",
     inputSchema: { type: "object", properties: { scene_id: { type: "string" } }, required: ["scene_id"] } },
   { name: "hue.rooms", description: "List all Hue rooms/zones and their lights" },
-  { name: "hue.status", description: "Get Hue Bridge connection status and info" }
+  { name: "hue.status", description: "Get Hue Bridge connection status and info" },
+  { name: "ui.listPlugins", description: "List available UI plugins for this connector" },
+  { name: "ui.getPlugin", description: "Get UI plugin details by ID",
+    inputSchema: { type: "object", properties: { plugin_id: { type: "string" } }, required: ["plugin_id"] } }
 ];
 
 async function callTool(name, args) {
@@ -299,6 +302,9 @@ async function callTool(name, args) {
         return { connected: false, bridge_ip: auth.bridge_ip, error: e.message };
       }
     }
+
+    case "ui.listPlugins": return { plugins: [] };
+    case "ui.getPlugin": return { error: "No UI plugins available in this connector" };
 
     default: throw new Error(`Unknown tool: ${name}`);
   }

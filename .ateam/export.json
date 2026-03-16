@@ -93,13 +93,36 @@
           "home-control"
         ]
       }
+    ],
+    "ui_plugins": [
+      {
+        "id": "mcp:home-assistant-mcp:home-layout-panel",
+        "name": "Home Layout Panel",
+        "version": "1.0.0",
+        "type": "ui",
+        "render": {
+          "mode": "adaptive",
+          "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+          "reactNative": {
+            "component": "HomeLayoutPanel"
+          }
+        },
+        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+        "capabilities": {
+          "haptics": true
+        },
+        "channels": [
+          "command"
+        ],
+        "commands": []
+      }
     ]
   },
   "skills": [
     {
       "id": "home-control",
       "name": "Home Control",
-      "description": "Control smart home devices via natural language.",
+      "description": "Control smart home devices via natural language. Supports Home Assistant, Philips Hue, Tuya/Smart Life, Google Home/Nest, LG TV, and Bosch Home Connect.",
       "version": "2.0.0",
       "phase": "TOOL_DEFINITION",
       "ui_capable": false,
@@ -110,12 +133,13 @@
         "google-home-mcp"
       ],
       "problem": {
-        "statement": "Users want to control smart home devices using natural language.",
-        "context": "Users want to control smart home devices using natural language.",
+        "statement": "Users want to control all their smart home devices using natural language across multiple providers.",
+        "context": "Home has 6 providers: Home Assistant (core hub), Philips Hue (lights), Tuya/Smart Life (IoT), Google Home/Nest (thermostats), LG TV (WebOS), Bosch Home Connect (oven).",
         "goals": [
-          "Control devices",
-          "Query states",
-          "Multi-provider support"
+          "Control any device with natural language",
+          "Query device states across all providers",
+          "List rooms and devices",
+          "Execute commands immediately without confirmations"
         ]
       },
       "tools": [
@@ -123,10 +147,11 @@
           "id": "tool-ha-rooms-list",
           "id_status": "permanent",
           "name": "rooms.list",
-          "description": "List all rooms from Home Assistant with their devices",
+          "description": "List all rooms/areas from Home Assistant with their devices",
           "inputs": [],
           "output": {
-            "type": "object"
+            "type": "object",
+            "description": "Rooms with device lists"
           },
           "source": {
             "type": "mcp_bridge",
@@ -164,8 +189,15 @@
           "id": "tool-ha-entities-list",
           "id_status": "permanent",
           "name": "entities.list",
-          "description": "List all smart home entities/devices",
-          "inputs": [],
+          "description": "List all entities (devices) from Home Assistant",
+          "inputs": [
+            {
+              "name": "domain",
+              "type": "string",
+              "required": false,
+              "description": ""
+            }
+          ],
           "output": {
             "type": "object"
           },
@@ -205,7 +237,7 @@
           "id": "tool-ha-entity-state",
           "id_status": "permanent",
           "name": "entity.state",
-          "description": "Get current state of a specific entity",
+          "description": "Get current state of a specific Home Assistant entity",
           "inputs": [
             {
               "name": "entity_id",
@@ -250,7 +282,7 @@
           "id": "tool-ha-services-call",
           "id_status": "permanent",
           "name": "services.call",
-          "description": "Call a service on a device",
+          "description": "Call a Home Assistant service to control a device",
           "inputs": [
             {
               "name": "domain",
@@ -315,7 +347,7 @@
           "id": "tool-ha-tv-discover",
           "id_status": "permanent",
           "name": "tv.discover",
-          "description": "Discover LG TV on local network",
+          "description": "Discover LG TV on the local network",
           "inputs": [],
           "output": {
             "type": "object"
@@ -351,7 +383,7 @@
           "id": "tool-ha-tv-apps",
           "id_status": "permanent",
           "name": "tv.apps",
-          "description": "List LG TV apps",
+          "description": "List installed apps on LG TV",
           "inputs": [],
           "output": {
             "type": "object"
@@ -392,7 +424,7 @@
           "id": "tool-ha-tv-inputs",
           "id_status": "permanent",
           "name": "tv.inputs",
-          "description": "List LG TV inputs",
+          "description": "List available inputs on LG TV",
           "inputs": [],
           "output": {
             "type": "object"
@@ -433,7 +465,7 @@
           "id": "tool-ha-hc-appliances",
           "id_status": "permanent",
           "name": "homeconnect.appliances",
-          "description": "List Home Connect appliances",
+          "description": "List Bosch Home Connect appliances",
           "inputs": [],
           "output": {
             "type": "object"
@@ -474,10 +506,10 @@
           "id": "tool-ha-hc-status",
           "id_status": "permanent",
           "name": "homeconnect.status",
-          "description": "Get Home Connect appliance status",
+          "description": "Get status of a Home Connect appliance",
           "inputs": [
             {
-              "name": "ha_id",
+              "name": "haId",
               "type": "string",
               "required": true,
               "description": ""
@@ -501,7 +533,7 @@
               {
                 "id": "tool-homeconnect-status-auto",
                 "input": {
-                  "ha_id": "id-001"
+                  "haId": "id-001"
                 },
                 "output": {
                   "success": true,
@@ -519,10 +551,10 @@
           "id": "tool-ha-hc-programs",
           "id_status": "permanent",
           "name": "homeconnect.programs",
-          "description": "List oven programs",
+          "description": "List available programs for a Home Connect appliance",
           "inputs": [
             {
-              "name": "ha_id",
+              "name": "haId",
               "type": "string",
               "required": true,
               "description": ""
@@ -546,7 +578,7 @@
               {
                 "id": "tool-homeconnect-programs-auto",
                 "input": {
-                  "ha_id": "id-001"
+                  "haId": "id-001"
                 },
                 "output": {
                   "results": [
@@ -569,29 +601,23 @@
           "id": "tool-ha-hc-start",
           "id_status": "permanent",
           "name": "homeconnect.start_program",
-          "description": "Start oven program",
+          "description": "Start a program on a Home Connect appliance",
           "inputs": [
             {
-              "name": "ha_id",
+              "name": "haId",
               "type": "string",
               "required": true,
               "description": ""
             },
             {
-              "name": "program_key",
+              "name": "programKey",
               "type": "string",
               "required": true,
               "description": ""
             },
             {
-              "name": "temperature",
-              "type": "number",
-              "required": false,
-              "description": ""
-            },
-            {
-              "name": "duration",
-              "type": "number",
+              "name": "options",
+              "type": "object",
               "required": false,
               "description": ""
             }
@@ -614,8 +640,8 @@
               {
                 "id": "tool-homeconnect-start_program-auto",
                 "input": {
-                  "ha_id": "id-001",
-                  "program_key": "example"
+                  "haId": "id-001",
+                  "programKey": "example"
                 },
                 "output": {
                   "success": true,
@@ -633,10 +659,10 @@
           "id": "tool-ha-hc-stop",
           "id_status": "permanent",
           "name": "homeconnect.stop_program",
-          "description": "Stop oven program",
+          "description": "Stop the running program on a Home Connect appliance",
           "inputs": [
             {
-              "name": "ha_id",
+              "name": "haId",
               "type": "string",
               "required": true,
               "description": ""
@@ -660,7 +686,7 @@
               {
                 "id": "tool-homeconnect-stop_program-auto",
                 "input": {
-                  "ha_id": "id-001"
+                  "haId": "id-001"
                 },
                 "output": {
                   "success": true,
@@ -678,7 +704,7 @@
           "id": "tool-ha-discovery",
           "id_status": "permanent",
           "name": "discovery.status",
-          "description": "Check provider connection status",
+          "description": "Check discovery/connection status for all providers",
           "inputs": [],
           "output": {
             "type": "object"
@@ -714,7 +740,7 @@
           "id": "tool-hue-rooms",
           "id_status": "permanent",
           "name": "hue.rooms",
-          "description": "List Hue rooms",
+          "description": "List all rooms from Philips Hue bridge",
           "inputs": [],
           "output": {
             "type": "object"
@@ -755,7 +781,7 @@
           "id": "tool-hue-devices",
           "id_status": "permanent",
           "name": "hue.devices",
-          "description": "List Hue devices",
+          "description": "List all Philips Hue devices",
           "inputs": [],
           "output": {
             "type": "object"
@@ -796,10 +822,10 @@
           "id": "tool-hue-state",
           "id_status": "permanent",
           "name": "hue.state",
-          "description": "Get Hue light state",
+          "description": "Get state of a Hue device",
           "inputs": [
             {
-              "name": "device_id",
+              "name": "id",
               "type": "string",
               "required": true,
               "description": ""
@@ -823,7 +849,7 @@
               {
                 "id": "tool-hue-state-auto",
                 "input": {
-                  "device_id": "id-001"
+                  "id": "id-001"
                 },
                 "output": {
                   "success": true,
@@ -841,23 +867,23 @@
           "id": "tool-hue-command",
           "id_status": "permanent",
           "name": "hue.command",
-          "description": "Control Hue light",
+          "description": "Send a command to a Hue device",
           "inputs": [
             {
-              "name": "device_id",
+              "name": "id",
               "type": "string",
               "required": true,
               "description": ""
             },
             {
-              "name": "command",
+              "name": "action",
               "type": "string",
               "required": true,
               "description": ""
             },
             {
-              "name": "params",
-              "type": "object",
+              "name": "value",
+              "type": "string",
               "required": false,
               "description": ""
             }
@@ -880,8 +906,8 @@
               {
                 "id": "tool-hue-command-auto",
                 "input": {
-                  "device_id": "id-001",
-                  "command": "example"
+                  "id": "id-001",
+                  "action": "example"
                 },
                 "output": {
                   "success": true,
@@ -899,7 +925,7 @@
           "id": "tool-hue-scenes",
           "id_status": "permanent",
           "name": "hue.scenes",
-          "description": "List Hue scenes",
+          "description": "List all Hue scenes",
           "inputs": [],
           "output": {
             "type": "object"
@@ -937,13 +963,13 @@
           }
         },
         {
-          "id": "tool-hue-activate",
+          "id": "tool-hue-activate-scene",
           "id_status": "permanent",
           "name": "hue.activate_scene",
-          "description": "Activate a Hue scene",
+          "description": "Activate a Hue scene by ID",
           "inputs": [
             {
-              "name": "scene_id",
+              "name": "id",
               "type": "string",
               "required": true,
               "description": ""
@@ -967,7 +993,7 @@
               {
                 "id": "tool-hue-activate_scene-auto",
                 "input": {
-                  "scene_id": "id-001"
+                  "id": "id-001"
                 },
                 "output": {
                   "success": true,
@@ -985,7 +1011,7 @@
           "id": "tool-hue-status",
           "id_status": "permanent",
           "name": "hue.status",
-          "description": "Check Hue connection status",
+          "description": "Check Philips Hue bridge connection status",
           "inputs": [],
           "output": {
             "type": "object"
@@ -1021,7 +1047,7 @@
           "id": "tool-tuya-devices",
           "id_status": "permanent",
           "name": "tuya.devices",
-          "description": "List Tuya devices",
+          "description": "List all Tuya/Smart Life devices",
           "inputs": [],
           "output": {
             "type": "object"
@@ -1062,7 +1088,7 @@
           "id": "tool-tuya-state",
           "id_status": "permanent",
           "name": "tuya.state",
-          "description": "Get Tuya device state",
+          "description": "Get current state of a Tuya device",
           "inputs": [
             {
               "name": "device_id",
@@ -1107,7 +1133,7 @@
           "id": "tool-tuya-command",
           "id_status": "permanent",
           "name": "tuya.command",
-          "description": "Send Tuya command",
+          "description": "Send a command to a Tuya device",
           "inputs": [
             {
               "name": "device_id",
@@ -1117,7 +1143,7 @@
             },
             {
               "name": "commands",
-              "type": "array",
+              "type": "object",
               "required": true,
               "description": ""
             }
@@ -1159,7 +1185,7 @@
           "id": "tool-tuya-functions",
           "id_status": "permanent",
           "name": "tuya.device_functions",
-          "description": "Get Tuya device functions",
+          "description": "List available functions for a Tuya device",
           "inputs": [
             {
               "name": "device_id",
@@ -1189,8 +1215,13 @@
                   "device_id": "id-001"
                 },
                 "output": {
-                  "success": true,
-                  "data": {}
+                  "results": [
+                    {
+                      "id": 1,
+                      "name": "Example item"
+                    }
+                  ],
+                  "total_count": 1
                 },
                 "description": "Auto-generated example for tuya.device_functions"
               }
@@ -1240,7 +1271,7 @@
           "id": "tool-google-devices",
           "id_status": "permanent",
           "name": "google.devices",
-          "description": "List Google/Nest devices",
+          "description": "List all Google Home/Nest devices",
           "inputs": [],
           "output": {
             "type": "object"
@@ -1281,7 +1312,7 @@
           "id": "tool-google-state",
           "id_status": "permanent",
           "name": "google.state",
-          "description": "Get Google device state",
+          "description": "Get current state of a Google/Nest device",
           "inputs": [
             {
               "name": "device_id",
@@ -1326,7 +1357,7 @@
           "id": "tool-google-command",
           "id_status": "permanent",
           "name": "google.command",
-          "description": "Send Google Home command",
+          "description": "Send a command to a Google/Nest device",
           "inputs": [
             {
               "name": "device_id",
@@ -1384,7 +1415,7 @@
           "id": "tool-google-status",
           "id_status": "permanent",
           "name": "google.status",
-          "description": "Check Google connection status",
+          "description": "Check Google Home connection status",
           "inputs": [],
           "output": {
             "type": "object"
@@ -1421,34 +1452,34 @@
         "supported": [
           {
             "id": "list",
-            "description": "List all rooms from Home Assistant with their devices",
+            "description": "List all rooms/areas from Home Assistant with their devices",
             "examples": [
-              "List all rooms from Home Assistant with their devices",
-              "I need to list all rooms from Home Assistant with their devices",
-              "Can you list all rooms from Home Assistant with their devices?",
-              "Please list all rooms from Home Assistant with their devices"
+              "List all rooms/areas from Home Assistant with their devices",
+              "I need to list all rooms/areas from Home Assistant with their devices",
+              "Can you list all rooms/areas from Home Assistant with their devices?",
+              "Please list all rooms/areas from Home Assistant with their devices"
             ],
             "maps_to_workflow": "list_flow"
           },
           {
             "id": "list",
-            "description": "List all smart home entities/devices",
+            "description": "List all entities (devices) from Home Assistant",
             "examples": [
-              "List all smart home entities/devices",
-              "I need to list all smart home entities/devices",
-              "Can you list all smart home entities/devices?",
-              "Please list all smart home entities/devices"
+              "List all entities (devices) from Home Assistant",
+              "I need to list all entities (devices) from Home Assistant",
+              "Can you list all entities (devices) from Home Assistant?",
+              "Please list all entities (devices) from Home Assistant"
             ],
             "maps_to_workflow": "list_flow"
           },
           {
             "id": "state",
-            "description": "Get current state of a specific entity",
+            "description": "Get current state of a specific Home Assistant entity",
             "examples": [
-              "Get current state of a specific entity",
-              "I need to get current state of a specific entity",
-              "Can you get current state of a specific entity?",
-              "Please get current state of a specific entity"
+              "Get current state of a specific Home Assistant entity",
+              "I need to get current state of a specific Home Assistant entity",
+              "Can you get current state of a specific Home Assistant entity?",
+              "Please get current state of a specific Home Assistant entity"
             ],
             "maps_to_workflow": "state_flow",
             "entities": [
@@ -1462,12 +1493,12 @@
           },
           {
             "id": "call",
-            "description": "Call a service on a device",
+            "description": "Call a Home Assistant service to control a device",
             "examples": [
-              "Call a service on a device",
-              "I need to call a service on a device",
-              "Can you call a service on a device?",
-              "Please call a service on a device"
+              "Call a Home Assistant service to control a device",
+              "I need to call a Home Assistant service to control a device",
+              "Can you call a Home Assistant service to control a device?",
+              "Please call a Home Assistant service to control a device"
             ],
             "maps_to_workflow": "call_flow",
             "entities": [
@@ -1493,61 +1524,61 @@
           },
           {
             "id": "discover",
-            "description": "Discover LG TV on local network",
+            "description": "Discover LG TV on the local network",
             "examples": [
-              "Discover LG TV on local network",
-              "I need to discover LG TV on local network",
-              "Can you discover LG TV on local network?",
-              "Please discover LG TV on local network"
+              "Discover LG TV on the local network",
+              "I need to discover LG TV on the local network",
+              "Can you discover LG TV on the local network?",
+              "Please discover LG TV on the local network"
             ],
             "maps_to_workflow": "discover_flow"
           },
           {
             "id": "apps",
-            "description": "List LG TV apps",
+            "description": "List installed apps on LG TV",
             "examples": [
-              "List LG TV apps",
-              "I need to list LG TV apps",
-              "Can you list LG TV apps?",
-              "Please list LG TV apps"
+              "List installed apps on LG TV",
+              "I need to list installed apps on LG TV",
+              "Can you list installed apps on LG TV?",
+              "Please list installed apps on LG TV"
             ],
             "maps_to_workflow": "apps_flow"
           },
           {
             "id": "inputs",
-            "description": "List LG TV inputs",
+            "description": "List available inputs on LG TV",
             "examples": [
-              "List LG TV inputs",
-              "I need to list LG TV inputs",
-              "Can you list LG TV inputs?",
-              "Please list LG TV inputs"
+              "List available inputs on LG TV",
+              "I need to list available inputs on LG TV",
+              "Can you list available inputs on LG TV?",
+              "Please list available inputs on LG TV"
             ],
             "maps_to_workflow": "inputs_flow"
           },
           {
             "id": "appliances",
-            "description": "List Home Connect appliances",
+            "description": "List Bosch Home Connect appliances",
             "examples": [
-              "List Home Connect appliances",
-              "I need to list Home Connect appliances",
-              "Can you list Home Connect appliances?",
-              "Please list Home Connect appliances"
+              "List Bosch Home Connect appliances",
+              "I need to list Bosch Home Connect appliances",
+              "Can you list Bosch Home Connect appliances?",
+              "Please list Bosch Home Connect appliances"
             ],
             "maps_to_workflow": "appliances_flow"
           },
           {
             "id": "status",
-            "description": "Get Home Connect appliance status",
+            "description": "Get status of a Home Connect appliance",
             "examples": [
-              "Get Home Connect appliance status",
-              "I need to get Home Connect appliance status",
-              "Can you get Home Connect appliance status?",
-              "Please get Home Connect appliance status"
+              "Get status of a Home Connect appliance",
+              "I need to get status of a Home Connect appliance",
+              "Can you get status of a Home Connect appliance?",
+              "Please get status of a Home Connect appliance"
             ],
             "maps_to_workflow": "status_flow",
             "entities": [
               {
-                "name": "ha_id",
+                "name": "haId",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1556,17 +1587,17 @@
           },
           {
             "id": "programs",
-            "description": "List oven programs",
+            "description": "List available programs for a Home Connect appliance",
             "examples": [
-              "List oven programs",
-              "I need to list oven programs",
-              "Can you list oven programs?",
-              "Please list oven programs"
+              "List available programs for a Home Connect appliance",
+              "I need to list available programs for a Home Connect appliance",
+              "Can you list available programs for a Home Connect appliance?",
+              "Please list available programs for a Home Connect appliance"
             ],
             "maps_to_workflow": "programs_flow",
             "entities": [
               {
-                "name": "ha_id",
+                "name": "haId",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1575,23 +1606,23 @@
           },
           {
             "id": "start_program",
-            "description": "Start oven program",
+            "description": "Start a program on a Home Connect appliance",
             "examples": [
-              "Start oven program",
-              "I need to start oven program",
-              "Can you start oven program?",
-              "Please start oven program"
+              "Start a program on a Home Connect appliance",
+              "I need to start a program on a Home Connect appliance",
+              "Can you start a program on a Home Connect appliance?",
+              "Please start a program on a Home Connect appliance"
             ],
             "maps_to_workflow": "start_program_flow",
             "entities": [
               {
-                "name": "ha_id",
+                "name": "haId",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
               },
               {
-                "name": "program_key",
+                "name": "programKey",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1600,17 +1631,17 @@
           },
           {
             "id": "stop_program",
-            "description": "Stop oven program",
+            "description": "Stop the running program on a Home Connect appliance",
             "examples": [
-              "Stop oven program",
-              "I need to stop oven program",
-              "Can you stop oven program?",
-              "Please stop oven program"
+              "Stop the running program on a Home Connect appliance",
+              "I need to stop the running program on a Home Connect appliance",
+              "Can you stop the running program on a Home Connect appliance?",
+              "Please stop the running program on a Home Connect appliance"
             ],
             "maps_to_workflow": "stop_program_flow",
             "entities": [
               {
-                "name": "ha_id",
+                "name": "haId",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1619,50 +1650,50 @@
           },
           {
             "id": "status",
-            "description": "Check provider connection status",
+            "description": "Check discovery/connection status for all providers",
             "examples": [
-              "Check provider connection status",
-              "I need to check provider connection status",
-              "Can you check provider connection status?",
-              "Please check provider connection status"
+              "Check discovery/connection status for all providers",
+              "I need to check discovery/connection status for all providers",
+              "Can you check discovery/connection status for all providers?",
+              "Please check discovery/connection status for all providers"
             ],
             "maps_to_workflow": "status_flow"
           },
           {
             "id": "rooms",
-            "description": "List Hue rooms",
+            "description": "List all rooms from Philips Hue bridge",
             "examples": [
-              "List Hue rooms",
-              "I need to list Hue rooms",
-              "Can you list Hue rooms?",
-              "Please list Hue rooms"
+              "List all rooms from Philips Hue bridge",
+              "I need to list all rooms from Philips Hue bridge",
+              "Can you list all rooms from Philips Hue bridge?",
+              "Please list all rooms from Philips Hue bridge"
             ],
             "maps_to_workflow": "rooms_flow"
           },
           {
             "id": "devices",
-            "description": "List Hue devices",
+            "description": "List all Philips Hue devices",
             "examples": [
-              "List Hue devices",
-              "I need to list Hue devices",
-              "Can you list Hue devices?",
-              "Please list Hue devices"
+              "List all Philips Hue devices",
+              "I need to list all Philips Hue devices",
+              "Can you list all Philips Hue devices?",
+              "Please list all Philips Hue devices"
             ],
             "maps_to_workflow": "devices_flow"
           },
           {
             "id": "state",
-            "description": "Get Hue light state",
+            "description": "Get state of a Hue device",
             "examples": [
-              "Get Hue light state",
-              "I need to get Hue light state",
-              "Can you get Hue light state?",
-              "Please get Hue light state"
+              "Get state of a Hue device",
+              "I need to get state of a Hue device",
+              "Can you get state of a Hue device?",
+              "Please get state of a Hue device"
             ],
             "maps_to_workflow": "state_flow",
             "entities": [
               {
-                "name": "device_id",
+                "name": "id",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1671,23 +1702,23 @@
           },
           {
             "id": "command",
-            "description": "Control Hue light",
+            "description": "Send a command to a Hue device",
             "examples": [
-              "Control Hue light",
-              "I need to control Hue light",
-              "Can you control Hue light?",
-              "Please control Hue light"
+              "Send a command to a Hue device",
+              "I need to send a command to a Hue device",
+              "Can you send a command to a Hue device?",
+              "Please send a command to a Hue device"
             ],
             "maps_to_workflow": "command_flow",
             "entities": [
               {
-                "name": "device_id",
+                "name": "id",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
               },
               {
-                "name": "command",
+                "name": "action",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1696,28 +1727,28 @@
           },
           {
             "id": "scenes",
-            "description": "List Hue scenes",
+            "description": "List all Hue scenes",
             "examples": [
-              "List Hue scenes",
-              "I need to list Hue scenes",
-              "Can you list Hue scenes?",
-              "Please list Hue scenes"
+              "List all Hue scenes",
+              "I need to list all Hue scenes",
+              "Can you list all Hue scenes?",
+              "Please list all Hue scenes"
             ],
             "maps_to_workflow": "scenes_flow"
           },
           {
             "id": "activate_scene",
-            "description": "Activate a Hue scene",
+            "description": "Activate a Hue scene by ID",
             "examples": [
-              "Activate a Hue scene",
-              "I need to activate a Hue scene",
-              "Can you activate a Hue scene?",
-              "Please activate a Hue scene"
+              "Activate a Hue scene by ID",
+              "I need to activate a Hue scene by ID",
+              "Can you activate a Hue scene by ID?",
+              "Please activate a Hue scene by ID"
             ],
             "maps_to_workflow": "activate_scene_flow",
             "entities": [
               {
-                "name": "scene_id",
+                "name": "id",
                 "type": "string",
                 "required": false,
                 "extract_from": "message"
@@ -1726,34 +1757,34 @@
           },
           {
             "id": "status",
-            "description": "Check Hue connection status",
+            "description": "Check Philips Hue bridge connection status",
             "examples": [
-              "Check Hue connection status",
-              "I need to check Hue connection status",
-              "Can you check Hue connection status?",
-              "Please check Hue connection status"
+              "Check Philips Hue bridge connection status",
+              "I need to check Philips Hue bridge connection status",
+              "Can you check Philips Hue bridge connection status?",
+              "Please check Philips Hue bridge connection status"
             ],
             "maps_to_workflow": "status_flow"
           },
           {
             "id": "devices",
-            "description": "List Tuya devices",
+            "description": "List all Tuya/Smart Life devices",
             "examples": [
-              "List Tuya devices",
-              "I need to list Tuya devices",
-              "Can you list Tuya devices?",
-              "Please list Tuya devices"
+              "List all Tuya/Smart Life devices",
+              "I need to list all Tuya/Smart Life devices",
+              "Can you list all Tuya/Smart Life devices?",
+              "Please list all Tuya/Smart Life devices"
             ],
             "maps_to_workflow": "devices_flow"
           },
           {
             "id": "state",
-            "description": "Get Tuya device state",
+            "description": "Get current state of a Tuya device",
             "examples": [
-              "Get Tuya device state",
-              "I need to get Tuya device state",
-              "Can you get Tuya device state?",
-              "Please get Tuya device state"
+              "Get current state of a Tuya device",
+              "I need to get current state of a Tuya device",
+              "Can you get current state of a Tuya device?",
+              "Please get current state of a Tuya device"
             ],
             "maps_to_workflow": "state_flow",
             "entities": [
@@ -1767,12 +1798,12 @@
           },
           {
             "id": "command",
-            "description": "Send Tuya command",
+            "description": "Send a command to a Tuya device",
             "examples": [
-              "Send Tuya command",
-              "I need to send Tuya command",
-              "Can you send Tuya command?",
-              "Please send Tuya command"
+              "Send a command to a Tuya device",
+              "I need to send a command to a Tuya device",
+              "Can you send a command to a Tuya device?",
+              "Please send a command to a Tuya device"
             ],
             "maps_to_workflow": "command_flow",
             "entities": [
@@ -1784,7 +1815,7 @@
               },
               {
                 "name": "commands",
-                "type": "array",
+                "type": "object",
                 "required": false,
                 "extract_from": "message"
               }
@@ -1792,12 +1823,12 @@
           },
           {
             "id": "device_functions",
-            "description": "Get Tuya device functions",
+            "description": "List available functions for a Tuya device",
             "examples": [
-              "Get Tuya device functions",
-              "I need to get Tuya device functions",
-              "Can you get Tuya device functions?",
-              "Please get Tuya device functions"
+              "List available functions for a Tuya device",
+              "I need to list available functions for a Tuya device",
+              "Can you list available functions for a Tuya device?",
+              "Please list available functions for a Tuya device"
             ],
             "maps_to_workflow": "device_functions_flow",
             "entities": [
@@ -1822,23 +1853,23 @@
           },
           {
             "id": "devices",
-            "description": "List Google/Nest devices",
+            "description": "List all Google Home/Nest devices",
             "examples": [
-              "List Google/Nest devices",
-              "I need to list Google/Nest devices",
-              "Can you list Google/Nest devices?",
-              "Please list Google/Nest devices"
+              "List all Google Home/Nest devices",
+              "I need to list all Google Home/Nest devices",
+              "Can you list all Google Home/Nest devices?",
+              "Please list all Google Home/Nest devices"
             ],
             "maps_to_workflow": "devices_flow"
           },
           {
             "id": "state",
-            "description": "Get Google device state",
+            "description": "Get current state of a Google/Nest device",
             "examples": [
-              "Get Google device state",
-              "I need to get Google device state",
-              "Can you get Google device state?",
-              "Please get Google device state"
+              "Get current state of a Google/Nest device",
+              "I need to get current state of a Google/Nest device",
+              "Can you get current state of a Google/Nest device?",
+              "Please get current state of a Google/Nest device"
             ],
             "maps_to_workflow": "state_flow",
             "entities": [
@@ -1852,12 +1883,12 @@
           },
           {
             "id": "command",
-            "description": "Send Google Home command",
+            "description": "Send a command to a Google/Nest device",
             "examples": [
-              "Send Google Home command",
-              "I need to send Google Home command",
-              "Can you send Google Home command?",
-              "Please send Google Home command"
+              "Send a command to a Google/Nest device",
+              "I need to send a command to a Google/Nest device",
+              "Can you send a command to a Google/Nest device?",
+              "Please send a command to a Google/Nest device"
             ],
             "maps_to_workflow": "command_flow",
             "entities": [
@@ -1877,12 +1908,12 @@
           },
           {
             "id": "status",
-            "description": "Check Google connection status",
+            "description": "Check Google Home connection status",
             "examples": [
-              "Check Google connection status",
-              "I need to check Google connection status",
-              "Can you check Google connection status?",
-              "Please check Google connection status"
+              "Check Google Home connection status",
+              "I need to check Google Home connection status",
+              "Can you check Google Home connection status?",
+              "Please check Google Home connection status"
             ],
             "maps_to_workflow": "status_flow"
           }
@@ -1906,7 +1937,7 @@
         "workflows": [
           {
             "id": "list_flow",
-            "name": "List all rooms from Home Assistant with their devices",
+            "name": "List all rooms/areas from Home Assistant with their devices",
             "description": "Auto-generated workflow for list",
             "trigger": "list",
             "steps": [
@@ -1917,7 +1948,7 @@
           },
           {
             "id": "list_flow",
-            "name": "List all smart home entities/devices",
+            "name": "List all entities (devices) from Home Assistant",
             "description": "Auto-generated workflow for list",
             "trigger": "list",
             "steps": [
@@ -1928,7 +1959,7 @@
           },
           {
             "id": "state_flow",
-            "name": "Get current state of a specific entity",
+            "name": "Get current state of a specific Home Assistant entity",
             "description": "Auto-generated workflow for state",
             "trigger": "state",
             "steps": [
@@ -1939,7 +1970,7 @@
           },
           {
             "id": "call_flow",
-            "name": "Call a service on a device",
+            "name": "Call a Home Assistant service to control a device",
             "description": "Auto-generated workflow for call",
             "trigger": "call",
             "steps": [
@@ -1950,7 +1981,7 @@
           },
           {
             "id": "discover_flow",
-            "name": "Discover LG TV on local network",
+            "name": "Discover LG TV on the local network",
             "description": "Auto-generated workflow for discover",
             "trigger": "discover",
             "steps": [
@@ -1961,7 +1992,7 @@
           },
           {
             "id": "apps_flow",
-            "name": "List LG TV apps",
+            "name": "List installed apps on LG TV",
             "description": "Auto-generated workflow for apps",
             "trigger": "apps",
             "steps": [
@@ -1972,7 +2003,7 @@
           },
           {
             "id": "inputs_flow",
-            "name": "List LG TV inputs",
+            "name": "List available inputs on LG TV",
             "description": "Auto-generated workflow for inputs",
             "trigger": "inputs",
             "steps": [
@@ -1983,7 +2014,7 @@
           },
           {
             "id": "appliances_flow",
-            "name": "List Home Connect appliances",
+            "name": "List Bosch Home Connect appliances",
             "description": "Auto-generated workflow for appliances",
             "trigger": "appliances",
             "steps": [
@@ -1994,7 +2025,7 @@
           },
           {
             "id": "status_flow",
-            "name": "Get Home Connect appliance status",
+            "name": "Get status of a Home Connect appliance",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -2005,7 +2036,7 @@
           },
           {
             "id": "programs_flow",
-            "name": "List oven programs",
+            "name": "List available programs for a Home Connect appliance",
             "description": "Auto-generated workflow for programs",
             "trigger": "programs",
             "steps": [
@@ -2016,7 +2047,7 @@
           },
           {
             "id": "start_program_flow",
-            "name": "Start oven program",
+            "name": "Start a program on a Home Connect appliance",
             "description": "Auto-generated workflow for start_program",
             "trigger": "start_program",
             "steps": [
@@ -2027,7 +2058,7 @@
           },
           {
             "id": "stop_program_flow",
-            "name": "Stop oven program",
+            "name": "Stop the running program on a Home Connect appliance",
             "description": "Auto-generated workflow for stop_program",
             "trigger": "stop_program",
             "steps": [
@@ -2038,7 +2069,7 @@
           },
           {
             "id": "status_flow",
-            "name": "Check provider connection status",
+            "name": "Check discovery/connection status for all providers",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -2049,7 +2080,7 @@
           },
           {
             "id": "rooms_flow",
-            "name": "List Hue rooms",
+            "name": "List all rooms from Philips Hue bridge",
             "description": "Auto-generated workflow for rooms",
             "trigger": "rooms",
             "steps": [
@@ -2060,7 +2091,7 @@
           },
           {
             "id": "devices_flow",
-            "name": "List Hue devices",
+            "name": "List all Philips Hue devices",
             "description": "Auto-generated workflow for devices",
             "trigger": "devices",
             "steps": [
@@ -2071,7 +2102,7 @@
           },
           {
             "id": "state_flow",
-            "name": "Get Hue light state",
+            "name": "Get state of a Hue device",
             "description": "Auto-generated workflow for state",
             "trigger": "state",
             "steps": [
@@ -2082,7 +2113,7 @@
           },
           {
             "id": "command_flow",
-            "name": "Control Hue light",
+            "name": "Send a command to a Hue device",
             "description": "Auto-generated workflow for command",
             "trigger": "command",
             "steps": [
@@ -2093,7 +2124,7 @@
           },
           {
             "id": "scenes_flow",
-            "name": "List Hue scenes",
+            "name": "List all Hue scenes",
             "description": "Auto-generated workflow for scenes",
             "trigger": "scenes",
             "steps": [
@@ -2104,7 +2135,7 @@
           },
           {
             "id": "activate_scene_flow",
-            "name": "Activate a Hue scene",
+            "name": "Activate a Hue scene by ID",
             "description": "Auto-generated workflow for activate_scene",
             "trigger": "activate_scene",
             "steps": [
@@ -2115,7 +2146,7 @@
           },
           {
             "id": "status_flow",
-            "name": "Check Hue connection status",
+            "name": "Check Philips Hue bridge connection status",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -2126,7 +2157,7 @@
           },
           {
             "id": "devices_flow",
-            "name": "List Tuya devices",
+            "name": "List all Tuya/Smart Life devices",
             "description": "Auto-generated workflow for devices",
             "trigger": "devices",
             "steps": [
@@ -2137,7 +2168,7 @@
           },
           {
             "id": "state_flow",
-            "name": "Get Tuya device state",
+            "name": "Get current state of a Tuya device",
             "description": "Auto-generated workflow for state",
             "trigger": "state",
             "steps": [
@@ -2148,7 +2179,7 @@
           },
           {
             "id": "command_flow",
-            "name": "Send Tuya command",
+            "name": "Send a command to a Tuya device",
             "description": "Auto-generated workflow for command",
             "trigger": "command",
             "steps": [
@@ -2159,7 +2190,7 @@
           },
           {
             "id": "device_functions_flow",
-            "name": "Get Tuya device functions",
+            "name": "List available functions for a Tuya device",
             "description": "Auto-generated workflow for device_functions",
             "trigger": "device_functions",
             "steps": [
@@ -2181,7 +2212,7 @@
           },
           {
             "id": "devices_flow",
-            "name": "List Google/Nest devices",
+            "name": "List all Google Home/Nest devices",
             "description": "Auto-generated workflow for devices",
             "trigger": "devices",
             "steps": [
@@ -2192,7 +2223,7 @@
           },
           {
             "id": "state_flow",
-            "name": "Get Google device state",
+            "name": "Get current state of a Google/Nest device",
             "description": "Auto-generated workflow for state",
             "trigger": "state",
             "steps": [
@@ -2203,7 +2234,7 @@
           },
           {
             "id": "command_flow",
-            "name": "Send Google Home command",
+            "name": "Send a command to a Google/Nest device",
             "description": "Auto-generated workflow for command",
             "trigger": "command",
             "steps": [
@@ -2214,7 +2245,7 @@
           },
           {
             "id": "status_flow",
-            "name": "Check Google connection status",
+            "name": "Check Google Home connection status",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -2233,264 +2264,264 @@
       "scenarios": [
         {
           "id": "list",
-          "title": "List all rooms from Home Assistant with their devices",
+          "title": "List all rooms/areas from Home Assistant with their devices",
           "description": "Test scenario for list",
           "steps": [
-            "User says: \"List all rooms from Home Assistant with their devices\"",
-            "Agent calls rooms.list — list all rooms from home assistant with their devices",
+            "User says: \"List all rooms/areas from Home Assistant with their devices\"",
+            "Agent calls rooms.list — list all rooms/areas from home assistant with their devices",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for list is handled successfully."
         },
         {
           "id": "list",
-          "title": "List all smart home entities/devices",
+          "title": "List all entities (devices) from Home Assistant",
           "description": "Test scenario for list",
           "steps": [
-            "User says: \"List all smart home entities/devices\"",
-            "Agent calls rooms.list — list all rooms from home assistant with their devices",
+            "User says: \"List all entities (devices) from Home Assistant\"",
+            "Agent calls rooms.list — list all rooms/areas from home assistant with their devices",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for list is handled successfully."
         },
         {
           "id": "state",
-          "title": "Get current state of a specific entity",
+          "title": "Get current state of a specific Home Assistant entity",
           "description": "Test scenario for state",
           "steps": [
-            "User says: \"Get current state of a specific entity\"",
-            "Agent calls entity.state — get current state of a specific entity",
+            "User says: \"Get current state of a specific Home Assistant entity\"",
+            "Agent calls entity.state — get current state of a specific home assistant entity",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for state is handled successfully."
         },
         {
           "id": "call",
-          "title": "Call a service on a device",
+          "title": "Call a Home Assistant service to control a device",
           "description": "Test scenario for call",
           "steps": [
-            "User says: \"Call a service on a device\"",
-            "Agent calls services.call — call a service on a device",
+            "User says: \"Call a Home Assistant service to control a device\"",
+            "Agent calls services.call — call a home assistant service to control a device",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for call is handled successfully."
         },
         {
           "id": "discover",
-          "title": "Discover LG TV on local network",
+          "title": "Discover LG TV on the local network",
           "description": "Test scenario for discover",
           "steps": [
-            "User says: \"Discover LG TV on local network\"",
-            "Agent calls tv.discover — discover lg tv on local network",
+            "User says: \"Discover LG TV on the local network\"",
+            "Agent calls tv.discover — discover lg tv on the local network",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for discover is handled successfully."
         },
         {
           "id": "apps",
-          "title": "List LG TV apps",
+          "title": "List installed apps on LG TV",
           "description": "Test scenario for apps",
           "steps": [
-            "User says: \"List LG TV apps\"",
-            "Agent calls tv.apps — list lg tv apps",
+            "User says: \"List installed apps on LG TV\"",
+            "Agent calls tv.apps — list installed apps on lg tv",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for apps is handled successfully."
         },
         {
           "id": "inputs",
-          "title": "List LG TV inputs",
+          "title": "List available inputs on LG TV",
           "description": "Test scenario for inputs",
           "steps": [
-            "User says: \"List LG TV inputs\"",
-            "Agent calls tv.inputs — list lg tv inputs",
+            "User says: \"List available inputs on LG TV\"",
+            "Agent calls tv.inputs — list available inputs on lg tv",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for inputs is handled successfully."
         },
         {
           "id": "appliances",
-          "title": "List Home Connect appliances",
+          "title": "List Bosch Home Connect appliances",
           "description": "Test scenario for appliances",
           "steps": [
-            "User says: \"List Home Connect appliances\"",
-            "Agent calls homeconnect.appliances — list home connect appliances",
+            "User says: \"List Bosch Home Connect appliances\"",
+            "Agent calls homeconnect.appliances — list bosch home connect appliances",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for appliances is handled successfully."
         },
         {
           "id": "status",
-          "title": "Get Home Connect appliance status",
+          "title": "Get status of a Home Connect appliance",
           "description": "Test scenario for status",
           "steps": [
-            "User says: \"Get Home Connect appliance status\"",
-            "Agent calls homeconnect.status — get home connect appliance status",
+            "User says: \"Get status of a Home Connect appliance\"",
+            "Agent calls homeconnect.status — get status of a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for status is handled successfully."
         },
         {
           "id": "programs",
-          "title": "List oven programs",
+          "title": "List available programs for a Home Connect appliance",
           "description": "Test scenario for programs",
           "steps": [
-            "User says: \"List oven programs\"",
-            "Agent calls homeconnect.programs — list oven programs",
+            "User says: \"List available programs for a Home Connect appliance\"",
+            "Agent calls homeconnect.programs — list available programs for a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for programs is handled successfully."
         },
         {
           "id": "start_program",
-          "title": "Start oven program",
+          "title": "Start a program on a Home Connect appliance",
           "description": "Test scenario for start program",
           "steps": [
-            "User says: \"Start oven program\"",
-            "Agent calls homeconnect.start_program — start oven program",
+            "User says: \"Start a program on a Home Connect appliance\"",
+            "Agent calls homeconnect.start_program — start a program on a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for start program is handled successfully."
         },
         {
           "id": "stop_program",
-          "title": "Stop oven program",
+          "title": "Stop the running program on a Home Connect appliance",
           "description": "Test scenario for stop program",
           "steps": [
-            "User says: \"Stop oven program\"",
-            "Agent calls homeconnect.stop_program — stop oven program",
+            "User says: \"Stop the running program on a Home Connect appliance\"",
+            "Agent calls homeconnect.stop_program — stop the running program on a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for stop program is handled successfully."
         },
         {
           "id": "status",
-          "title": "Check provider connection status",
+          "title": "Check discovery/connection status for all providers",
           "description": "Test scenario for status",
           "steps": [
-            "User says: \"Check provider connection status\"",
-            "Agent calls homeconnect.status — get home connect appliance status",
+            "User says: \"Check discovery/connection status for all providers\"",
+            "Agent calls homeconnect.status — get status of a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for status is handled successfully."
         },
         {
           "id": "rooms",
-          "title": "List Hue rooms",
+          "title": "List all rooms from Philips Hue bridge",
           "description": "Test scenario for rooms",
           "steps": [
-            "User says: \"List Hue rooms\"",
-            "Agent calls hue.rooms — list hue rooms",
+            "User says: \"List all rooms from Philips Hue bridge\"",
+            "Agent calls hue.rooms — list all rooms from philips hue bridge",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for rooms is handled successfully."
         },
         {
           "id": "devices",
-          "title": "List Hue devices",
+          "title": "List all Philips Hue devices",
           "description": "Test scenario for devices",
           "steps": [
-            "User says: \"List Hue devices\"",
-            "Agent calls hue.devices — list hue devices",
+            "User says: \"List all Philips Hue devices\"",
+            "Agent calls hue.devices — list all philips hue devices",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for devices is handled successfully."
         },
         {
           "id": "state",
-          "title": "Get Hue light state",
+          "title": "Get state of a Hue device",
           "description": "Test scenario for state",
           "steps": [
-            "User says: \"Get Hue light state\"",
-            "Agent calls entity.state — get current state of a specific entity",
+            "User says: \"Get state of a Hue device\"",
+            "Agent calls entity.state — get current state of a specific home assistant entity",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for state is handled successfully."
         },
         {
           "id": "command",
-          "title": "Control Hue light",
+          "title": "Send a command to a Hue device",
           "description": "Test scenario for command",
           "steps": [
-            "User says: \"Control Hue light\"",
-            "Agent calls hue.command — control hue light",
+            "User says: \"Send a command to a Hue device\"",
+            "Agent calls hue.command — send a command to a hue device",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for command is handled successfully."
         },
         {
           "id": "scenes",
-          "title": "List Hue scenes",
+          "title": "List all Hue scenes",
           "description": "Test scenario for scenes",
           "steps": [
-            "User says: \"List Hue scenes\"",
-            "Agent calls hue.scenes — list hue scenes",
+            "User says: \"List all Hue scenes\"",
+            "Agent calls hue.scenes — list all hue scenes",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for scenes is handled successfully."
         },
         {
           "id": "activate_scene",
-          "title": "Activate a Hue scene",
+          "title": "Activate a Hue scene by ID",
           "description": "Test scenario for activate scene",
           "steps": [
-            "User says: \"Activate a Hue scene\"",
-            "Agent calls hue.activate_scene — activate a hue scene",
+            "User says: \"Activate a Hue scene by ID\"",
+            "Agent calls hue.activate_scene — activate a hue scene by id",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for activate scene is handled successfully."
         },
         {
           "id": "status",
-          "title": "Check Hue connection status",
+          "title": "Check Philips Hue bridge connection status",
           "description": "Test scenario for status",
           "steps": [
-            "User says: \"Check Hue connection status\"",
-            "Agent calls homeconnect.status — get home connect appliance status",
+            "User says: \"Check Philips Hue bridge connection status\"",
+            "Agent calls homeconnect.status — get status of a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for status is handled successfully."
         },
         {
           "id": "devices",
-          "title": "List Tuya devices",
+          "title": "List all Tuya/Smart Life devices",
           "description": "Test scenario for devices",
           "steps": [
-            "User says: \"List Tuya devices\"",
-            "Agent calls hue.devices — list hue devices",
+            "User says: \"List all Tuya/Smart Life devices\"",
+            "Agent calls hue.devices — list all philips hue devices",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for devices is handled successfully."
         },
         {
           "id": "state",
-          "title": "Get Tuya device state",
+          "title": "Get current state of a Tuya device",
           "description": "Test scenario for state",
           "steps": [
-            "User says: \"Get Tuya device state\"",
-            "Agent calls entity.state — get current state of a specific entity",
+            "User says: \"Get current state of a Tuya device\"",
+            "Agent calls entity.state — get current state of a specific home assistant entity",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for state is handled successfully."
         },
         {
           "id": "command",
-          "title": "Send Tuya command",
+          "title": "Send a command to a Tuya device",
           "description": "Test scenario for command",
           "steps": [
-            "User says: \"Send Tuya command\"",
-            "Agent calls hue.command — control hue light",
+            "User says: \"Send a command to a Tuya device\"",
+            "Agent calls hue.command — send a command to a hue device",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for command is handled successfully."
         },
         {
           "id": "device_functions",
-          "title": "Get Tuya device functions",
+          "title": "List available functions for a Tuya device",
           "description": "Test scenario for device functions",
           "steps": [
-            "User says: \"Get Tuya device functions\"",
-            "Agent calls tuya.device_functions — get tuya device functions",
+            "User says: \"List available functions for a Tuya device\"",
+            "Agent calls tuya.device_functions — list available functions for a tuya device",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for device functions is handled successfully."
@@ -2501,66 +2532,63 @@
           "description": "Test scenario for status",
           "steps": [
             "User says: \"Check Tuya connection status\"",
-            "Agent calls homeconnect.status — get home connect appliance status",
+            "Agent calls homeconnect.status — get status of a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for status is handled successfully."
         },
         {
           "id": "devices",
-          "title": "List Google/Nest devices",
+          "title": "List all Google Home/Nest devices",
           "description": "Test scenario for devices",
           "steps": [
-            "User says: \"List Google/Nest devices\"",
-            "Agent calls hue.devices — list hue devices",
+            "User says: \"List all Google Home/Nest devices\"",
+            "Agent calls hue.devices — list all philips hue devices",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for devices is handled successfully."
         },
         {
           "id": "state",
-          "title": "Get Google device state",
+          "title": "Get current state of a Google/Nest device",
           "description": "Test scenario for state",
           "steps": [
-            "User says: \"Get Google device state\"",
-            "Agent calls entity.state — get current state of a specific entity",
+            "User says: \"Get current state of a Google/Nest device\"",
+            "Agent calls entity.state — get current state of a specific home assistant entity",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for state is handled successfully."
         },
         {
           "id": "command",
-          "title": "Send Google Home command",
+          "title": "Send a command to a Google/Nest device",
           "description": "Test scenario for command",
           "steps": [
-            "User says: \"Send Google Home command\"",
-            "Agent calls hue.command — control hue light",
+            "User says: \"Send a command to a Google/Nest device\"",
+            "Agent calls hue.command — send a command to a hue device",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for command is handled successfully."
         },
         {
           "id": "status",
-          "title": "Check Google connection status",
+          "title": "Check Google Home connection status",
           "description": "Test scenario for status",
           "steps": [
-            "User says: \"Check Google connection status\"",
-            "Agent calls homeconnect.status — get home connect appliance status",
+            "User says: \"Check Google Home connection status\"",
+            "Agent calls homeconnect.status — get status of a home connect appliance",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for status is handled successfully."
         }
       ],
       "role": {
-        "name": "Home Control",
-        "persona": "You are a helpful assistant that users want to control smart home devices using natural language. You have access to tools for: List all rooms from Home Assistant with their devices, List all smart home entities/devices, Get current state of a specific entity, Call a service on a device, Discover LG TV on local network, List LG TV apps, List LG TV inputs, List Home Connect appliances, Get Home Connect appliance status, List oven programs, Start oven program, Stop oven program, Check provider connection status, List Hue rooms, List Hue devices, Get Hue light state, Control Hue light, List Hue scenes, Activate a Hue scene, Check Hue connection status, List Tuya devices, Get Tuya device state, Send Tuya command, Get Tuya device functions, Check Tuya connection status, List Google/Nest devices, Get Google device state, Send Google Home command, Check Google connection status.",
+        "name": "Smart Home Controller",
+        "persona": "You are a smart home assistant that controls devices across multiple providers. You execute commands immediately and report results concisely.",
         "goals": [
-          "Control devices",
-          "Query states",
-          "Multi-provider support"
-        ],
-        "limitations": [
-          "Operates only within defined tool capabilities"
+          "Execute device commands immediately",
+          "Query device states accurately",
+          "Route to the correct provider automatically"
         ],
         "communication_style": {
           "tone": "casual",
@@ -2571,21 +2599,9 @@
         "model": "claude-sonnet-4-20250514",
         "temperature": 0.3,
         "rv2": {
-          "max_iterations": 10,
+          "max_iterations": 12,
           "iteration_timeout_ms": 30000,
-          "allow_parallel_tools": false,
-          "on_max_iterations": "fail"
-        },
-        "hlr": {
-          "enabled": true,
-          "critic": {
-            "enabled": false,
-            "strictness": "medium"
-          },
-          "reflection": {
-            "enabled": false,
-            "depth": "shallow"
-          }
+          "allow_parallel_tools": true
         },
         "autonomy": {
           "level": "autonomous"
@@ -2623,9 +2639,7 @@
         "context": "Users need to connect and configure their smart home providers before they can control devices.",
         "goals": [
           "Guide users through connecting each provider step-by-step",
-          "Check connection status of all providers",
-          "Verify connections work after setup",
-          "Sync rooms and devices after connecting"
+          "Check connection status of all providers"
         ]
       },
       "tools": [
@@ -2633,7 +2647,7 @@
           "id": "tool-ha-config-get",
           "id_status": "permanent",
           "name": "config.get",
-          "description": "Get current Home Assistant configuration and connection status",
+          "description": "Get current Home Assistant configuration",
           "inputs": [],
           "output": {
             "type": "object"
@@ -2839,7 +2853,7 @@
           "id": "tool-ha-rooms-sync",
           "id_status": "permanent",
           "name": "rooms.sync",
-          "description": "Sync rooms and devices",
+          "description": "Sync rooms and devices from Home Assistant",
           "inputs": [],
           "output": {
             "type": "object"
@@ -3506,12 +3520,12 @@
         "supported": [
           {
             "id": "get",
-            "description": "Get current Home Assistant configuration and connection status",
+            "description": "Get current Home Assistant configuration",
             "examples": [
-              "Get current Home Assistant configuration and connection status",
-              "I need to get current Home Assistant configuration and connection status",
-              "Can you get current Home Assistant configuration and connection status?",
-              "Please get current Home Assistant configuration and connection status"
+              "Get current Home Assistant configuration",
+              "I need to get current Home Assistant configuration",
+              "Can you get current Home Assistant configuration?",
+              "Please get current Home Assistant configuration"
             ],
             "maps_to_workflow": "get_flow"
           },
@@ -3575,12 +3589,12 @@
           },
           {
             "id": "sync",
-            "description": "Sync rooms and devices",
+            "description": "Sync rooms and devices from Home Assistant",
             "examples": [
-              "Sync rooms and devices",
-              "I need to sync rooms and devices",
-              "Can you sync rooms and devices?",
-              "Please sync rooms and devices"
+              "Sync rooms and devices from Home Assistant",
+              "I need to sync rooms and devices from Home Assistant",
+              "Can you sync rooms and devices from Home Assistant?",
+              "Please sync rooms and devices from Home Assistant"
             ],
             "maps_to_workflow": "sync_flow"
           },
@@ -3810,7 +3824,7 @@
         "workflows": [
           {
             "id": "get_flow",
-            "name": "Get current Home Assistant configuration and connection status",
+            "name": "Get current Home Assistant configuration",
             "description": "Auto-generated workflow for get",
             "trigger": "get",
             "steps": [
@@ -3865,7 +3879,7 @@
           },
           {
             "id": "sync_flow",
-            "name": "Sync rooms and devices",
+            "name": "Sync rooms and devices from Home Assistant",
             "description": "Auto-generated workflow for sync",
             "trigger": "sync",
             "steps": [
@@ -4060,11 +4074,11 @@
       "scenarios": [
         {
           "id": "get",
-          "title": "Get current Home Assistant configuration and connection status",
+          "title": "Get current Home Assistant configuration",
           "description": "Test scenario for get",
           "steps": [
-            "User says: \"Get current Home Assistant configuration and connection status\"",
-            "Agent calls config.get — get current home assistant configuration and connection status",
+            "User says: \"Get current Home Assistant configuration\"",
+            "Agent calls config.get — get current home assistant configuration",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for get is handled successfully."
@@ -4115,11 +4129,11 @@
         },
         {
           "id": "sync",
-          "title": "Sync rooms and devices",
+          "title": "Sync rooms and devices from Home Assistant",
           "description": "Test scenario for sync",
           "steps": [
-            "User says: \"Sync rooms and devices\"",
-            "Agent calls rooms.sync — sync rooms and devices",
+            "User says: \"Sync rooms and devices from Home Assistant\"",
+            "Agent calls rooms.sync — sync rooms and devices from home assistant",
             "Agent presents results to the user"
           ],
           "expected_outcome": "User request for sync is handled successfully."
@@ -4302,19 +4316,14 @@
         }
       ],
       "role": {
-        "name": "Connect My Home",
-        "persona": "You are a helpful assistant that users need to connect and configure their smart home providers before they can control devices. You have access to tools for: Get current Home Assistant configuration and connection status, Save Home Assistant configuration, Check connection status for all providers, List all supported providers, List rooms from Home Assistant, Sync rooms and devices, List entities from Home Assistant, Discover LG TV on the local network, Start Bosch Home Connect OAuth flow, Complete Home Connect OAuth, Start Philips Hue bridge pairing, Complete Hue bridge pairing, Check Hue bridge connection status, List Hue devices, Configure Tuya Cloud API credentials, Complete Tuya authentication, Check Tuya connection status, List Tuya devices, Start Google Home OAuth flow, Complete Google Home OAuth, Check Google Home connection status, List Google/Nest devices.",
+        "name": "Setup Assistant",
+        "persona": "You guide users through connecting their smart home providers step-by-step.",
         "goals": [
-          "Guide users through connecting each provider step-by-step",
-          "Check connection status of all providers",
-          "Verify connections work after setup",
-          "Sync rooms and devices after connecting"
-        ],
-        "limitations": [
-          "Operates only within defined tool capabilities"
+          "Help users connect all their smart home providers",
+          "Verify each connection works after setup"
         ],
         "communication_style": {
-          "tone": "casual",
+          "tone": "friendly",
           "verbosity": "concise"
         }
       },
@@ -4322,21 +4331,8 @@
         "model": "claude-sonnet-4-20250514",
         "temperature": 0.3,
         "rv2": {
-          "max_iterations": 10,
-          "iteration_timeout_ms": 30000,
-          "allow_parallel_tools": false,
-          "on_max_iterations": "fail"
-        },
-        "hlr": {
-          "enabled": true,
-          "critic": {
-            "enabled": false,
-            "strictness": "medium"
-          },
-          "reflection": {
-            "enabled": false,
-            "depth": "shallow"
-          }
+          "max_iterations": 15,
+          "iteration_timeout_ms": 30000
         },
         "autonomy": {
           "level": "autonomous"
@@ -4358,5 +4354,5 @@
     }
   ],
   "connectors": [],
-  "timestamp": "2026-03-16T13:22:51.655Z"
+  "timestamp": "2026-03-16T17:33:06.523Z"
 }

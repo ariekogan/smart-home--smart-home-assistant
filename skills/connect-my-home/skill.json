@@ -16,9 +16,7 @@
     "context": "Users need to connect and configure their smart home providers before they can control devices.",
     "goals": [
       "Guide users through connecting each provider step-by-step",
-      "Check connection status of all providers",
-      "Verify connections work after setup",
-      "Sync rooms and devices after connecting"
+      "Check connection status of all providers"
     ]
   },
   "tools": [
@@ -26,7 +24,7 @@
       "id": "tool-ha-config-get",
       "id_status": "permanent",
       "name": "config.get",
-      "description": "Get current Home Assistant configuration and connection status",
+      "description": "Get current Home Assistant configuration",
       "inputs": [],
       "output": {
         "type": "object"
@@ -232,7 +230,7 @@
       "id": "tool-ha-rooms-sync",
       "id_status": "permanent",
       "name": "rooms.sync",
-      "description": "Sync rooms and devices",
+      "description": "Sync rooms and devices from Home Assistant",
       "inputs": [],
       "output": {
         "type": "object"
@@ -899,12 +897,12 @@
     "supported": [
       {
         "id": "get",
-        "description": "Get current Home Assistant configuration and connection status",
+        "description": "Get current Home Assistant configuration",
         "examples": [
-          "Get current Home Assistant configuration and connection status",
-          "I need to get current Home Assistant configuration and connection status",
-          "Can you get current Home Assistant configuration and connection status?",
-          "Please get current Home Assistant configuration and connection status"
+          "Get current Home Assistant configuration",
+          "I need to get current Home Assistant configuration",
+          "Can you get current Home Assistant configuration?",
+          "Please get current Home Assistant configuration"
         ],
         "maps_to_workflow": "get_flow"
       },
@@ -968,12 +966,12 @@
       },
       {
         "id": "sync",
-        "description": "Sync rooms and devices",
+        "description": "Sync rooms and devices from Home Assistant",
         "examples": [
-          "Sync rooms and devices",
-          "I need to sync rooms and devices",
-          "Can you sync rooms and devices?",
-          "Please sync rooms and devices"
+          "Sync rooms and devices from Home Assistant",
+          "I need to sync rooms and devices from Home Assistant",
+          "Can you sync rooms and devices from Home Assistant?",
+          "Please sync rooms and devices from Home Assistant"
         ],
         "maps_to_workflow": "sync_flow"
       },
@@ -1203,7 +1201,7 @@
     "workflows": [
       {
         "id": "get_flow",
-        "name": "Get current Home Assistant configuration and connection status",
+        "name": "Get current Home Assistant configuration",
         "description": "Auto-generated workflow for get",
         "trigger": "get",
         "steps": [
@@ -1258,7 +1256,7 @@
       },
       {
         "id": "sync_flow",
-        "name": "Sync rooms and devices",
+        "name": "Sync rooms and devices from Home Assistant",
         "description": "Auto-generated workflow for sync",
         "trigger": "sync",
         "steps": [
@@ -1453,11 +1451,11 @@
   "scenarios": [
     {
       "id": "get",
-      "title": "Get current Home Assistant configuration and connection status",
+      "title": "Get current Home Assistant configuration",
       "description": "Test scenario for get",
       "steps": [
-        "User says: \"Get current Home Assistant configuration and connection status\"",
-        "Agent calls config.get — get current home assistant configuration and connection status",
+        "User says: \"Get current Home Assistant configuration\"",
+        "Agent calls config.get — get current home assistant configuration",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for get is handled successfully."
@@ -1508,11 +1506,11 @@
     },
     {
       "id": "sync",
-      "title": "Sync rooms and devices",
+      "title": "Sync rooms and devices from Home Assistant",
       "description": "Test scenario for sync",
       "steps": [
-        "User says: \"Sync rooms and devices\"",
-        "Agent calls rooms.sync — sync rooms and devices",
+        "User says: \"Sync rooms and devices from Home Assistant\"",
+        "Agent calls rooms.sync — sync rooms and devices from home assistant",
         "Agent presents results to the user"
       ],
       "expected_outcome": "User request for sync is handled successfully."
@@ -1695,19 +1693,14 @@
     }
   ],
   "role": {
-    "name": "Connect My Home",
-    "persona": "You are a helpful assistant that users need to connect and configure their smart home providers before they can control devices. You have access to tools for: Get current Home Assistant configuration and connection status, Save Home Assistant configuration, Check connection status for all providers, List all supported providers, List rooms from Home Assistant, Sync rooms and devices, List entities from Home Assistant, Discover LG TV on the local network, Start Bosch Home Connect OAuth flow, Complete Home Connect OAuth, Start Philips Hue bridge pairing, Complete Hue bridge pairing, Check Hue bridge connection status, List Hue devices, Configure Tuya Cloud API credentials, Complete Tuya authentication, Check Tuya connection status, List Tuya devices, Start Google Home OAuth flow, Complete Google Home OAuth, Check Google Home connection status, List Google/Nest devices.",
+    "name": "Setup Assistant",
+    "persona": "You guide users through connecting their smart home providers step-by-step.",
     "goals": [
-      "Guide users through connecting each provider step-by-step",
-      "Check connection status of all providers",
-      "Verify connections work after setup",
-      "Sync rooms and devices after connecting"
-    ],
-    "limitations": [
-      "Operates only within defined tool capabilities"
+      "Help users connect all their smart home providers",
+      "Verify each connection works after setup"
     ],
     "communication_style": {
-      "tone": "casual",
+      "tone": "friendly",
       "verbosity": "concise"
     }
   },
@@ -1715,21 +1708,8 @@
     "model": "claude-sonnet-4-20250514",
     "temperature": 0.3,
     "rv2": {
-      "max_iterations": 10,
-      "iteration_timeout_ms": 30000,
-      "allow_parallel_tools": false,
-      "on_max_iterations": "fail"
-    },
-    "hlr": {
-      "enabled": true,
-      "critic": {
-        "enabled": false,
-        "strictness": "medium"
-      },
-      "reflection": {
-        "enabled": false,
-        "depth": "shallow"
-      }
+      "max_iterations": 15,
+      "iteration_timeout_ms": 30000
     },
     "autonomy": {
       "level": "autonomous"
