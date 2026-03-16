@@ -7,8 +7,8 @@ Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, a
 
 ## Skills
 
-- **connect-my-home** — Users need to connect and configure their smart home providers before they can control devices.
-- **home-control** — Users want to control smart home devices using natural language.
+- **connect-my-home** — Users need to connect and configure their smart home providers.
+- **home-control** — Control smart home devices using natural language.
 
 ## Connectors
 
