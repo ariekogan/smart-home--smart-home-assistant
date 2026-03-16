@@ -1,8 +1,10 @@
 {
   "id": "connect-my-home",
   "name": "Connect My Home",
-  "description": "Setup and onboarding for smart home providers \u2014 Home Assistant, Philips Hue, Tuya, Google Home, LG TV, Bosch Home Connect.",
+  "description": "Setup smart home providers.",
   "version": "2.0.0",
+  "phase": "TOOL_DEFINITION",
+  "ui_capable": false,
   "connectors": [
     "home-assistant-mcp",
     "hue-mcp",
@@ -10,24 +12,23 @@
     "google-home-mcp"
   ],
   "problem": {
-    "statement": "Users need to connect and configure their smart home providers before they can control devices.",
-    "context": "Supports 6 providers, each with different setup: HA needs URL+token, Hue needs bridge pairing, Tuya needs API keys, Google needs OAuth, Home Connect needs OAuth, LG TV needs network discovery.",
+    "statement": "Users need to connect their smart home providers.",
+    "context": "Users need to connect their smart home providers.",
     "goals": [
-      "Guide users through connecting each provider step-by-step",
-      "Check connection status of all providers",
-      "Verify connections work after setup",
-      "Sync rooms and devices after connecting"
+      "Guide setup",
+      "Check status",
+      "Verify connections"
     ]
   },
   "tools": [
     {
       "id": "tool-ha-config-get",
+      "id_status": "permanent",
       "name": "config.get",
-      "description": "Get current Home Assistant configuration and connection status",
+      "description": "Get HA config",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Current HA config"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -36,29 +37,47 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-config-get-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for config.get"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-config-save",
+      "id_status": "permanent",
       "name": "config.save",
-      "description": "Save Home Assistant configuration (URL and long-lived access token)",
+      "description": "Save HA config",
       "inputs": [
         {
           "name": "url",
           "type": "string",
           "required": true,
-          "description": "HA URL (e.g., http://homeassistant.local:8123)"
+          "description": ""
         },
         {
           "name": "token",
           "type": "string",
           "required": true,
-          "description": "Long-lived access token"
+          "description": ""
         }
       ],
       "output": {
-        "type": "object",
-        "description": "Save result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -67,16 +86,37 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-config-save-auto",
+            "input": {
+              "url": "https://example.com",
+              "token": "example"
+            },
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for config.save"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-discovery-status",
+      "id_status": "permanent",
       "name": "discovery.status",
-      "description": "Check connection status for all providers",
+      "description": "Check providers",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Provider status map"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -85,16 +125,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-discovery-status-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for discovery.status"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-discovery-supported",
+      "id_status": "permanent",
       "name": "discovery.supported",
-      "description": "List all supported providers and their setup requirements",
+      "description": "List providers",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Supported providers"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -103,16 +161,39 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-discovery-supported-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for discovery.supported"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-rooms-list",
+      "id_status": "permanent",
       "name": "rooms.list",
-      "description": "List rooms from Home Assistant (to verify connection)",
+      "description": "List rooms",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Rooms list"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -121,16 +202,39 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-rooms-list-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for rooms.list"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-rooms-sync",
+      "id_status": "permanent",
       "name": "rooms.sync",
-      "description": "Sync rooms and devices from Home Assistant",
+      "description": "Sync rooms",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Sync result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -139,16 +243,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-rooms-sync-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for rooms.sync"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-entities-list",
+      "id_status": "permanent",
       "name": "entities.list",
-      "description": "List entities from Home Assistant (to verify connection)",
+      "description": "List entities",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Entities list"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -157,16 +279,39 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-entities-list-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for entities.list"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-tv-discover",
+      "id_status": "permanent",
       "name": "tv.discover",
-      "description": "Discover LG TV on the local network",
+      "description": "Discover TV",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "TV discovery result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -175,16 +320,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-tv-discover-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for tv.discover"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-hc-auth",
+      "id_status": "permanent",
       "name": "homeconnect.auth",
-      "description": "Start Bosch Home Connect OAuth flow",
+      "description": "Start HC OAuth",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "OAuth URL to visit"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -193,23 +356,41 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-homeconnect-auth-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for homeconnect.auth"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-ha-hc-callback",
+      "id_status": "permanent",
       "name": "homeconnect.callback",
-      "description": "Complete Home Connect OAuth with authorization code",
+      "description": "Complete HC OAuth",
       "inputs": [
         {
           "name": "code",
           "type": "string",
           "required": true,
-          "description": "OAuth authorization code"
+          "description": ""
         }
       ],
       "output": {
-        "type": "object",
-        "description": "Auth result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -218,16 +399,36 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-homeconnect-callback-auto",
+            "input": {
+              "code": "example"
+            },
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for homeconnect.callback"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-hue-auth",
+      "id_status": "permanent",
       "name": "hue.auth",
-      "description": "Start Philips Hue bridge pairing (user must press bridge button)",
+      "description": "Start Hue pairing",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Pairing instructions"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -236,16 +437,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-hue-auth-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for hue.auth"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-hue-callback",
+      "id_status": "permanent",
       "name": "hue.callback",
-      "description": "Complete Hue bridge pairing after button press",
+      "description": "Complete Hue pairing",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Pairing result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -254,16 +473,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-hue-callback-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for hue.callback"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-hue-status",
+      "id_status": "permanent",
       "name": "hue.status",
-      "description": "Check Hue bridge connection status",
+      "description": "Check Hue status",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Connection status"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -272,16 +509,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-hue-status-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for hue.status"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-hue-devices",
+      "id_status": "permanent",
       "name": "hue.devices",
-      "description": "List Hue devices (to verify connection)",
+      "description": "List Hue devices",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Hue devices"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -290,29 +545,52 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-hue-devices-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for hue.devices"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-tuya-auth",
+      "id_status": "permanent",
       "name": "tuya.auth",
-      "description": "Configure Tuya Cloud API credentials",
+      "description": "Configure Tuya",
       "inputs": [
         {
           "name": "access_id",
           "type": "string",
           "required": true,
-          "description": "Tuya access ID"
+          "description": ""
         },
         {
           "name": "access_secret",
           "type": "string",
           "required": true,
-          "description": "Tuya access secret"
+          "description": ""
         }
       ],
       "output": {
-        "type": "object",
-        "description": "Auth result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -321,16 +599,37 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-tuya-auth-auto",
+            "input": {
+              "access_id": "id-001",
+              "access_secret": "example"
+            },
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for tuya.auth"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-tuya-callback",
+      "id_status": "permanent",
       "name": "tuya.callback",
-      "description": "Complete Tuya authentication",
+      "description": "Complete Tuya auth",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Callback result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -339,16 +638,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-tuya-callback-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for tuya.callback"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-tuya-status",
+      "id_status": "permanent",
       "name": "tuya.status",
-      "description": "Check Tuya connection status",
+      "description": "Check Tuya status",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Connection status"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -357,16 +674,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-tuya-status-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for tuya.status"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-tuya-devices",
+      "id_status": "permanent",
       "name": "tuya.devices",
-      "description": "List Tuya devices (to verify connection)",
+      "description": "List Tuya devices",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Tuya devices"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -375,16 +710,39 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-tuya-devices-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for tuya.devices"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-google-auth",
+      "id_status": "permanent",
       "name": "google.auth",
-      "description": "Start Google Home OAuth flow",
+      "description": "Start Google OAuth",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "OAuth URL"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -393,23 +751,41 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-google-auth-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for google.auth"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-google-callback",
+      "id_status": "permanent",
       "name": "google.callback",
-      "description": "Complete Google Home OAuth with authorization code",
+      "description": "Complete Google OAuth",
       "inputs": [
         {
           "name": "code",
           "type": "string",
           "required": true,
-          "description": "OAuth authorization code"
+          "description": ""
         }
       ],
       "output": {
-        "type": "object",
-        "description": "Auth result"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -418,16 +794,36 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-google-callback-auto",
+            "input": {
+              "code": "example"
+            },
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for google.callback"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-google-status",
+      "id_status": "permanent",
       "name": "google.status",
-      "description": "Check Google Home connection status",
+      "description": "Check Google status",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Connection status"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -436,16 +832,34 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-google-status-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for google.status"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
     },
     {
       "id": "tool-google-devices",
+      "id_status": "permanent",
       "name": "google.devices",
-      "description": "List Google/Nest devices (to verify connection)",
+      "description": "List Google devices",
       "inputs": [],
       "output": {
-        "type": "object",
-        "description": "Google devices"
+        "type": "object"
       },
       "source": {
         "type": "mcp_bridge",
@@ -454,16 +868,837 @@
       },
       "policy": {
         "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-google-devices-auto",
+            "input": {},
+            "output": {
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
+            },
+            "description": "Auto-generated example for google.devices"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
       }
+    }
+  ],
+  "intents": {
+    "supported": [
+      {
+        "id": "get",
+        "description": "Get HA config",
+        "examples": [
+          "Get HA config",
+          "I need to get HA config",
+          "Can you get HA config?",
+          "Please get HA config"
+        ],
+        "maps_to_workflow": "get_flow"
+      },
+      {
+        "id": "save",
+        "description": "Save HA config",
+        "examples": [
+          "Save HA config",
+          "I need to save HA config",
+          "Can you save HA config?",
+          "Please save HA config"
+        ],
+        "maps_to_workflow": "save_flow",
+        "entities": [
+          {
+            "name": "url",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          },
+          {
+            "name": "token",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          }
+        ]
+      },
+      {
+        "id": "status",
+        "description": "Check providers",
+        "examples": [
+          "Check providers",
+          "I need to check providers",
+          "Can you check providers?",
+          "Please check providers"
+        ],
+        "maps_to_workflow": "status_flow"
+      },
+      {
+        "id": "supported",
+        "description": "List providers",
+        "examples": [
+          "List providers",
+          "I need to list providers",
+          "Can you list providers?",
+          "Please list providers"
+        ],
+        "maps_to_workflow": "supported_flow"
+      },
+      {
+        "id": "list",
+        "description": "List rooms",
+        "examples": [
+          "List rooms",
+          "I need to list rooms",
+          "Can you list rooms?",
+          "Please list rooms"
+        ],
+        "maps_to_workflow": "list_flow"
+      },
+      {
+        "id": "sync",
+        "description": "Sync rooms",
+        "examples": [
+          "Sync rooms",
+          "I need to sync rooms",
+          "Can you sync rooms?",
+          "Please sync rooms"
+        ],
+        "maps_to_workflow": "sync_flow"
+      },
+      {
+        "id": "list",
+        "description": "List entities",
+        "examples": [
+          "List entities",
+          "I need to list entities",
+          "Can you list entities?",
+          "Please list entities"
+        ],
+        "maps_to_workflow": "list_flow"
+      },
+      {
+        "id": "discover",
+        "description": "Discover TV",
+        "examples": [
+          "Discover TV",
+          "I need to discover TV",
+          "Can you discover TV?",
+          "Please discover TV"
+        ],
+        "maps_to_workflow": "discover_flow"
+      },
+      {
+        "id": "auth",
+        "description": "Start HC OAuth",
+        "examples": [
+          "Start HC OAuth",
+          "I need to start HC OAuth",
+          "Can you start HC OAuth?",
+          "Please start HC OAuth"
+        ],
+        "maps_to_workflow": "auth_flow"
+      },
+      {
+        "id": "callback",
+        "description": "Complete HC OAuth",
+        "examples": [
+          "Complete HC OAuth",
+          "I need to complete HC OAuth",
+          "Can you complete HC OAuth?",
+          "Please complete HC OAuth"
+        ],
+        "maps_to_workflow": "callback_flow",
+        "entities": [
+          {
+            "name": "code",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          }
+        ]
+      },
+      {
+        "id": "auth",
+        "description": "Start Hue pairing",
+        "examples": [
+          "Start Hue pairing",
+          "I need to start Hue pairing",
+          "Can you start Hue pairing?",
+          "Please start Hue pairing"
+        ],
+        "maps_to_workflow": "auth_flow"
+      },
+      {
+        "id": "callback",
+        "description": "Complete Hue pairing",
+        "examples": [
+          "Complete Hue pairing",
+          "I need to complete Hue pairing",
+          "Can you complete Hue pairing?",
+          "Please complete Hue pairing"
+        ],
+        "maps_to_workflow": "callback_flow"
+      },
+      {
+        "id": "status",
+        "description": "Check Hue status",
+        "examples": [
+          "Check Hue status",
+          "I need to check Hue status",
+          "Can you check Hue status?",
+          "Please check Hue status"
+        ],
+        "maps_to_workflow": "status_flow"
+      },
+      {
+        "id": "devices",
+        "description": "List Hue devices",
+        "examples": [
+          "List Hue devices",
+          "I need to list Hue devices",
+          "Can you list Hue devices?",
+          "Please list Hue devices"
+        ],
+        "maps_to_workflow": "devices_flow"
+      },
+      {
+        "id": "auth",
+        "description": "Configure Tuya",
+        "examples": [
+          "Configure Tuya",
+          "I need to configure Tuya",
+          "Can you configure Tuya?",
+          "Please configure Tuya"
+        ],
+        "maps_to_workflow": "auth_flow",
+        "entities": [
+          {
+            "name": "access_id",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          },
+          {
+            "name": "access_secret",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          }
+        ]
+      },
+      {
+        "id": "callback",
+        "description": "Complete Tuya auth",
+        "examples": [
+          "Complete Tuya auth",
+          "I need to complete Tuya auth",
+          "Can you complete Tuya auth?",
+          "Please complete Tuya auth"
+        ],
+        "maps_to_workflow": "callback_flow"
+      },
+      {
+        "id": "status",
+        "description": "Check Tuya status",
+        "examples": [
+          "Check Tuya status",
+          "I need to check Tuya status",
+          "Can you check Tuya status?",
+          "Please check Tuya status"
+        ],
+        "maps_to_workflow": "status_flow"
+      },
+      {
+        "id": "devices",
+        "description": "List Tuya devices",
+        "examples": [
+          "List Tuya devices",
+          "I need to list Tuya devices",
+          "Can you list Tuya devices?",
+          "Please list Tuya devices"
+        ],
+        "maps_to_workflow": "devices_flow"
+      },
+      {
+        "id": "auth",
+        "description": "Start Google OAuth",
+        "examples": [
+          "Start Google OAuth",
+          "I need to start Google OAuth",
+          "Can you start Google OAuth?",
+          "Please start Google OAuth"
+        ],
+        "maps_to_workflow": "auth_flow"
+      },
+      {
+        "id": "callback",
+        "description": "Complete Google OAuth",
+        "examples": [
+          "Complete Google OAuth",
+          "I need to complete Google OAuth",
+          "Can you complete Google OAuth?",
+          "Please complete Google OAuth"
+        ],
+        "maps_to_workflow": "callback_flow",
+        "entities": [
+          {
+            "name": "code",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          }
+        ]
+      },
+      {
+        "id": "status",
+        "description": "Check Google status",
+        "examples": [
+          "Check Google status",
+          "I need to check Google status",
+          "Can you check Google status?",
+          "Please check Google status"
+        ],
+        "maps_to_workflow": "status_flow"
+      },
+      {
+        "id": "devices",
+        "description": "List Google devices",
+        "examples": [
+          "List Google devices",
+          "I need to list Google devices",
+          "Can you list Google devices?",
+          "Please list Google devices"
+        ],
+        "maps_to_workflow": "devices_flow"
+      }
+    ],
+    "thresholds": {
+      "accept": 0.85,
+      "clarify": 0.6,
+      "reject": 0.4
+    },
+    "out_of_domain": {
+      "action": "redirect",
+      "message": "This request is outside my capabilities.",
+      "suggest_domains": []
+    }
+  },
+  "policy": {
+    "guardrails": {
+      "never": [],
+      "always": []
+    },
+    "workflows": [
+      {
+        "id": "get_flow",
+        "name": "Get HA config",
+        "description": "Auto-generated workflow for get",
+        "trigger": "get",
+        "steps": [
+          "config.get"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "save_flow",
+        "name": "Save HA config",
+        "description": "Auto-generated workflow for save",
+        "trigger": "save",
+        "steps": [
+          "config.save"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "status_flow",
+        "name": "Check providers",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
+        "steps": [
+          "discovery.status"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "supported_flow",
+        "name": "List providers",
+        "description": "Auto-generated workflow for supported",
+        "trigger": "supported",
+        "steps": [
+          "discovery.supported"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "list_flow",
+        "name": "List rooms",
+        "description": "Auto-generated workflow for list",
+        "trigger": "list",
+        "steps": [
+          "rooms.list"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "sync_flow",
+        "name": "Sync rooms",
+        "description": "Auto-generated workflow for sync",
+        "trigger": "sync",
+        "steps": [
+          "rooms.sync"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "list_flow",
+        "name": "List entities",
+        "description": "Auto-generated workflow for list",
+        "trigger": "list",
+        "steps": [
+          "rooms.list"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "discover_flow",
+        "name": "Discover TV",
+        "description": "Auto-generated workflow for discover",
+        "trigger": "discover",
+        "steps": [
+          "tv.discover"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "auth_flow",
+        "name": "Start HC OAuth",
+        "description": "Auto-generated workflow for auth",
+        "trigger": "auth",
+        "steps": [
+          "homeconnect.auth"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "callback_flow",
+        "name": "Complete HC OAuth",
+        "description": "Auto-generated workflow for callback",
+        "trigger": "callback",
+        "steps": [
+          "homeconnect.callback"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "auth_flow",
+        "name": "Start Hue pairing",
+        "description": "Auto-generated workflow for auth",
+        "trigger": "auth",
+        "steps": [
+          "homeconnect.auth"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "callback_flow",
+        "name": "Complete Hue pairing",
+        "description": "Auto-generated workflow for callback",
+        "trigger": "callback",
+        "steps": [
+          "homeconnect.callback"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "status_flow",
+        "name": "Check Hue status",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
+        "steps": [
+          "discovery.status"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "devices_flow",
+        "name": "List Hue devices",
+        "description": "Auto-generated workflow for devices",
+        "trigger": "devices",
+        "steps": [
+          "hue.devices"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "auth_flow",
+        "name": "Configure Tuya",
+        "description": "Auto-generated workflow for auth",
+        "trigger": "auth",
+        "steps": [
+          "homeconnect.auth"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "callback_flow",
+        "name": "Complete Tuya auth",
+        "description": "Auto-generated workflow for callback",
+        "trigger": "callback",
+        "steps": [
+          "homeconnect.callback"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "status_flow",
+        "name": "Check Tuya status",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
+        "steps": [
+          "discovery.status"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "devices_flow",
+        "name": "List Tuya devices",
+        "description": "Auto-generated workflow for devices",
+        "trigger": "devices",
+        "steps": [
+          "hue.devices"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "auth_flow",
+        "name": "Start Google OAuth",
+        "description": "Auto-generated workflow for auth",
+        "trigger": "auth",
+        "steps": [
+          "homeconnect.auth"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "callback_flow",
+        "name": "Complete Google OAuth",
+        "description": "Auto-generated workflow for callback",
+        "trigger": "callback",
+        "steps": [
+          "homeconnect.callback"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "status_flow",
+        "name": "Check Google status",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
+        "steps": [
+          "discovery.status"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "devices_flow",
+        "name": "List Google devices",
+        "description": "Auto-generated workflow for devices",
+        "trigger": "devices",
+        "steps": [
+          "hue.devices"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      }
+    ],
+    "approvals": [],
+    "escalation": {
+      "enabled": false,
+      "conditions": []
+    }
+  },
+  "scenarios": [
+    {
+      "id": "get",
+      "title": "Get HA config",
+      "description": "User triggers \"Get HA config\" (e.g. \"Get HA config\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Get HA config\"",
+        "Agent calls config.get — get ha config",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Get HA config\" request and presents the result."
+    },
+    {
+      "id": "save",
+      "title": "Save HA config",
+      "description": "User triggers \"Save HA config\" (e.g. \"Save HA config\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Save HA config\"",
+        "Agent calls config.save — save ha config",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Save HA config\" request and presents the result."
+    },
+    {
+      "id": "status",
+      "title": "Check providers",
+      "description": "User triggers \"Check providers\" (e.g. \"Check providers\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Check providers\"",
+        "Agent calls discovery.status — check providers",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Check providers\" request and presents the result."
+    },
+    {
+      "id": "supported",
+      "title": "List providers",
+      "description": "User triggers \"List providers\" (e.g. \"List providers\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List providers\"",
+        "Agent calls discovery.supported — list providers",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List providers\" request and presents the result."
+    },
+    {
+      "id": "list",
+      "title": "List rooms",
+      "description": "User triggers \"List rooms\" (e.g. \"List rooms\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List rooms\"",
+        "Agent calls rooms.list — list rooms",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List rooms\" request and presents the result."
+    },
+    {
+      "id": "sync",
+      "title": "Sync rooms",
+      "description": "User triggers \"Sync rooms\" (e.g. \"Sync rooms\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Sync rooms\"",
+        "Agent calls rooms.sync — sync rooms",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Sync rooms\" request and presents the result."
+    },
+    {
+      "id": "list",
+      "title": "List entities",
+      "description": "User triggers \"List entities\" (e.g. \"List entities\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List entities\"",
+        "Agent calls rooms.list — list rooms",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List entities\" request and presents the result."
+    },
+    {
+      "id": "discover",
+      "title": "Discover TV",
+      "description": "User triggers \"Discover TV\" (e.g. \"Discover TV\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Discover TV\"",
+        "Agent calls tv.discover — discover tv",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Discover TV\" request and presents the result."
+    },
+    {
+      "id": "auth",
+      "title": "Start HC OAuth",
+      "description": "User triggers \"Start HC OAuth\" (e.g. \"Start HC OAuth\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Start HC OAuth\"",
+        "Agent calls homeconnect.auth — start hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Start HC OAuth\" request and presents the result."
+    },
+    {
+      "id": "callback",
+      "title": "Complete HC OAuth",
+      "description": "User triggers \"Complete HC OAuth\" (e.g. \"Complete HC OAuth\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Complete HC OAuth\"",
+        "Agent calls homeconnect.callback — complete hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Complete HC OAuth\" request and presents the result."
+    },
+    {
+      "id": "auth",
+      "title": "Start Hue pairing",
+      "description": "User triggers \"Start Hue pairing\" (e.g. \"Start Hue pairing\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Start Hue pairing\"",
+        "Agent calls homeconnect.auth — start hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Start Hue pairing\" request and presents the result."
+    },
+    {
+      "id": "callback",
+      "title": "Complete Hue pairing",
+      "description": "User triggers \"Complete Hue pairing\" (e.g. \"Complete Hue pairing\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Complete Hue pairing\"",
+        "Agent calls homeconnect.callback — complete hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Complete Hue pairing\" request and presents the result."
+    },
+    {
+      "id": "status",
+      "title": "Check Hue status",
+      "description": "User triggers \"Check Hue status\" (e.g. \"Check Hue status\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Check Hue status\"",
+        "Agent calls discovery.status — check providers",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Check Hue status\" request and presents the result."
+    },
+    {
+      "id": "devices",
+      "title": "List Hue devices",
+      "description": "User triggers \"List Hue devices\" (e.g. \"List Hue devices\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List Hue devices\"",
+        "Agent calls hue.devices — list hue devices",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List Hue devices\" request and presents the result."
+    },
+    {
+      "id": "auth",
+      "title": "Configure Tuya",
+      "description": "User triggers \"Configure Tuya\" (e.g. \"Configure Tuya\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Configure Tuya\"",
+        "Agent calls homeconnect.auth — start hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Configure Tuya\" request and presents the result."
+    },
+    {
+      "id": "callback",
+      "title": "Complete Tuya auth",
+      "description": "User triggers \"Complete Tuya auth\" (e.g. \"Complete Tuya auth\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Complete Tuya auth\"",
+        "Agent calls homeconnect.callback — complete hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Complete Tuya auth\" request and presents the result."
+    },
+    {
+      "id": "status",
+      "title": "Check Tuya status",
+      "description": "User triggers \"Check Tuya status\" (e.g. \"Check Tuya status\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Check Tuya status\"",
+        "Agent calls discovery.status — check providers",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Check Tuya status\" request and presents the result."
+    },
+    {
+      "id": "devices",
+      "title": "List Tuya devices",
+      "description": "User triggers \"List Tuya devices\" (e.g. \"List Tuya devices\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List Tuya devices\"",
+        "Agent calls hue.devices — list hue devices",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List Tuya devices\" request and presents the result."
+    },
+    {
+      "id": "auth",
+      "title": "Start Google OAuth",
+      "description": "User triggers \"Start Google OAuth\" (e.g. \"Start Google OAuth\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Start Google OAuth\"",
+        "Agent calls homeconnect.auth — start hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Start Google OAuth\" request and presents the result."
+    },
+    {
+      "id": "callback",
+      "title": "Complete Google OAuth",
+      "description": "User triggers \"Complete Google OAuth\" (e.g. \"Complete Google OAuth\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Complete Google OAuth\"",
+        "Agent calls homeconnect.callback — complete hc oauth",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Complete Google OAuth\" request and presents the result."
+    },
+    {
+      "id": "status",
+      "title": "Check Google status",
+      "description": "User triggers \"Check Google status\" (e.g. \"Check Google status\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Check Google status\"",
+        "Agent calls discovery.status — check providers",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Check Google status\" request and presents the result."
+    },
+    {
+      "id": "devices",
+      "title": "List Google devices",
+      "description": "User triggers \"List Google devices\" (e.g. \"List Google devices\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"List Google devices\"",
+        "Agent calls hue.devices — list hue devices",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"List Google devices\" request and presents the result."
     }
   ],
   "role": {
     "name": "Setup Assistant",
-    "persona": "You guide users through connecting their smart home providers step-by-step. You check status first, then walk through setup one step at a time. You verify connections work after completing setup.",
+    "persona": "Guide users through setup.",
     "goals": [
-      "Help users connect all their smart home providers",
-      "Verify each connection works after setup",
-      "Sync rooms and devices after connecting"
+      "Connect providers",
+      "Verify connections"
     ],
     "communication_style": {
       "tone": "friendly",
@@ -475,12 +1710,23 @@
     "temperature": 0.3,
     "rv2": {
       "max_iterations": 15,
-      "iteration_timeout_ms": 30000,
-      "allow_parallel_tools": false,
-      "on_max_iterations": "fail"
+      "iteration_timeout_ms": 30000
     },
     "autonomy": {
       "level": "autonomous"
     }
-  }
+  },
+  "grant_mappings": [],
+  "access_policy": {
+    "rules": [
+      {
+        "tools": [
+          "*"
+        ],
+        "effect": "allow"
+      }
+    ]
+  },
+  "response_filters": [],
+  "triggers": []
 }

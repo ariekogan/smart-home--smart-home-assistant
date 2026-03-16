@@ -3,6 +3,19 @@
   "name": "Smart Home Assistant",
   "version": "1.0.0",
   "description": "Smart home control.",
+  "identity": {
+    "actor_types": [
+      {
+        "key": "homeowner",
+        "label": "Homeowner",
+        "default_channel": "chat"
+      }
+    ],
+    "admin_roles": [
+      "homeowner"
+    ],
+    "default_actor_type": "homeowner"
+  },
   "skills": [
     {
       "id": "connect-my-home",
@@ -70,11 +83,11 @@
       "name": "Home Layout Panel",
       "version": "1.0.0",
       "type": "ui",
+      "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
       "render": {
         "mode": "adaptive",
         "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html"
       },
-      "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
       "channels": [
         "command"
       ],

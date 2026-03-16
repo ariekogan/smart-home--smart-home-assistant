@@ -7,8 +7,8 @@ Smart home control.
 
 ## Skills
 
-- **home-control** — Control smart home devices via natural language.
-- **connect-my-home** — Setup smart home providers.
+- **home-control** — Users want to control all their smart home devices using natural language across multiple providers.
+- **connect-my-home** — Users need to connect their smart home providers.
 
 ## Repo Structure
 

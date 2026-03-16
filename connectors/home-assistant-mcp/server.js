@@ -897,7 +897,7 @@ async function callTool(name, args = {}) {
       return await syncRooms();
     case "ui.listPlugins":
       return { plugins: [
-        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html", render: { mode: "iframe", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html" } }
+        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "iframe", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html" } }
       ]};
     case "ui.getPlugin": {
       const pluginId = args.id || "home-layout-panel";
@@ -907,7 +907,6 @@ async function callTool(name, args = {}) {
         name: "Home Layout Panel",
         version: "1.0.0",
         description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
-        iframeUrl: "/ui/home-layout-panel/1.0.0/index.html",
         render: {
           mode: "iframe",
           iframeUrl: "/ui/home-layout-panel/1.0.0/index.html",
