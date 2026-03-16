@@ -2,91 +2,52 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control.",
-  "identity": {
-    "actor_types": [
-      {
-        "key": "homeowner",
-        "label": "Homeowner",
-        "default_channel": "chat"
-      }
-    ],
-    "admin_roles": [
-      "homeowner"
-    ],
-    "default_actor_type": "homeowner"
-  },
+  "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
   "skills": [
-    {
-      "id": "connect-my-home",
-      "name": "Connect My Home",
-      "role": "gateway",
-      "entry_channels": [],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ]
-    },
-    {
-      "id": "home-control",
-      "name": "Home Control",
-      "role": "worker",
-      "entry_channels": [
-        "chat",
-        "dashboard",
-        "voice"
-      ],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ],
-      "ui_capable": true
-    }
+    "connect-my-home",
+    "home-control"
   ],
-  "routing": {
-    "chat": {
-      "default_skill": "home-control"
-    },
-    "dashboard": {
-      "default_skill": "home-control"
-    },
-    "voice": {
-      "default_skill": "home-control"
-    }
-  },
-  "platform_connectors": [
-    {
-      "id": "home-assistant-mcp",
-      "required": true,
-      "ui_capable": true
-    },
-    {
-      "id": "hue-mcp",
-      "required": false
-    },
-    {
-      "id": "tuya-mcp",
-      "required": false
-    },
-    {
-      "id": "google-home-mcp",
-      "required": false
-    }
+  "connectors": [
+    "home-assistant-mcp",
+    "hue-mcp",
+    "tuya-mcp",
+    "google-home-mcp"
   ],
   "ui_plugins": [
     {
       "id": "mcp:home-assistant-mcp:home-layout-panel",
-      "name": "Home Layout Panel",
+      "name": "Home Dashboard",
       "version": "1.0.0",
       "type": "ui",
-      "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
       "render": {
         "mode": "adaptive",
-        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html"
+        "iframeUrl": "/ui/home-layout-panel/1.0.0/index.html",
+        "reactNative": {
+          "component": "HomeLayoutPanel"
+        }
+      },
+      "capabilities": {
+        "haptics": true
+      },
+      "channels": [
+        "command"
+      ],
+      "commands": []
+    },
+    {
+      "id": "mcp:home-assistant-mcp:whatsapp-setup",
+      "name": "WhatsApp Setup",
+      "version": "1.0.0",
+      "type": "ui",
+      "render": {
+        "mode": "adaptive",
+        "iframeUrl": "/ui/whatsapp-setup/1.0.0/index.html",
+        "reactNative": {
+          "component": "WhatsAppSetup"
+        }
+      },
+      "capabilities": {
+        "haptics": true
       },
       "channels": [
         "command"

@@ -12,12 +12,10 @@
     "google-home-mcp"
   ],
   "problem": {
-    "statement": "Users want to control all their smart home devices using natural language across multiple providers.",
+    "statement": "Users want to control smart home devices using natural language.",
     "context": "Home has 6 providers.",
     "goals": [
-      "Control any device",
-      "Query device states",
-      "List rooms and devices",
+      "Control any device with natural language",
       "Execute commands immediately"
     ]
   },
@@ -26,10 +24,11 @@
       "id": "tool-ha-rooms-list",
       "id_status": "permanent",
       "name": "rooms.list",
-      "description": "List rooms from HA",
+      "description": "List all rooms from HA",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Rooms"
       },
       "source": {
         "type": "mcp_bridge",
@@ -70,7 +69,8 @@
       "description": "Sync rooms from HA",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -103,17 +103,18 @@
       "id": "tool-ha-entities-list",
       "id_status": "permanent",
       "name": "entities.list",
-      "description": "List entities from HA",
+      "description": "List HA entities",
       "inputs": [
         {
           "name": "domain",
           "type": "string",
           "required": false,
-          "description": ""
+          "description": "Filter by domain"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Entities"
       },
       "source": {
         "type": "mcp_bridge",
@@ -151,17 +152,18 @@
       "id": "tool-ha-entity-state",
       "id_status": "permanent",
       "name": "entity.state",
-      "description": "Get device state",
+      "description": "Get entity state",
       "inputs": [
         {
           "name": "entity_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Entity ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "State"
       },
       "source": {
         "type": "mcp_bridge",
@@ -196,35 +198,36 @@
       "id": "tool-ha-services-call",
       "id_status": "permanent",
       "name": "services.call",
-      "description": "Call HA service",
+      "description": "Call HA service to control a device",
       "inputs": [
         {
           "name": "domain",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Domain"
         },
         {
           "name": "service",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Service"
         },
         {
           "name": "entity_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Entity ID"
         },
         {
           "name": "service_data",
           "type": "object",
           "required": false,
-          "description": ""
+          "description": "Extra data"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -264,7 +267,8 @@
       "description": "Discover LG TV",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -300,7 +304,8 @@
       "description": "List TV apps",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Apps"
       },
       "source": {
         "type": "mcp_bridge",
@@ -341,7 +346,8 @@
       "description": "List TV inputs",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Inputs"
       },
       "source": {
         "type": "mcp_bridge",
@@ -379,10 +385,11 @@
       "id": "tool-ha-hc-appliances",
       "id_status": "permanent",
       "name": "homeconnect.appliances",
-      "description": "List HC appliances",
+      "description": "List Home Connect appliances",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Appliances"
       },
       "source": {
         "type": "mcp_bridge",
@@ -420,17 +427,18 @@
       "id": "tool-ha-hc-status",
       "id_status": "permanent",
       "name": "homeconnect.status",
-      "description": "Get HC status",
+      "description": "Get appliance status",
       "inputs": [
         {
           "name": "haId",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "haId"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Status"
       },
       "source": {
         "type": "mcp_bridge",
@@ -465,17 +473,18 @@
       "id": "tool-ha-hc-programs",
       "id_status": "permanent",
       "name": "homeconnect.programs",
-      "description": "List HC programs",
+      "description": "List appliance programs",
       "inputs": [
         {
           "name": "haId",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "haId"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Programs"
       },
       "source": {
         "type": "mcp_bridge",
@@ -515,29 +524,30 @@
       "id": "tool-ha-hc-start",
       "id_status": "permanent",
       "name": "homeconnect.start_program",
-      "description": "Start HC program",
+      "description": "Start appliance program",
       "inputs": [
         {
           "name": "haId",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "haId"
         },
         {
           "name": "programKey",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Program key"
         },
         {
           "name": "options",
           "type": "object",
           "required": false,
-          "description": ""
+          "description": "Options"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -573,17 +583,18 @@
       "id": "tool-ha-hc-stop",
       "id_status": "permanent",
       "name": "homeconnect.stop_program",
-      "description": "Stop HC program",
+      "description": "Stop appliance program",
       "inputs": [
         {
           "name": "haId",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "haId"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -618,10 +629,11 @@
       "id": "tool-ha-discovery",
       "id_status": "permanent",
       "name": "discovery.status",
-      "description": "Check providers status",
+      "description": "Check all provider status",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Status map"
       },
       "source": {
         "type": "mcp_bridge",
@@ -657,7 +669,8 @@
       "description": "List Hue rooms",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Rooms"
       },
       "source": {
         "type": "mcp_bridge",
@@ -698,7 +711,8 @@
       "description": "List Hue devices",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Devices"
       },
       "source": {
         "type": "mcp_bridge",
@@ -736,17 +750,18 @@
       "id": "tool-hue-state",
       "id_status": "permanent",
       "name": "hue.state",
-      "description": "Get Hue state",
+      "description": "Get Hue device state",
       "inputs": [
         {
           "name": "id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "State"
       },
       "source": {
         "type": "mcp_bridge",
@@ -781,29 +796,30 @@
       "id": "tool-hue-command",
       "id_status": "permanent",
       "name": "hue.command",
-      "description": "Hue command",
+      "description": "Send Hue command",
       "inputs": [
         {
           "name": "id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         },
         {
           "name": "action",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Action"
         },
         {
           "name": "value",
           "type": "string",
           "required": false,
-          "description": ""
+          "description": "Value"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -842,7 +858,8 @@
       "description": "List Hue scenes",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Scenes"
       },
       "source": {
         "type": "mcp_bridge",
@@ -886,11 +903,12 @@
           "name": "id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Scene ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -928,7 +946,8 @@
       "description": "Check Hue status",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Status"
       },
       "source": {
         "type": "mcp_bridge",
@@ -964,7 +983,8 @@
       "description": "List Tuya devices",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Devices"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1002,17 +1022,18 @@
       "id": "tool-tuya-state",
       "id_status": "permanent",
       "name": "tuya.state",
-      "description": "Get Tuya state",
+      "description": "Get Tuya device state",
       "inputs": [
         {
           "name": "device_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "State"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1047,23 +1068,24 @@
       "id": "tool-tuya-command",
       "id_status": "permanent",
       "name": "tuya.command",
-      "description": "Tuya command",
+      "description": "Send Tuya command",
       "inputs": [
         {
           "name": "device_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         },
         {
           "name": "commands",
           "type": "object",
           "required": true,
-          "description": ""
+          "description": "Commands"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1099,17 +1121,18 @@
       "id": "tool-tuya-functions",
       "id_status": "permanent",
       "name": "tuya.device_functions",
-      "description": "Tuya functions",
+      "description": "List Tuya device functions",
       "inputs": [
         {
           "name": "device_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Functions"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1129,8 +1152,13 @@
               "device_id": "id-001"
             },
             "output": {
-              "success": true,
-              "data": {}
+              "results": [
+                {
+                  "id": 1,
+                  "name": "Example item"
+                }
+              ],
+              "total_count": 1
             },
             "description": "Auto-generated example for tuya.device_functions"
           }
@@ -1144,10 +1172,11 @@
       "id": "tool-tuya-status",
       "id_status": "permanent",
       "name": "tuya.status",
-      "description": "Tuya status",
+      "description": "Check Tuya status",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Status"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1180,10 +1209,11 @@
       "id": "tool-google-devices",
       "id_status": "permanent",
       "name": "google.devices",
-      "description": "List Google devices",
+      "description": "List Google/Nest devices",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Devices"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1221,17 +1251,18 @@
       "id": "tool-google-state",
       "id_status": "permanent",
       "name": "google.state",
-      "description": "Google device state",
+      "description": "Get Google device state",
       "inputs": [
         {
           "name": "device_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "State"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1266,29 +1297,30 @@
       "id": "tool-google-command",
       "id_status": "permanent",
       "name": "google.command",
-      "description": "Google command",
+      "description": "Send Google device command",
       "inputs": [
         {
           "name": "device_id",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Device ID"
         },
         {
           "name": "command",
           "type": "string",
           "required": true,
-          "description": ""
+          "description": "Command"
         },
         {
           "name": "params",
           "type": "object",
           "required": false,
-          "description": ""
+          "description": "Params"
         }
       ],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Result"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1324,10 +1356,11 @@
       "id": "tool-google-status",
       "id_status": "permanent",
       "name": "google.status",
-      "description": "Google status",
+      "description": "Check Google status",
       "inputs": [],
       "output": {
-        "type": "object"
+        "type": "object",
+        "description": "Status"
       },
       "source": {
         "type": "mcp_bridge",
@@ -1355,18 +1388,108 @@
       "security": {
         "classification": "public"
       }
+    },
+    {
+      "id": "tool-wa-send",
+      "id_status": "permanent",
+      "name": "whatsapp.send",
+      "description": "Send WhatsApp message",
+      "inputs": [
+        {
+          "name": "to",
+          "type": "string",
+          "required": true,
+          "description": "Phone number"
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "description": "Message"
+        }
+      ],
+      "output": {
+        "type": "object",
+        "description": "Result"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "whatsapp.send"
+      },
+      "policy": {
+        "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-whatsapp-send-auto",
+            "input": {
+              "to": "example",
+              "message": "example"
+            },
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for whatsapp.send"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
+      }
+    },
+    {
+      "id": "tool-wa-status-hc",
+      "id_status": "permanent",
+      "name": "whatsapp.status",
+      "description": "Check WhatsApp status",
+      "inputs": [],
+      "output": {
+        "type": "object",
+        "description": "Status"
+      },
+      "source": {
+        "type": "mcp_bridge",
+        "connection_id": "home-assistant-mcp",
+        "mcp_tool": "whatsapp.status"
+      },
+      "policy": {
+        "allowed": "always"
+      },
+      "mock": {
+        "enabled": true,
+        "mode": "examples",
+        "examples": [
+          {
+            "id": "tool-whatsapp-status-auto",
+            "input": {},
+            "output": {
+              "success": true,
+              "data": {}
+            },
+            "description": "Auto-generated example for whatsapp.status"
+          }
+        ]
+      },
+      "security": {
+        "classification": "public"
+      }
     }
   ],
   "intents": {
     "supported": [
       {
         "id": "list",
-        "description": "List rooms from HA",
+        "description": "List all rooms from HA",
         "examples": [
-          "List rooms from HA",
-          "I need to list rooms from HA",
-          "Can you list rooms from HA?",
-          "Please list rooms from HA"
+          "List all rooms from HA",
+          "I need to list all rooms from HA",
+          "Can you list all rooms from HA?",
+          "Please list all rooms from HA"
         ],
         "maps_to_workflow": "list_flow"
       },
@@ -1383,23 +1506,23 @@
       },
       {
         "id": "list",
-        "description": "List entities from HA",
+        "description": "List HA entities",
         "examples": [
-          "List entities from HA",
-          "I need to list entities from HA",
-          "Can you list entities from HA?",
-          "Please list entities from HA"
+          "List HA entities",
+          "I need to list HA entities",
+          "Can you list HA entities?",
+          "Please list HA entities"
         ],
         "maps_to_workflow": "list_flow"
       },
       {
         "id": "state",
-        "description": "Get device state",
+        "description": "Get entity state",
         "examples": [
-          "Get device state",
-          "I need to get device state",
-          "Can you get device state?",
-          "Please get device state"
+          "Get entity state",
+          "I need to get entity state",
+          "Can you get entity state?",
+          "Please get entity state"
         ],
         "maps_to_workflow": "state_flow",
         "entities": [
@@ -1413,12 +1536,12 @@
       },
       {
         "id": "call",
-        "description": "Call HA service",
+        "description": "Call HA service to control a device",
         "examples": [
-          "Call HA service",
-          "I need to call HA service",
-          "Can you call HA service?",
-          "Please call HA service"
+          "Call HA service to control a device",
+          "I need to call HA service to control a device",
+          "Can you call HA service to control a device?",
+          "Please call HA service to control a device"
         ],
         "maps_to_workflow": "call_flow",
         "entities": [
@@ -1477,23 +1600,23 @@
       },
       {
         "id": "appliances",
-        "description": "List HC appliances",
+        "description": "List Home Connect appliances",
         "examples": [
-          "List HC appliances",
-          "I need to list HC appliances",
-          "Can you list HC appliances?",
-          "Please list HC appliances"
+          "List Home Connect appliances",
+          "I need to list Home Connect appliances",
+          "Can you list Home Connect appliances?",
+          "Please list Home Connect appliances"
         ],
         "maps_to_workflow": "appliances_flow"
       },
       {
         "id": "status",
-        "description": "Get HC status",
+        "description": "Get appliance status",
         "examples": [
-          "Get HC status",
-          "I need to get HC status",
-          "Can you get HC status?",
-          "Please get HC status"
+          "Get appliance status",
+          "I need to get appliance status",
+          "Can you get appliance status?",
+          "Please get appliance status"
         ],
         "maps_to_workflow": "status_flow",
         "entities": [
@@ -1507,12 +1630,12 @@
       },
       {
         "id": "programs",
-        "description": "List HC programs",
+        "description": "List appliance programs",
         "examples": [
-          "List HC programs",
-          "I need to list HC programs",
-          "Can you list HC programs?",
-          "Please list HC programs"
+          "List appliance programs",
+          "I need to list appliance programs",
+          "Can you list appliance programs?",
+          "Please list appliance programs"
         ],
         "maps_to_workflow": "programs_flow",
         "entities": [
@@ -1526,12 +1649,12 @@
       },
       {
         "id": "start_program",
-        "description": "Start HC program",
+        "description": "Start appliance program",
         "examples": [
-          "Start HC program",
-          "I need to start HC program",
-          "Can you start HC program?",
-          "Please start HC program"
+          "Start appliance program",
+          "I need to start appliance program",
+          "Can you start appliance program?",
+          "Please start appliance program"
         ],
         "maps_to_workflow": "start_program_flow",
         "entities": [
@@ -1551,12 +1674,12 @@
       },
       {
         "id": "stop_program",
-        "description": "Stop HC program",
+        "description": "Stop appliance program",
         "examples": [
-          "Stop HC program",
-          "I need to stop HC program",
-          "Can you stop HC program?",
-          "Please stop HC program"
+          "Stop appliance program",
+          "I need to stop appliance program",
+          "Can you stop appliance program?",
+          "Please stop appliance program"
         ],
         "maps_to_workflow": "stop_program_flow",
         "entities": [
@@ -1570,12 +1693,12 @@
       },
       {
         "id": "status",
-        "description": "Check providers status",
+        "description": "Check all provider status",
         "examples": [
-          "Check providers status",
-          "I need to check providers status",
-          "Can you check providers status?",
-          "Please check providers status"
+          "Check all provider status",
+          "I need to check all provider status",
+          "Can you check all provider status?",
+          "Please check all provider status"
         ],
         "maps_to_workflow": "status_flow"
       },
@@ -1603,12 +1726,12 @@
       },
       {
         "id": "state",
-        "description": "Get Hue state",
+        "description": "Get Hue device state",
         "examples": [
-          "Get Hue state",
-          "I need to get Hue state",
-          "Can you get Hue state?",
-          "Please get Hue state"
+          "Get Hue device state",
+          "I need to get Hue device state",
+          "Can you get Hue device state?",
+          "Please get Hue device state"
         ],
         "maps_to_workflow": "state_flow",
         "entities": [
@@ -1622,12 +1745,12 @@
       },
       {
         "id": "command",
-        "description": "Hue command",
+        "description": "Send Hue command",
         "examples": [
-          "Hue command",
-          "I need to hue command",
-          "Can you hue command?",
-          "Please hue command"
+          "Send Hue command",
+          "I need to send Hue command",
+          "Can you send Hue command?",
+          "Please send Hue command"
         ],
         "maps_to_workflow": "command_flow",
         "entities": [
@@ -1699,12 +1822,12 @@
       },
       {
         "id": "state",
-        "description": "Get Tuya state",
+        "description": "Get Tuya device state",
         "examples": [
-          "Get Tuya state",
-          "I need to get Tuya state",
-          "Can you get Tuya state?",
-          "Please get Tuya state"
+          "Get Tuya device state",
+          "I need to get Tuya device state",
+          "Can you get Tuya device state?",
+          "Please get Tuya device state"
         ],
         "maps_to_workflow": "state_flow",
         "entities": [
@@ -1718,12 +1841,12 @@
       },
       {
         "id": "command",
-        "description": "Tuya command",
+        "description": "Send Tuya command",
         "examples": [
-          "Tuya command",
-          "I need to tuya command",
-          "Can you tuya command?",
-          "Please tuya command"
+          "Send Tuya command",
+          "I need to send Tuya command",
+          "Can you send Tuya command?",
+          "Please send Tuya command"
         ],
         "maps_to_workflow": "command_flow",
         "entities": [
@@ -1743,11 +1866,12 @@
       },
       {
         "id": "device_functions",
-        "description": "Tuya functions",
+        "description": "List Tuya device functions",
         "examples": [
-          "I want to device functions",
-          "Can you help me device functions?",
-          "I need to device functions"
+          "List Tuya device functions",
+          "I need to list Tuya device functions",
+          "Can you list Tuya device functions?",
+          "Please list Tuya device functions"
         ],
         "maps_to_workflow": "device_functions_flow",
         "entities": [
@@ -1761,34 +1885,34 @@
       },
       {
         "id": "status",
-        "description": "Tuya status",
+        "description": "Check Tuya status",
         "examples": [
-          "Tuya status",
-          "I need to tuya status",
-          "Can you tuya status?",
-          "Please tuya status"
+          "Check Tuya status",
+          "I need to check Tuya status",
+          "Can you check Tuya status?",
+          "Please check Tuya status"
         ],
         "maps_to_workflow": "status_flow"
       },
       {
         "id": "devices",
-        "description": "List Google devices",
+        "description": "List Google/Nest devices",
         "examples": [
-          "List Google devices",
-          "I need to list Google devices",
-          "Can you list Google devices?",
-          "Please list Google devices"
+          "List Google/Nest devices",
+          "I need to list Google/Nest devices",
+          "Can you list Google/Nest devices?",
+          "Please list Google/Nest devices"
         ],
         "maps_to_workflow": "devices_flow"
       },
       {
         "id": "state",
-        "description": "Google device state",
+        "description": "Get Google device state",
         "examples": [
-          "Google device state",
-          "I need to google device state",
-          "Can you google device state?",
-          "Please google device state"
+          "Get Google device state",
+          "I need to get Google device state",
+          "Can you get Google device state?",
+          "Please get Google device state"
         ],
         "maps_to_workflow": "state_flow",
         "entities": [
@@ -1802,12 +1926,12 @@
       },
       {
         "id": "command",
-        "description": "Google command",
+        "description": "Send Google device command",
         "examples": [
-          "Google command",
-          "I need to google command",
-          "Can you google command?",
-          "Please google command"
+          "Send Google device command",
+          "I need to send Google device command",
+          "Can you send Google device command?",
+          "Please send Google device command"
         ],
         "maps_to_workflow": "command_flow",
         "entities": [
@@ -1827,12 +1951,48 @@
       },
       {
         "id": "status",
-        "description": "Google status",
+        "description": "Check Google status",
         "examples": [
-          "Google status",
-          "I need to google status",
-          "Can you google status?",
-          "Please google status"
+          "Check Google status",
+          "I need to check Google status",
+          "Can you check Google status?",
+          "Please check Google status"
+        ],
+        "maps_to_workflow": "status_flow"
+      },
+      {
+        "id": "send",
+        "description": "Send WhatsApp message",
+        "examples": [
+          "Send WhatsApp message",
+          "I need to send WhatsApp message",
+          "Can you send WhatsApp message?",
+          "Please send WhatsApp message"
+        ],
+        "maps_to_workflow": "send_flow",
+        "entities": [
+          {
+            "name": "to",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          },
+          {
+            "name": "message",
+            "type": "string",
+            "required": false,
+            "extract_from": "message"
+          }
+        ]
+      },
+      {
+        "id": "status",
+        "description": "Check WhatsApp status",
+        "examples": [
+          "Check WhatsApp status",
+          "I need to check WhatsApp status",
+          "Can you check WhatsApp status?",
+          "Please check WhatsApp status"
         ],
         "maps_to_workflow": "status_flow"
       }
@@ -1856,7 +2016,7 @@
     "workflows": [
       {
         "id": "list_flow",
-        "name": "List rooms from HA",
+        "name": "List all rooms from HA",
         "description": "Auto-generated workflow for list",
         "trigger": "list",
         "steps": [
@@ -1878,7 +2038,7 @@
       },
       {
         "id": "list_flow",
-        "name": "List entities from HA",
+        "name": "List HA entities",
         "description": "Auto-generated workflow for list",
         "trigger": "list",
         "steps": [
@@ -1889,7 +2049,7 @@
       },
       {
         "id": "state_flow",
-        "name": "Get device state",
+        "name": "Get entity state",
         "description": "Auto-generated workflow for state",
         "trigger": "state",
         "steps": [
@@ -1900,7 +2060,7 @@
       },
       {
         "id": "call_flow",
-        "name": "Call HA service",
+        "name": "Call HA service to control a device",
         "description": "Auto-generated workflow for call",
         "trigger": "call",
         "steps": [
@@ -1944,7 +2104,7 @@
       },
       {
         "id": "appliances_flow",
-        "name": "List HC appliances",
+        "name": "List Home Connect appliances",
         "description": "Auto-generated workflow for appliances",
         "trigger": "appliances",
         "steps": [
@@ -1955,7 +2115,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Get HC status",
+        "name": "Get appliance status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -1966,7 +2126,7 @@
       },
       {
         "id": "programs_flow",
-        "name": "List HC programs",
+        "name": "List appliance programs",
         "description": "Auto-generated workflow for programs",
         "trigger": "programs",
         "steps": [
@@ -1977,7 +2137,7 @@
       },
       {
         "id": "start_program_flow",
-        "name": "Start HC program",
+        "name": "Start appliance program",
         "description": "Auto-generated workflow for start_program",
         "trigger": "start_program",
         "steps": [
@@ -1988,7 +2148,7 @@
       },
       {
         "id": "stop_program_flow",
-        "name": "Stop HC program",
+        "name": "Stop appliance program",
         "description": "Auto-generated workflow for stop_program",
         "trigger": "stop_program",
         "steps": [
@@ -1999,7 +2159,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Check providers status",
+        "name": "Check all provider status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -2032,7 +2192,7 @@
       },
       {
         "id": "state_flow",
-        "name": "Get Hue state",
+        "name": "Get Hue device state",
         "description": "Auto-generated workflow for state",
         "trigger": "state",
         "steps": [
@@ -2043,7 +2203,7 @@
       },
       {
         "id": "command_flow",
-        "name": "Hue command",
+        "name": "Send Hue command",
         "description": "Auto-generated workflow for command",
         "trigger": "command",
         "steps": [
@@ -2098,7 +2258,7 @@
       },
       {
         "id": "state_flow",
-        "name": "Get Tuya state",
+        "name": "Get Tuya device state",
         "description": "Auto-generated workflow for state",
         "trigger": "state",
         "steps": [
@@ -2109,7 +2269,7 @@
       },
       {
         "id": "command_flow",
-        "name": "Tuya command",
+        "name": "Send Tuya command",
         "description": "Auto-generated workflow for command",
         "trigger": "command",
         "steps": [
@@ -2120,7 +2280,7 @@
       },
       {
         "id": "device_functions_flow",
-        "name": "Tuya functions",
+        "name": "List Tuya device functions",
         "description": "Auto-generated workflow for device_functions",
         "trigger": "device_functions",
         "steps": [
@@ -2131,7 +2291,7 @@
       },
       {
         "id": "status_flow",
-        "name": "Tuya status",
+        "name": "Check Tuya status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -2142,7 +2302,7 @@
       },
       {
         "id": "devices_flow",
-        "name": "List Google devices",
+        "name": "List Google/Nest devices",
         "description": "Auto-generated workflow for devices",
         "trigger": "devices",
         "steps": [
@@ -2153,7 +2313,7 @@
       },
       {
         "id": "state_flow",
-        "name": "Google device state",
+        "name": "Get Google device state",
         "description": "Auto-generated workflow for state",
         "trigger": "state",
         "steps": [
@@ -2164,7 +2324,7 @@
       },
       {
         "id": "command_flow",
-        "name": "Google command",
+        "name": "Send Google device command",
         "description": "Auto-generated workflow for command",
         "trigger": "command",
         "steps": [
@@ -2175,7 +2335,29 @@
       },
       {
         "id": "status_flow",
-        "name": "Google status",
+        "name": "Check Google status",
+        "description": "Auto-generated workflow for status",
+        "trigger": "status",
+        "steps": [
+          "homeconnect.status"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "send_flow",
+        "name": "Send WhatsApp message",
+        "description": "Auto-generated workflow for send",
+        "trigger": "send",
+        "steps": [
+          "whatsapp.send"
+        ],
+        "required": false,
+        "on_deviation": "warn"
+      },
+      {
+        "id": "status_flow",
+        "name": "Check WhatsApp status",
         "description": "Auto-generated workflow for status",
         "trigger": "status",
         "steps": [
@@ -2194,14 +2376,14 @@
   "scenarios": [
     {
       "id": "list",
-      "title": "List rooms from HA",
-      "description": "User triggers \"List rooms from HA\" (e.g. \"List rooms from HA\") and the agent handles it end-to-end.",
+      "title": "List all rooms from HA",
+      "description": "User triggers \"List all rooms from HA\" (e.g. \"List all rooms from HA\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List rooms from HA\"",
-        "Agent calls rooms.list — list rooms from ha",
+        "User says: \"List all rooms from HA\"",
+        "Agent calls rooms.list — list all rooms from ha",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List rooms from HA\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List all rooms from HA\" request and presents the result."
     },
     {
       "id": "sync",
@@ -2216,36 +2398,36 @@
     },
     {
       "id": "list",
-      "title": "List entities from HA",
-      "description": "User triggers \"List entities from HA\" (e.g. \"List entities from HA\") and the agent handles it end-to-end.",
+      "title": "List HA entities",
+      "description": "User triggers \"List HA entities\" (e.g. \"List HA entities\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List entities from HA\"",
-        "Agent calls rooms.list — list rooms from ha",
+        "User says: \"List HA entities\"",
+        "Agent calls rooms.list — list all rooms from ha",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List entities from HA\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List HA entities\" request and presents the result."
     },
     {
       "id": "state",
-      "title": "Get device state",
-      "description": "User triggers \"Get device state\" (e.g. \"Get device state\") and the agent handles it end-to-end.",
+      "title": "Get entity state",
+      "description": "User triggers \"Get entity state\" (e.g. \"Get entity state\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Get device state\"",
-        "Agent calls entity.state — get device state",
+        "User says: \"Get entity state\"",
+        "Agent calls entity.state — get entity state",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Get device state\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Get entity state\" request and presents the result."
     },
     {
       "id": "call",
-      "title": "Call HA service",
-      "description": "User triggers \"Call HA service\" (e.g. \"Call HA service\") and the agent handles it end-to-end.",
+      "title": "Call HA service to control a device",
+      "description": "User triggers \"Call HA service to control a device\" (e.g. \"Call HA service to control a device\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Call HA service\"",
-        "Agent calls services.call — call ha service",
+        "User says: \"Call HA service to control a device\"",
+        "Agent calls services.call — call ha service to control a device",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Call HA service\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Call HA service to control a device\" request and presents the result."
     },
     {
       "id": "discover",
@@ -2282,69 +2464,69 @@
     },
     {
       "id": "appliances",
-      "title": "List HC appliances",
-      "description": "User triggers \"List HC appliances\" (e.g. \"List HC appliances\") and the agent handles it end-to-end.",
+      "title": "List Home Connect appliances",
+      "description": "User triggers \"List Home Connect appliances\" (e.g. \"List Home Connect appliances\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List HC appliances\"",
-        "Agent calls homeconnect.appliances — list hc appliances",
+        "User says: \"List Home Connect appliances\"",
+        "Agent calls homeconnect.appliances — list home connect appliances",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List HC appliances\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List Home Connect appliances\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Get HC status",
-      "description": "User triggers \"Get HC status\" (e.g. \"Get HC status\") and the agent handles it end-to-end.",
+      "title": "Get appliance status",
+      "description": "User triggers \"Get appliance status\" (e.g. \"Get appliance status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Get HC status\"",
-        "Agent calls homeconnect.status — get hc status",
+        "User says: \"Get appliance status\"",
+        "Agent calls homeconnect.status — get appliance status",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Get HC status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Get appliance status\" request and presents the result."
     },
     {
       "id": "programs",
-      "title": "List HC programs",
-      "description": "User triggers \"List HC programs\" (e.g. \"List HC programs\") and the agent handles it end-to-end.",
+      "title": "List appliance programs",
+      "description": "User triggers \"List appliance programs\" (e.g. \"List appliance programs\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List HC programs\"",
-        "Agent calls homeconnect.programs — list hc programs",
+        "User says: \"List appliance programs\"",
+        "Agent calls homeconnect.programs — list appliance programs",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List HC programs\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List appliance programs\" request and presents the result."
     },
     {
       "id": "start_program",
-      "title": "Start HC program",
-      "description": "User triggers \"Start HC program\" (e.g. \"Start HC program\") and the agent handles it end-to-end.",
+      "title": "Start appliance program",
+      "description": "User triggers \"Start appliance program\" (e.g. \"Start appliance program\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Start HC program\"",
-        "Agent calls homeconnect.start_program — start hc program",
+        "User says: \"Start appliance program\"",
+        "Agent calls homeconnect.start_program — start appliance program",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Start HC program\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Start appliance program\" request and presents the result."
     },
     {
       "id": "stop_program",
-      "title": "Stop HC program",
-      "description": "User triggers \"Stop HC program\" (e.g. \"Stop HC program\") and the agent handles it end-to-end.",
+      "title": "Stop appliance program",
+      "description": "User triggers \"Stop appliance program\" (e.g. \"Stop appliance program\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Stop HC program\"",
-        "Agent calls homeconnect.stop_program — stop hc program",
+        "User says: \"Stop appliance program\"",
+        "Agent calls homeconnect.stop_program — stop appliance program",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Stop HC program\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Stop appliance program\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Check providers status",
-      "description": "User triggers \"Check providers status\" (e.g. \"Check providers status\") and the agent handles it end-to-end.",
+      "title": "Check all provider status",
+      "description": "User triggers \"Check all provider status\" (e.g. \"Check all provider status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Check providers status\"",
-        "Agent calls homeconnect.status — get hc status",
+        "User says: \"Check all provider status\"",
+        "Agent calls homeconnect.status — get appliance status",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Check providers status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Check all provider status\" request and presents the result."
     },
     {
       "id": "rooms",
@@ -2370,25 +2552,25 @@
     },
     {
       "id": "state",
-      "title": "Get Hue state",
-      "description": "User triggers \"Get Hue state\" (e.g. \"Get Hue state\") and the agent handles it end-to-end.",
+      "title": "Get Hue device state",
+      "description": "User triggers \"Get Hue device state\" (e.g. \"Get Hue device state\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Get Hue state\"",
-        "Agent calls entity.state — get device state",
+        "User says: \"Get Hue device state\"",
+        "Agent calls entity.state — get entity state",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Get Hue state\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Get Hue device state\" request and presents the result."
     },
     {
       "id": "command",
-      "title": "Hue command",
-      "description": "User triggers \"Hue command\" (e.g. \"Hue command\") and the agent handles it end-to-end.",
+      "title": "Send Hue command",
+      "description": "User triggers \"Send Hue command\" (e.g. \"Send Hue command\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Hue command\"",
-        "Agent calls hue.command — hue command",
+        "User says: \"Send Hue command\"",
+        "Agent calls hue.command — send hue command",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Hue command\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Send Hue command\" request and presents the result."
     },
     {
       "id": "scenes",
@@ -2418,7 +2600,7 @@
       "description": "User triggers \"Check Hue status\" (e.g. \"Check Hue status\") and the agent handles it end-to-end.",
       "steps": [
         "User says: \"Check Hue status\"",
-        "Agent calls homeconnect.status — get hc status",
+        "Agent calls homeconnect.status — get appliance status",
         "Agent presents results to the user"
       ],
       "expected_outcome": "The agent successfully handles the \"Check Hue status\" request and presents the result."
@@ -2436,100 +2618,124 @@
     },
     {
       "id": "state",
-      "title": "Get Tuya state",
-      "description": "User triggers \"Get Tuya state\" (e.g. \"Get Tuya state\") and the agent handles it end-to-end.",
+      "title": "Get Tuya device state",
+      "description": "User triggers \"Get Tuya device state\" (e.g. \"Get Tuya device state\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Get Tuya state\"",
-        "Agent calls entity.state — get device state",
+        "User says: \"Get Tuya device state\"",
+        "Agent calls entity.state — get entity state",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Get Tuya state\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Get Tuya device state\" request and presents the result."
     },
     {
       "id": "command",
-      "title": "Tuya command",
-      "description": "User triggers \"Tuya command\" (e.g. \"Tuya command\") and the agent handles it end-to-end.",
+      "title": "Send Tuya command",
+      "description": "User triggers \"Send Tuya command\" (e.g. \"Send Tuya command\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Tuya command\"",
-        "Agent calls hue.command — hue command",
+        "User says: \"Send Tuya command\"",
+        "Agent calls hue.command — send hue command",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Tuya command\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Send Tuya command\" request and presents the result."
     },
     {
       "id": "device_functions",
-      "title": "Tuya functions",
-      "description": "User triggers \"Tuya functions\" (e.g. \"I want to device functions\") and the agent handles it end-to-end.",
+      "title": "List Tuya device functions",
+      "description": "User triggers \"List Tuya device functions\" (e.g. \"List Tuya device functions\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"I want to device functions\"",
-        "Agent calls tuya.device_functions — tuya functions",
+        "User says: \"List Tuya device functions\"",
+        "Agent calls tuya.device_functions — list tuya device functions",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Tuya functions\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List Tuya device functions\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Tuya status",
-      "description": "User triggers \"Tuya status\" (e.g. \"Tuya status\") and the agent handles it end-to-end.",
+      "title": "Check Tuya status",
+      "description": "User triggers \"Check Tuya status\" (e.g. \"Check Tuya status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Tuya status\"",
-        "Agent calls homeconnect.status — get hc status",
+        "User says: \"Check Tuya status\"",
+        "Agent calls homeconnect.status — get appliance status",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Tuya status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Check Tuya status\" request and presents the result."
     },
     {
       "id": "devices",
-      "title": "List Google devices",
-      "description": "User triggers \"List Google devices\" (e.g. \"List Google devices\") and the agent handles it end-to-end.",
+      "title": "List Google/Nest devices",
+      "description": "User triggers \"List Google/Nest devices\" (e.g. \"List Google/Nest devices\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"List Google devices\"",
+        "User says: \"List Google/Nest devices\"",
         "Agent calls hue.devices — list hue devices",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"List Google devices\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"List Google/Nest devices\" request and presents the result."
     },
     {
       "id": "state",
-      "title": "Google device state",
-      "description": "User triggers \"Google device state\" (e.g. \"Google device state\") and the agent handles it end-to-end.",
+      "title": "Get Google device state",
+      "description": "User triggers \"Get Google device state\" (e.g. \"Get Google device state\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Google device state\"",
-        "Agent calls entity.state — get device state",
+        "User says: \"Get Google device state\"",
+        "Agent calls entity.state — get entity state",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Google device state\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Get Google device state\" request and presents the result."
     },
     {
       "id": "command",
-      "title": "Google command",
-      "description": "User triggers \"Google command\" (e.g. \"Google command\") and the agent handles it end-to-end.",
+      "title": "Send Google device command",
+      "description": "User triggers \"Send Google device command\" (e.g. \"Send Google device command\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Google command\"",
-        "Agent calls hue.command — hue command",
+        "User says: \"Send Google device command\"",
+        "Agent calls hue.command — send hue command",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Google command\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Send Google device command\" request and presents the result."
     },
     {
       "id": "status",
-      "title": "Google status",
-      "description": "User triggers \"Google status\" (e.g. \"Google status\") and the agent handles it end-to-end.",
+      "title": "Check Google status",
+      "description": "User triggers \"Check Google status\" (e.g. \"Check Google status\") and the agent handles it end-to-end.",
       "steps": [
-        "User says: \"Google status\"",
-        "Agent calls homeconnect.status — get hc status",
+        "User says: \"Check Google status\"",
+        "Agent calls homeconnect.status — get appliance status",
         "Agent presents results to the user"
       ],
-      "expected_outcome": "The agent successfully handles the \"Google status\" request and presents the result."
+      "expected_outcome": "The agent successfully handles the \"Check Google status\" request and presents the result."
+    },
+    {
+      "id": "send",
+      "title": "Send WhatsApp message",
+      "description": "User triggers \"Send WhatsApp message\" (e.g. \"Send WhatsApp message\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Send WhatsApp message\"",
+        "Agent calls whatsapp.send — send whatsapp message",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Send WhatsApp message\" request and presents the result."
+    },
+    {
+      "id": "status",
+      "title": "Check WhatsApp status",
+      "description": "User triggers \"Check WhatsApp status\" (e.g. \"Check WhatsApp status\") and the agent handles it end-to-end.",
+      "steps": [
+        "User says: \"Check WhatsApp status\"",
+        "Agent calls homeconnect.status — get appliance status",
+        "Agent presents results to the user"
+      ],
+      "expected_outcome": "The agent successfully handles the \"Check WhatsApp status\" request and presents the result."
     }
   ],
   "role": {
     "name": "Smart Home Controller",
-    "persona": "Smart home assistant.",
+    "persona": "Smart home assistant that controls devices across multiple providers.",
     "goals": [
-      "Execute commands",
-      "Query states",
-      "Route to correct provider"
+      "Execute device commands immediately",
+      "Query device states accurately"
+    ],
+    "limitations": [
+      "Cannot control devices from disconnected providers"
     ],
     "communication_style": {
       "tone": "casual",
@@ -2542,7 +2748,8 @@
     "rv2": {
       "max_iterations": 12,
       "iteration_timeout_ms": 30000,
-      "allow_parallel_tools": true
+      "allow_parallel_tools": true,
+      "on_max_iterations": "fail"
     },
     "autonomy": {
       "level": "autonomous"

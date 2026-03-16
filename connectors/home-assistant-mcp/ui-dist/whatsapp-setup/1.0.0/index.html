@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WhatsApp Setup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, system-ui, 'Segoe UI', sans-serif; background: #0f1117; color: #e4e4e7; padding: 16px; }
+  .header { text-align: center; margin-bottom: 20px; }
+  .header-icon { font-size: 40px; margin-bottom: 8px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #a1a1aa; line-height: 1.5; }
+  .status-card { display: flex; align-items: center; gap: 12px; background: #1c1c22; border: 1px solid #2e2e38; border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.on { background: #22c55e; }
+  .status-dot.off { background: #52525b; }
+  .status-info { flex: 1; }
+  .status-label { font-size: 15px; font-weight: 600; }
+  .status-detail { font-size: 12px; color: #a1a1aa; margin-top: 2px; }
+  .disconnect-btn { padding: 6px 12px; border-radius: 8px; border: 1px solid #ef4444; background: none; color: #ef4444; font-size: 12px; cursor: pointer; }
+  .banner { padding: 12px; border-radius: 10px; border: 1px solid; margin-bottom: 12px; font-size: 13px; display: none; }
+  .banner.error { background: rgba(239,68,68,0.12); border-color: #ef4444; color: #ef4444; }
+  .banner.success { background: rgba(34,197,94,0.12); border-color: #22c55e; color: #22c55e; }
+  .card { background: #1c1c22; border: 1px solid #2e2e38; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+  .card h2 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .help-text { font-size: 13px; color: #a1a1aa; line-height: 1.5; margin-bottom: 12px; }
+  .link-btn { display: inline-block; padding: 10px 14px; border: 1px solid #6366f1; border-radius: 10px; color: #6366f1; font-size: 13px; text-decoration: none; margin-bottom: 16px; }
+  .link-btn:hover { background: rgba(99,102,241,0.1); }
+  .input-label { display: block; font-size: 12px; font-weight: 600; color: #a1a1aa; letter-spacing: 0.3px; margin-bottom: 6px; margin-top: 4px; }
+  .input { width: 100%; border: 1px solid #2e2e38; border-radius: 10px; padding: 12px 14px; font-size: 15px; background: #0f1117; color: #e4e4e7; margin-bottom: 12px; outline: none; }
+  .input:focus { border-color: #6366f1; }
+  .input::placeholder { color: #52525b; }
+  .primary-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: #6366f1; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 4px; }
+  .primary-btn:hover { background: #5558e6; }
+  .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .btn-row { display: flex; gap: 10px; margin-top: 4px; }
+  .btn-row .primary-btn { flex: 1; }
+  .secondary-btn { padding: 14px 20px; border: 1px solid #2e2e38; border-radius: 12px; background: none; color: #a1a1aa; font-size: 14px; cursor: pointer; }
+  .feature-list { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
+  .feature-row { display: flex; align-items: center; gap: 10px; }
+  .feature-icon { font-size: 18px; }
+  .feature-text { font-size: 14px; }
+  .guide-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .guide-num { width: 24px; height: 24px; border-radius: 12px; background: #6366f1; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .guide-text { font-size: 13px; color: #a1a1aa; line-height: 1.5; }
+  .hidden { display: none !important; }
+  .live-badge { display: none; font-size: 10px; color: #22c55e; text-align: center; margin-top: 8px; }
+</style>
+</head><body>
+
+<div class="header">
+  <div class="header-icon">💬</div>
+  <h1>WhatsApp Setup</h1>
+  <p>Connect WhatsApp Business API to receive smart home alerts and control devices via chat.</p>
+</div>
+
+<div class="status-card">
+  <div class="status-dot off" id="statusDot"></div>
+  <div class="status-info">
+    <div class="status-label" id="statusLabel">Not Connected</div>
+    <div class="status-detail hidden" id="statusDetail"></div>
+  </div>
+  <button class="disconnect-btn hidden" id="disconnectBtn" onclick="doDisconnect()">Disconnect</button>
+</div>
+
+<div class="banner error" id="errorBanner"></div>
+<div class="banner success" id="successBanner"></div>
+
+<!-- Credentials card -->
+<div class="card" id="credentialsCard">
+  <h2>1. Enter Credentials</h2>
+  <p class="help-text">Get these from Meta Business Suite → WhatsApp → API Setup</p>
+  <a class="link-btn" href="https://business.facebook.com/latest/whatsapp_manager/phone_numbers/" target="_blank">Open Meta Business Suite →</a>
+
+  <label class="input-label">Phone Number ID *</label>
+  <input class="input" id="phoneNumberId" type="text" placeholder="e.g. 100234567890">
+
+  <label class="input-label">Permanent Access Token *</label>
+  <input class="input" id="accessToken" type="password" placeholder="EAAx...">
+
+  <label class="input-label">Business Account ID (optional)</label>
+  <input class="input" id="businessId" type="text" placeholder="e.g. 102345678901234">
+
+  <button class="primary-btn" id="saveBtn" onclick="saveCredentials()">Save & Connect</button>
+</div>
+
+<!-- Verify card -->
+<div class="card hidden" id="verifyCard">
+  <h2>2. Send Test Message</h2>
+  <p class="help-text">Enter your phone number (with country code) to receive a test message.</p>
+
+  <label class="input-label">Your Phone Number</label>
+  <input class="input" id="testPhone" type="tel" placeholder="+1234567890">
+
+  <div class="btn-row">
+    <button class="primary-btn" id="testBtn" onclick="sendTest()">Send Test</button>
+    <button class="secondary-btn" onclick="skipVerify()">Skip</button>
+  </div>
+</div>
+
+<!-- Done card -->
+<div class="card hidden" id="doneCard">
+  <h2>✓ Connected</h2>
+  <p class="help-text">WhatsApp is connected and ready. You'll receive smart home alerts here.</p>
+  <div class="feature-list">
+    <div class="feature-row"><span class="feature-icon">🔔</span><span class="feature-text">Security alerts (doors, locks)</span></div>
+    <div class="feature-row"><span class="feature-icon">🌡️</span><span class="feature-text">Climate notifications</span></div>
+    <div class="feature-row"><span class="feature-icon">💡</span><span class="feature-text">Device control via chat</span></div>
+    <div class="feature-row"><span class="feature-icon">📊</span><span class="feature-text">Daily status summaries</span></div>
+  </div>
+</div>
+
+<!-- Guide card -->
+<div class="card" id="guideCard">
+  <h2>Setup Guide</h2>
+  <div class="guide-row"><div class="guide-num">1</div><div class="guide-text">Create a Meta Business account at business.facebook.com</div></div>
+  <div class="guide-row"><div class="guide-num">2</div><div class="guide-text">Go to WhatsApp Manager → API Setup</div></div>
+  <div class="guide-row"><div class="guide-num">3</div><div class="guide-text">Copy your Phone Number ID from the dashboard</div></div>
+  <div class="guide-row"><div class="guide-num">4</div><div class="guide-text">Generate a Permanent Access Token (System User → Generate Token → whatsapp_business_messaging)</div></div>
+  <div class="guide-row"><div class="guide-num">5</div><div class="guide-text">Paste both values above and tap Save & Connect</div></div>
+</div>
+
+<div class="live-badge" id="liveBadge">● LIVE</div>
+
+<script>
+// ── State ──
+let connected = false;
+
+function showError(msg) {
+  const el = document.getElementById('errorBanner');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 8000);
+}
+function showSuccess(msg) {
+  const el = document.getElementById('successBanner');
+  el.textContent = '✓ ' + msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 8000);
+}
+function hideError() { document.getElementById('errorBanner').style.display = 'none'; }
+
+function showStep(step) {
+  document.getElementById('credentialsCard').classList.toggle('hidden', step !== 'credentials');
+  document.getElementById('verifyCard').classList.toggle('hidden', step !== 'verify');
+  document.getElementById('doneCard').classList.toggle('hidden', step !== 'done');
+  document.getElementById('guideCard').classList.toggle('hidden', step !== 'credentials');
+  document.getElementById('disconnectBtn').classList.toggle('hidden', !connected);
+}
+
+function updateStatus(data) {
+  connected = data.connected;
+  const dot = document.getElementById('statusDot');
+  const label = document.getElementById('statusLabel');
+  const detail = document.getElementById('statusDetail');
+  dot.className = 'status-dot ' + (connected ? 'on' : 'off');
+  label.textContent = connected ? 'Connected' : 'Not Connected';
+  if (connected && (data.display_phone || data.business_name)) {
+    detail.textContent = [data.display_phone, data.business_name].filter(Boolean).join(' · ');
+    detail.classList.remove('hidden');
+  } else {
+    detail.classList.add('hidden');
+  }
+  document.getElementById('disconnectBtn').classList.toggle('hidden', !connected);
+}
+
+// ── postMessage bridge (web only, silent fail on mobile) ──
+let hostReady = false;
+let counter = 0;
+const pending = new Map();
+
+window.addEventListener('message', (ev) => {
+  const d = ev.data || {};
+  if (d.source !== 'adas-host') return;
+  const msg = d.message;
+  if (msg?.type === 'init') { hostReady = true; tryLiveStatus(); }
+  if (msg?.type === 'mcp-result') {
+    const p = pending.get(msg.payload?.requestId);
+    if (p) { pending.delete(msg.payload.requestId); p.resolve(unwrap(msg.payload.result)); }
+  }
+});
+
+function unwrap(raw) {
+  if (raw?.content?.[0]?.type === 'text') try { raw = JSON.parse(raw.content[0].text); } catch {}
+  if (raw?.content?.[0]?.type === 'text') try { raw = JSON.parse(raw.content[0].text); } catch {}
+  return raw;
+}
+
+function mcpCall(tool, args, connectorId) {
+  const requestId = 'req_' + (++counter) + '_' + Date.now();
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => { pending.delete(requestId); reject(new Error('timeout')); }, 15000);
+    pending.set(requestId, {
+      resolve: (r) => { clearTimeout(timeout); resolve(r); },
+      reject: (e) => { clearTimeout(timeout); reject(e); },
+    });
+    window.parent.postMessage({
+      source: 'adas-plugin',
+      message: { action: 'mcp-call', payload: { requestId, toolName: 'cp.fe_api',
+        args: { method: 'mcpProxy', params: { connectorId, tool, args } } } },
+    }, '*');
+  });
+}
+
+// ── Actions ──
+async function tryLiveStatus() {
+  try {
+    const res = await mcpCall('whatsapp.status', {}, 'home-assistant-mcp');
+    if (res) {
+      updateStatus(res);
+      showStep(res.connected ? 'done' : 'credentials');
+      document.getElementById('liveBadge').style.display = 'block';
+    }
+  } catch {}
+}
+
+async function saveCredentials() {
+  const phoneNumberId = document.getElementById('phoneNumberId').value.trim();
+  const accessToken = document.getElementById('accessToken').value.trim();
+  const businessId = document.getElementById('businessId').value.trim();
+  if (!phoneNumberId || !accessToken) { showError('Phone Number ID and Access Token are required'); return; }
+  hideError();
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Connecting...';
+  try {
+    const res = await mcpCall('whatsapp.auth', { phone_number_id: phoneNumberId, access_token: accessToken, business_id: businessId || undefined }, 'home-assistant-mcp');
+    if (res?.connected) {
+      updateStatus(res);
+      showSuccess('Credentials saved! Send a test message to verify.');
+      showStep('verify');
+    } else {
+      showError(res?.error || 'Failed to connect');
+    }
+  } catch (e) {
+    showError(e.message || 'Failed to save credentials');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save & Connect';
+  }
+}
+
+async function sendTest() {
+  const phone = document.getElementById('testPhone').value.trim();
+  if (!phone) { showError('Enter a phone number'); return; }
+  hideError();
+  const btn = document.getElementById('testBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    const res = await mcpCall('whatsapp.test', { to: phone }, 'home-assistant-mcp');
+    if (res?.sent) {
+      showSuccess('Test message sent! Check your WhatsApp.');
+      showStep('done');
+    } else {
+      showError(res?.error || 'Failed to send');
+    }
+  } catch (e) {
+    showError(e.message || 'Failed to send');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Send Test';
+  }
+}
+
+function skipVerify() {
+  showSuccess('Setup complete!');
+  showStep('done');
+}
+
+async function doDisconnect() {
+  try {
+    await mcpCall('whatsapp.disconnect', {}, 'home-assistant-mcp');
+    updateStatus({ connected: false });
+    showStep('credentials');
+    document.getElementById('accessToken').value = '';
+  } catch (e) {
+    showError(e.message || 'Failed to disconnect');
+  }
+}
+
+// ── Init: render default state, try live data silently ──
+showStep('credentials');
+</script>
+</body></html>

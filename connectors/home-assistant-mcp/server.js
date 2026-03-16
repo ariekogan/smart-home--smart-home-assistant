@@ -552,6 +552,36 @@ if (LG_TV_IP) {
   console.error("[lgtv] TV configured at " + LG_TV_IP + " — will connect on first use");
 }
 
+// --- WhatsApp Business API integration -----------------------------------
+const WA_API_BASE = "https://graph.facebook.com/v21.0";
+
+function getWAIntegration() {
+  const row = db.prepare("SELECT * FROM integrations WHERE integration_id = 'whatsapp'").get();
+  return row ? { ...row, credentials: JSON.parse(row.credentials_json || "{}"), config: JSON.parse(row.config_json || "{}") } : null;
+}
+
+function saveWACredentials(creds) {
+  db.prepare(`INSERT OR REPLACE INTO integrations(integration_id, type, status, credentials_json, config_json, updated_at)
+    VALUES('whatsapp', 'cloud_api', 'connected', ?, '{}', ?)`).run(JSON.stringify(creds), now());
+}
+
+async function waFetch(endpoint, options = {}) {
+  const integration = getWAIntegration();
+  if (!integration || integration.status !== "connected") throw new Error("WhatsApp not connected. Use whatsapp.auth first.");
+  const creds = integration.credentials;
+  const res = await fetch(`${WA_API_BASE}${endpoint}`, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${creds.access_token}`,
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+  const body = await res.json();
+  if (!res.ok) throw new Error(`WhatsApp API ${res.status}: ${JSON.stringify(body.error || body)}`);
+  return body;
+}
+
 // --- Business logic ------------------------------------------------------
 function configSummary() {
   const devices = db.prepare("SELECT * FROM devices ORDER BY domain, friendly_name").all().map(r => ({
@@ -748,6 +778,7 @@ async function callTool(name, args = {}) {
 
     // --- Discovery & onboarding tools ---
     case "discovery.supported": {
+      const waIntegration = getWAIntegration();
       return {
         integrations: [
           {
@@ -791,6 +822,13 @@ async function callTool(name, args = {}) {
             devices: ["Nest Thermostats", "Nest Cameras", "Nest Doorbells", "Nest Displays"],
             setup: "OAuth2 via Google Device Access — requires $5 registration fee",
             requires: "Google Device Access project + OAuth credentials"
+          },
+          {
+            id: "whatsapp", name: "WhatsApp Business",
+            type: "cloud_api", status: waIntegration?.status || "disconnected",
+            devices: [],
+            setup: "WhatsApp Business API — requires Meta Business account + permanent access token",
+            requires: "Meta Business account at business.facebook.com"
           }
         ]
       };
@@ -883,6 +921,109 @@ async function callTool(name, args = {}) {
       return { stopped: true };
     }
 
+    // --- WhatsApp Business API tools ---
+    case "whatsapp.auth": {
+      if (!args.phone_number_id || !args.access_token) {
+        return { error: "Provide phone_number_id and access_token from Meta Business Suite" };
+      }
+      // Validate token by fetching phone number details
+      try {
+        const res = await fetch(`${WA_API_BASE}/${encodeURIComponent(args.phone_number_id)}`, {
+          headers: { Authorization: `Bearer ${args.access_token}` },
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          return { connected: false, error: `Invalid credentials: ${JSON.stringify(data.error?.message || data)}` };
+        }
+        const creds = {
+          phone_number_id: args.phone_number_id,
+          access_token: args.access_token,
+          business_id: args.business_id || null,
+          display_phone: data.display_phone_number || data.verified_name || args.phone_number_id,
+          business_name: data.verified_name || null,
+        };
+        saveWACredentials(creds);
+        console.error("[whatsapp] Connected: " + creds.display_phone);
+        return { connected: true, phone_number_id: creds.phone_number_id, display_phone: creds.display_phone, business_name: creds.business_name };
+      } catch (e) {
+        return { connected: false, error: e.message };
+      }
+    }
+    case "whatsapp.status": {
+      const wa = getWAIntegration();
+      if (!wa || wa.status !== "connected") {
+        return { connected: false };
+      }
+      const creds = wa.credentials;
+      return {
+        connected: true,
+        phone_number_id: creds.phone_number_id,
+        display_phone: creds.display_phone || null,
+        business_name: creds.business_name || null,
+        business_id: creds.business_id || null,
+      };
+    }
+    case "whatsapp.test": {
+      if (!args.to) return { error: "Provide 'to' phone number (with country code, e.g. +1234567890)" };
+      const wa = getWAIntegration();
+      if (!wa || wa.status !== "connected") return { error: "WhatsApp not connected. Use whatsapp.auth first." };
+      const creds = wa.credentials;
+      // Send a template message (hello_world is available by default on all WA Business accounts)
+      try {
+        const res = await fetch(`${WA_API_BASE}/${encodeURIComponent(creds.phone_number_id)}/messages`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${creds.access_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            messaging_product: "whatsapp",
+            to: args.to.replace(/[^0-9]/g, ""),
+            type: "template",
+            template: { name: "hello_world", language: { code: "en_US" } },
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          return { sent: false, error: data.error?.message || JSON.stringify(data) };
+        }
+        return { sent: true, message_id: data.messages?.[0]?.id, to: args.to };
+      } catch (e) {
+        return { sent: false, error: e.message };
+      }
+    }
+    case "whatsapp.send": {
+      if (!args.to || !args.message) return { error: "Provide 'to' (phone) and 'message' (text)" };
+      const wa = getWAIntegration();
+      if (!wa || wa.status !== "connected") return { error: "WhatsApp not connected" };
+      const creds = wa.credentials;
+      try {
+        const res = await fetch(`${WA_API_BASE}/${encodeURIComponent(creds.phone_number_id)}/messages`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${creds.access_token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            messaging_product: "whatsapp",
+            to: args.to.replace(/[^0-9]/g, ""),
+            type: "text",
+            text: { body: args.message },
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) return { sent: false, error: data.error?.message || JSON.stringify(data) };
+        return { sent: true, message_id: data.messages?.[0]?.id };
+      } catch (e) {
+        return { sent: false, error: e.message };
+      }
+    }
+    case "whatsapp.disconnect": {
+      db.prepare("DELETE FROM integrations WHERE integration_id = 'whatsapp'").run();
+      console.error("[whatsapp] Disconnected");
+      return { disconnected: true };
+    }
+
     case "config.get":
       return configSummary();
     case "config.save": {
@@ -897,23 +1038,36 @@ async function callTool(name, args = {}) {
       return await syncRooms();
     case "ui.listPlugins":
       return { plugins: [
-        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "iframe", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html" } }
+        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html", reactNative: { component: "HomeLayoutPanel" } } },
+        { id: "mcp:home-assistant-mcp:whatsapp-setup", name: "WhatsApp Setup", version: "1.0.0", description: "Setup wizard for WhatsApp Business API — receive smart home alerts and control devices via chat", render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/1.0.0/index.html", reactNative: { component: "WhatsAppSetup" } } }
       ]};
     case "ui.getPlugin": {
       const pluginId = args.id || "home-layout-panel";
-      if (pluginId !== "home-layout-panel") return { error: `Plugin '${pluginId}' not found` };
-      return {
-        id: "home-layout-panel",
-        name: "Home Layout Panel",
-        version: "1.0.0",
-        description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
-        render: {
-          mode: "iframe",
-          iframeUrl: "/ui/home-layout-panel/1.0.0/index.html",
+      const plugins = {
+        "home-layout-panel": {
+          id: "mcp:home-assistant-mcp:home-layout-panel",
+          name: "Home Layout Panel",
+          version: "1.0.0",
+          description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status",
+          render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html", reactNative: { component: "HomeLayoutPanel" } },
+          channels: ["command"],
+          capabilities: { haptics: true, commands: [] }
         },
-        channels: ["command"],
-        capabilities: { commands: [] }
+        "whatsapp-setup": {
+          id: "mcp:home-assistant-mcp:whatsapp-setup",
+          name: "WhatsApp Setup",
+          version: "1.0.0",
+          description: "Setup wizard for WhatsApp Business API — receive smart home alerts and control devices via chat",
+          render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/1.0.0/index.html", reactNative: { component: "WhatsAppSetup" } },
+          channels: ["command"],
+          capabilities: { haptics: true, commands: [] }
+        },
       };
+      // Support both short and full plugin IDs
+      const shortId = pluginId.includes(":") ? pluginId.split(":").pop() : pluginId;
+      const plugin = plugins[shortId];
+      if (!plugin) return { error: `Plugin '${pluginId}' not found` };
+      return plugin;
     }
     default:
       throw new Error(`Unknown tool ${name}`);
@@ -937,7 +1091,7 @@ process.stdin.on("data", async (chunk) => {
         writeResult(id, {
           protocolVersion: "2024-11-05",
           capabilities: { tools: {} },
-          serverInfo: { name: "home-assistant-mcp", version: "0.5.0" }
+          serverInfo: { name: "home-assistant-mcp", version: "0.6.0" }
         });
         continue;
       }
@@ -962,6 +1116,11 @@ process.stdin.on("data", async (chunk) => {
           { name: "tv.discover", description: "Discover and connect to the LG TV on the local network" },
           { name: "tv.apps", description: "List all apps installed on the LG TV" },
           { name: "tv.inputs", description: "List all HDMI/external inputs on the LG TV" },
+          { name: "whatsapp.auth", description: "Save WhatsApp Business API credentials (phone_number_id + access_token)", inputSchema: { type: "object", properties: { phone_number_id: { type: "string" }, access_token: { type: "string" }, business_id: { type: "string" } }, required: ["phone_number_id", "access_token"] } },
+          { name: "whatsapp.status", description: "Check WhatsApp Business connection status" },
+          { name: "whatsapp.test", description: "Send a test message via WhatsApp to verify the connection", inputSchema: { type: "object", properties: { to: { type: "string", description: "Phone number with country code" } }, required: ["to"] } },
+          { name: "whatsapp.send", description: "Send a WhatsApp message to a phone number", inputSchema: { type: "object", properties: { to: { type: "string" }, message: { type: "string" } }, required: ["to", "message"] } },
+          { name: "whatsapp.disconnect", description: "Remove WhatsApp credentials and disconnect" },
           { name: "ui.listPlugins", description: "List available UI plugins" },
           { name: "ui.getPlugin", description: "Get a specific UI plugin", inputSchema: { type: "object", properties: { id: { type: "string" } } } }
         ]});

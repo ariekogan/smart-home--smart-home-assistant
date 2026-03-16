@@ -1,14 +1,18 @@
 {
   "name": "home-assistant-mcp",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "type": "module",
   "private": true,
   "scripts": {
     "start": "node server.js",
+    "build:rn": "esbuild rn-src/index.tsx --bundle --format=cjs --platform=neutral --outfile=rn-bundle/index.bundle.js --external:react --external:react-native --external:@adas/plugin-sdk",
     "test:sim": "python3 simulator/fake_ha.py & sleep 1 && node connector/server.js"
   },
   "dependencies": {
     "lgtv2": "^1.6.3",
     "wake_on_lan": "^1.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.21.0"
   }
 }
