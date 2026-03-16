@@ -3,7 +3,7 @@
     "id": "smart-home-assistant",
     "name": "Smart Home Assistant",
     "version": "1.0.0",
-    "description": "Smart home control.",
+    "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
     "identity": {
       "actor_types": [],
       "admin_roles": [],
@@ -11,367 +11,71 @@
       "default_roles": []
     },
     "skills": [
-      {
-        "id": "connect-my-home",
-        "name": "Connect My Home",
-        "role": "gateway",
-        "entry_channels": [],
-        "connectors": [
-          "home-assistant-mcp",
-          "hue-mcp",
-          "tuya-mcp",
-          "google-home-mcp"
-        ]
-      },
-      {
-        "id": "home-control",
-        "name": "Home Control",
-        "role": "worker",
-        "entry_channels": [
-          "chat",
-          "dashboard",
-          "voice"
-        ],
-        "connectors": [
-          "home-assistant-mcp",
-          "hue-mcp",
-          "tuya-mcp",
-          "google-home-mcp"
-        ],
-        "ui_capable": true
-      }
+      "connect-my-home",
+      "home-control"
     ],
     "grants": [],
     "handoffs": [],
-    "routing": {
-      "chat": {
-        "default_skill": "home-control"
-      },
-      "dashboard": {
-        "default_skill": "home-control"
-      },
-      "voice": {
-        "default_skill": "home-control"
-      }
-    },
+    "routing": {},
     "platform_connectors": [
       {
         "id": "home-assistant-mcp",
+        "description": "",
         "required": true,
-        "ui_capable": true
+        "used_by": []
       },
       {
         "id": "hue-mcp",
-        "required": false
+        "description": "",
+        "required": true,
+        "used_by": []
       },
       {
         "id": "tuya-mcp",
-        "required": false
+        "description": "",
+        "required": true,
+        "used_by": []
       },
       {
         "id": "google-home-mcp",
-        "required": false
+        "description": "",
+        "required": true,
+        "used_by": []
       }
     ],
     "security_contracts": []
   },
-  "skills": [
-    {
-      "description": "Setup smart home providers.",
-      "version": "2.0.0",
-      "phase": "DEPLOYED",
-      "problem": {
-        "statement": "Setup smart home providers.",
-        "context": "Setup smart home providers.",
-        "goals": []
-      },
-      "scenarios": [],
-      "role": {
-        "name": "Setup Assistant",
-        "persona": "Guide users through setup.",
-        "goals": [],
-        "limitations": []
-      },
-      "glossary": {},
-      "intents": {
-        "supported": [],
-        "thresholds": {
-          "accept": 0.85,
-          "clarify": 0.6,
-          "reject": 0.4
-        },
-        "out_of_domain": {
-          "action": "redirect",
-          "message": "This request is outside my capabilities.",
-          "suggest_domains": []
-        }
-      },
-      "engine": {
-        "rv2": {
-          "max_iterations": 10,
-          "iteration_timeout_ms": 30000,
-          "allow_parallel_tools": false,
-          "on_max_iterations": "ask_user"
-        },
-        "hlr": {
-          "enabled": true,
-          "critic": {
-            "enabled": true,
-            "check_interval": 3,
-            "strictness": "medium"
-          },
-          "reflection": {
-            "enabled": true,
-            "depth": "shallow"
-          },
-          "replanning": {
-            "enabled": true,
-            "max_replans": 5
-          }
-        },
-        "autonomy": {
-          "level": "supervised"
-        },
-        "finalization_gate": {
-          "enabled": true,
-          "max_retries": 2
-        },
-        "internal_error": {
-          "enabled": true,
-          "tool_not_found": {
-            "enter_resolution_after": 1,
-            "retryable": false
-          },
-          "resolution": {
-            "max_iterations": 1,
-            "allowed_capabilities": [
-              "read",
-              "search",
-              "document_output"
-            ]
-          },
-          "loop_detection": {
-            "enabled": true,
-            "identical_call_threshold": 2
-          }
-        },
-        "model": "claude-sonnet-4-20250514",
-        "temperature": 0.3
-      },
-      "toolbox_imports": [],
-      "tools": [],
-      "meta_tools": [],
-      "triggers": [],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ],
-      "policy": {
-        "guardrails": {
-          "never": [],
-          "always": []
-        },
-        "approvals": [],
-        "workflows": [],
-        "escalation": {
-          "enabled": false,
-          "conditions": [],
-          "target": ""
-        }
-      },
-      "channels": [],
-      "id": "connect-my-home",
-      "name": "Connect My Home",
-      "ui_capable": false,
-      "grant_mappings": [],
-      "access_policy": {
-        "rules": [
-          {
-            "tools": [
-              "*"
-            ],
-            "effect": "allow"
-          }
-        ]
-      },
-      "response_filters": [],
-      "created_at": "2026-03-08T10:01:43.362Z",
-      "updated_at": "2026-03-16T19:50:11.647Z",
-      "_force_redeploy": true
-    },
-    {
-      "description": "Control smart home devices via natural language.",
-      "version": "2.0.0",
-      "phase": "DEPLOYED",
-      "problem": {
-        "statement": "Control smart home devices via natural language.",
-        "context": "Control smart home devices via natural language.",
-        "goals": []
-      },
-      "scenarios": [],
-      "role": {
-        "name": "Smart Home Controller",
-        "persona": "Smart home assistant.",
-        "goals": [],
-        "limitations": []
-      },
-      "glossary": {},
-      "intents": {
-        "supported": [],
-        "thresholds": {
-          "accept": 0.85,
-          "clarify": 0.6,
-          "reject": 0.4
-        },
-        "out_of_domain": {
-          "action": "redirect",
-          "message": "This request is outside my capabilities.",
-          "suggest_domains": []
-        }
-      },
-      "engine": {
-        "rv2": {
-          "max_iterations": 10,
-          "iteration_timeout_ms": 30000,
-          "allow_parallel_tools": false,
-          "on_max_iterations": "ask_user"
-        },
-        "hlr": {
-          "enabled": true,
-          "critic": {
-            "enabled": true,
-            "check_interval": 3,
-            "strictness": "medium"
-          },
-          "reflection": {
-            "enabled": true,
-            "depth": "shallow"
-          },
-          "replanning": {
-            "enabled": true,
-            "max_replans": 5
-          }
-        },
-        "autonomy": {
-          "level": "supervised"
-        },
-        "finalization_gate": {
-          "enabled": true,
-          "max_retries": 2
-        },
-        "internal_error": {
-          "enabled": true,
-          "tool_not_found": {
-            "enter_resolution_after": 1,
-            "retryable": false
-          },
-          "resolution": {
-            "max_iterations": 1,
-            "allowed_capabilities": [
-              "read",
-              "search",
-              "document_output"
-            ]
-          },
-          "loop_detection": {
-            "enabled": true,
-            "identical_call_threshold": 2
-          }
-        },
-        "model": "claude-sonnet-4-20250514",
-        "temperature": 0.3
-      },
-      "toolbox_imports": [],
-      "tools": [],
-      "meta_tools": [],
-      "triggers": [],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ],
-      "policy": {
-        "guardrails": {
-          "never": [],
-          "always": []
-        },
-        "approvals": [],
-        "workflows": [],
-        "escalation": {
-          "enabled": false,
-          "conditions": [],
-          "target": ""
-        }
-      },
-      "channels": [],
-      "id": "home-control",
-      "name": "Home Control",
-      "ui_capable": false,
-      "grant_mappings": [],
-      "access_policy": {
-        "rules": [
-          {
-            "tools": [
-              "*"
-            ],
-            "effect": "allow"
-          }
-        ]
-      },
-      "response_filters": [],
-      "created_at": "2026-03-08T10:01:43.331Z",
-      "updated_at": "2026-03-16T19:49:59.651Z",
-      "_force_redeploy": true,
-      "guardrails": [
-        {
-          "id": "immediate-execution",
-          "description": "Execute commands immediately",
-          "rule": "Execute device commands directly without asking for confirmation. Just do it and report the result."
-        },
-        {
-          "id": "security-confirmation",
-          "description": "Confirm security actions",
-          "rule": "For lock, garage, and alarm domains, ask the user to confirm first."
-        },
-        {
-          "id": "provider-routing",
-          "description": "Route to correct provider",
-          "rule": "Route to hue-mcp for Hue lights, tuya-mcp for Tuya devices, google-home-mcp for Nest/Google devices. Default to home-assistant-mcp."
-        },
-        {
-          "id": "graceful-disconnected",
-          "description": "Handle disconnected providers",
-          "rule": "If a provider returns not-connected error, inform user and suggest connecting it."
-        }
-      ]
-    }
-  ],
+  "skills": [],
   "connectors": [
     {
       "id": "home-assistant-mcp",
+      "description": "",
       "required": true,
-      "ui_capable": true,
+      "used_by": [],
       "_platform": true
     },
     {
       "id": "hue-mcp",
-      "required": false,
+      "description": "",
+      "required": true,
+      "used_by": [],
       "_platform": true
     },
     {
       "id": "tuya-mcp",
-      "required": false,
+      "description": "",
+      "required": true,
+      "used_by": [],
       "_platform": true
     },
     {
       "id": "google-home-mcp",
-      "required": false,
+      "description": "",
+      "required": true,
+      "used_by": [],
       "_platform": true
     }
   ],
-  "exported_at": "2026-03-16T19:50:18.160Z",
+  "exported_at": "2026-03-16T23:58:19.720Z",
   "export_version": "1.0.0"
 }

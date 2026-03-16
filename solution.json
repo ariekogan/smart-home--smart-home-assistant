@@ -2,7 +2,7 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control.",
+  "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
   "identity": {
     "actor_types": [],
     "admin_roles": [],
@@ -10,66 +10,36 @@
     "default_roles": []
   },
   "skills": [
-    {
-      "id": "connect-my-home",
-      "name": "Connect My Home",
-      "role": "gateway",
-      "entry_channels": [],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ]
-    },
-    {
-      "id": "home-control",
-      "name": "Home Control",
-      "role": "worker",
-      "entry_channels": [
-        "chat",
-        "dashboard",
-        "voice"
-      ],
-      "connectors": [
-        "home-assistant-mcp",
-        "hue-mcp",
-        "tuya-mcp",
-        "google-home-mcp"
-      ],
-      "ui_capable": true
-    }
+    "connect-my-home",
+    "home-control"
   ],
   "grants": [],
   "handoffs": [],
-  "routing": {
-    "chat": {
-      "default_skill": "home-control"
-    },
-    "dashboard": {
-      "default_skill": "home-control"
-    },
-    "voice": {
-      "default_skill": "home-control"
-    }
-  },
+  "routing": {},
   "platform_connectors": [
     {
       "id": "home-assistant-mcp",
+      "description": "",
       "required": true,
-      "ui_capable": true
+      "used_by": []
     },
     {
       "id": "hue-mcp",
-      "required": false
+      "description": "",
+      "required": true,
+      "used_by": []
     },
     {
       "id": "tuya-mcp",
-      "required": false
+      "description": "",
+      "required": true,
+      "used_by": []
     },
     {
       "id": "google-home-mcp",
-      "required": false
+      "description": "",
+      "required": true,
+      "used_by": []
     }
   ],
   "security_contracts": []
