@@ -3,6 +3,19 @@
   "name": "Smart Home Assistant",
   "version": "1.0.0",
   "description": "Smart home control.",
+  "identity": {
+    "actor_types": [
+      {
+        "key": "homeowner",
+        "label": "Homeowner",
+        "default_channel": "chat"
+      }
+    ],
+    "admin_roles": [
+      "homeowner"
+    ],
+    "default_actor_type": "homeowner"
+  },
   "skills": [
     {
       "id": "connect-my-home",
@@ -34,6 +47,17 @@
       "ui_capable": true
     }
   ],
+  "routing": {
+    "chat": {
+      "default_skill": "home-control"
+    },
+    "dashboard": {
+      "default_skill": "home-control"
+    },
+    "voice": {
+      "default_skill": "home-control"
+    }
+  },
   "platform_connectors": [
     {
       "id": "home-assistant-mcp",
@@ -68,29 +92,5 @@
         "home-control"
       ]
     }
-  ],
-  "identity": {
-    "actor_types": [
-      {
-        "key": "homeowner",
-        "label": "Homeowner",
-        "default_channel": "chat"
-      }
-    ],
-    "admin_roles": [
-      "homeowner"
-    ],
-    "default_actor_type": "homeowner"
-  },
-  "routing": {
-    "chat": {
-      "default_skill": "home-control"
-    },
-    "dashboard": {
-      "default_skill": "home-control"
-    },
-    "voice": {
-      "default_skill": "home-control"
-    }
-  }
+  ]
 }
