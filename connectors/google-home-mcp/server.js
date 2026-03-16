@@ -174,7 +174,10 @@ const TOOLS = [
       params: { type: "object", description: "Command params, e.g. { heatCelsius: 22 } for SetHeat, { mode: 'HEAT' } for SetMode" }
     }, required: ["device_id", "command"] } },
   { name: "google.structures", description: "List Google Home structures (homes) and rooms" },
-  { name: "google.status", description: "Get Google Home integration connection status" }
+  { name: "google.status", description: "Get Google Home integration connection status" },
+  { name: "ui.listPlugins", description: "List available UI plugins for this connector" },
+  { name: "ui.getPlugin", description: "Get UI plugin details by ID",
+    inputSchema: { type: "object", properties: { plugin_id: { type: "string" } }, required: ["plugin_id"] } }
 ];
 
 // --- Command mapping ---
@@ -308,6 +311,9 @@ async function callTool(name, args) {
         project_id: GOOGLE_PROJECT_ID
       };
     }
+
+    case "ui.listPlugins": return { plugins: [] };
+    case "ui.getPlugin": return { error: "No UI plugins available in this connector" };
 
     default: throw new Error(`Unknown tool: ${name}`);
   }
