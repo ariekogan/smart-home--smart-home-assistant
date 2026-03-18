@@ -22,6 +22,11 @@ interface WAStatus {
   business_name?: string;
 }
 
+/* ── Safe haptics ── */
+function haptic(native: any, type: 'selection' | 'error') {
+  try { native?.haptics?.[type]?.(); } catch {}
+}
+
 /* ── Component ── */
 export default PluginSDK.register('whatsapp-setup', {
   type: 'ui',
@@ -73,7 +78,7 @@ export default PluginSDK.register('whatsapp-setup', {
     const saveCredentials = useCallback(async () => {
       if (!phoneNumberId.trim() || !accessToken.trim()) {
         setError('Phone Number ID and Access Token are required');
-        native.haptics.error();
+        haptic(native, 'error');
         return;
       }
       setSaving(true);
@@ -85,17 +90,17 @@ export default PluginSDK.register('whatsapp-setup', {
           business_id: businessId.trim() || undefined,
         });
         if (res.connected) {
-          native.haptics.selection();
+          haptic(native, 'selection');
           setStatus(res);
           setStep('verify');
           setSuccess('Credentials saved! Send a test message to verify.');
         } else {
           setError(res.error || 'Failed to connect');
-          native.haptics.error();
+          haptic(native, 'error');
         }
       } catch (err: any) {
         setError(err.message || 'Failed to save credentials');
-        native.haptics.error();
+        haptic(native, 'error');
       } finally {
         setSaving(false);
       }
@@ -105,7 +110,7 @@ export default PluginSDK.register('whatsapp-setup', {
     const sendTest = useCallback(async () => {
       if (!testPhone.trim()) {
         setError('Enter a phone number to send a test message');
-        native.haptics.error();
+        haptic(native, 'error');
         return;
       }
       setTesting(true);
@@ -116,16 +121,16 @@ export default PluginSDK.register('whatsapp-setup', {
           to: testPhone.trim(),
         });
         if (res.sent) {
-          native.haptics.selection();
+          haptic(native, 'selection');
           setSuccess('Test message sent! Check your WhatsApp.');
           setStep('done');
         } else {
           setError(res.error || 'Failed to send test message');
-          native.haptics.error();
+          haptic(native, 'error');
         }
       } catch (err: any) {
         setError(err.message || 'Failed to send test message');
-        native.haptics.error();
+        haptic(native, 'error');
       } finally {
         setTesting(false);
       }
@@ -135,14 +140,14 @@ export default PluginSDK.register('whatsapp-setup', {
     const disconnect = useCallback(async () => {
       try {
         await api.call('whatsapp.disconnect', {});
-        native.haptics.selection();
+        haptic(native, 'selection');
         setStatus({ connected: false });
         setStep('credentials');
         setAccessToken('');
         setSuccess(null);
       } catch (err: any) {
         setError(err.message || 'Failed to disconnect');
-        native.haptics.error();
+        haptic(native, 'error');
       }
     }, [api, native]);
 
