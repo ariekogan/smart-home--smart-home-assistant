@@ -3,7 +3,7 @@
     "id": "smart-home-assistant",
     "name": "Smart Home Assistant",
     "version": "1.0.0",
-    "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
+    "description": "Smart home control.",
     "skills": [
       "connect-my-home",
       "home-control"
@@ -61,7 +61,7 @@
     {
       "id": "home-control",
       "name": "Home Control",
-      "description": "Control smart home devices via natural language.",
+      "description": "Control smart home devices.",
       "version": "2.0.0",
       "phase": "TOOL_DEFINITION",
       "ui_capable": false,
@@ -73,7 +73,7 @@
       ],
       "tools": [
         {
-          "id": "tool-ha-rooms-list",
+          "id": "t1",
           "id_status": "permanent",
           "name": "rooms.list",
           "description": "List rooms",
@@ -114,7 +114,7 @@
           }
         },
         {
-          "id": "tool-ha-rooms-sync",
+          "id": "t2",
           "id_status": "permanent",
           "name": "rooms.sync",
           "description": "Sync rooms",
@@ -150,7 +150,7 @@
           }
         },
         {
-          "id": "tool-ha-entities-list",
+          "id": "t3",
           "id_status": "permanent",
           "name": "entities.list",
           "description": "List entities",
@@ -198,7 +198,7 @@
           }
         },
         {
-          "id": "tool-ha-entity-state",
+          "id": "t4",
           "id_status": "permanent",
           "name": "entity.state",
           "description": "Get entity state",
@@ -243,7 +243,7 @@
           }
         },
         {
-          "id": "tool-ha-services-call",
+          "id": "t5",
           "id_status": "permanent",
           "name": "services.call",
           "description": "Call HA service",
@@ -308,10 +308,10 @@
           }
         },
         {
-          "id": "tool-ha-tv-discover",
+          "id": "t6",
           "id_status": "permanent",
           "name": "tv.discover",
-          "description": "Discover LG TV",
+          "description": "Discover TV",
           "inputs": [],
           "output": {
             "type": "object"
@@ -344,10 +344,10 @@
           }
         },
         {
-          "id": "tool-ha-tv-apps",
+          "id": "t7",
           "id_status": "permanent",
           "name": "tv.apps",
-          "description": "List TV apps",
+          "description": "TV apps",
           "inputs": [],
           "output": {
             "type": "object"
@@ -368,13 +368,8 @@
                 "id": "tool-tv-apps-auto",
                 "input": {},
                 "output": {
-                  "results": [
-                    {
-                      "id": 1,
-                      "name": "Example item"
-                    }
-                  ],
-                  "total_count": 1
+                  "success": true,
+                  "data": {}
                 },
                 "description": "Auto-generated example for tv.apps"
               }
@@ -385,10 +380,10 @@
           }
         },
         {
-          "id": "tool-ha-tv-inputs",
+          "id": "t8",
           "id_status": "permanent",
           "name": "tv.inputs",
-          "description": "List TV inputs",
+          "description": "TV inputs",
           "inputs": [],
           "output": {
             "type": "object"
@@ -409,13 +404,8 @@
                 "id": "tool-tv-inputs-auto",
                 "input": {},
                 "output": {
-                  "results": [
-                    {
-                      "id": 1,
-                      "name": "Example item"
-                    }
-                  ],
-                  "total_count": 1
+                  "success": true,
+                  "data": {}
                 },
                 "description": "Auto-generated example for tv.inputs"
               }
@@ -426,10 +416,10 @@
           }
         },
         {
-          "id": "tool-ha-hc-appliances",
+          "id": "t9",
           "id_status": "permanent",
           "name": "homeconnect.appliances",
-          "description": "List HC appliances",
+          "description": "HC appliances",
           "inputs": [],
           "output": {
             "type": "object"
@@ -450,13 +440,8 @@
                 "id": "tool-homeconnect-appliances-auto",
                 "input": {},
                 "output": {
-                  "results": [
-                    {
-                      "id": 1,
-                      "name": "Example item"
-                    }
-                  ],
-                  "total_count": 1
+                  "success": true,
+                  "data": {}
                 },
                 "description": "Auto-generated example for homeconnect.appliances"
               }
@@ -467,10 +452,10 @@
           }
         },
         {
-          "id": "tool-ha-hc-status",
+          "id": "t10",
           "id_status": "permanent",
           "name": "homeconnect.status",
-          "description": "HC appliance status",
+          "description": "HC status",
           "inputs": [
             {
               "name": "haId",
@@ -512,7 +497,7 @@
           }
         },
         {
-          "id": "tool-ha-hc-programs",
+          "id": "t11",
           "id_status": "permanent",
           "name": "homeconnect.programs",
           "description": "HC programs",
@@ -557,7 +542,7 @@
           }
         },
         {
-          "id": "tool-ha-hc-start",
+          "id": "t12",
           "id_status": "permanent",
           "name": "homeconnect.start_program",
           "description": "Start HC program",
@@ -615,7 +600,7 @@
           }
         },
         {
-          "id": "tool-ha-hc-stop",
+          "id": "t13",
           "id_status": "permanent",
           "name": "homeconnect.stop_program",
           "description": "Stop HC program",
@@ -660,7 +645,7 @@
           }
         },
         {
-          "id": "tool-ha-discovery",
+          "id": "t14",
           "id_status": "permanent",
           "name": "discovery.status",
           "description": "Provider status",
@@ -696,7 +681,7 @@
           }
         },
         {
-          "id": "tool-hue-rooms",
+          "id": "t15",
           "id_status": "permanent",
           "name": "hue.rooms",
           "description": "Hue rooms",
@@ -732,7 +717,7 @@
           }
         },
         {
-          "id": "tool-hue-devices",
+          "id": "t16",
           "id_status": "permanent",
           "name": "hue.devices",
           "description": "Hue devices",
@@ -768,10 +753,10 @@
           }
         },
         {
-          "id": "tool-hue-state",
+          "id": "t17",
           "id_status": "permanent",
           "name": "hue.state",
-          "description": "Hue device state",
+          "description": "Hue state",
           "inputs": [
             {
               "name": "id",
@@ -813,7 +798,7 @@
           }
         },
         {
-          "id": "tool-hue-command",
+          "id": "t18",
           "id_status": "permanent",
           "name": "hue.command",
           "description": "Hue command",
@@ -871,7 +856,7 @@
           }
         },
         {
-          "id": "tool-hue-scenes",
+          "id": "t19",
           "id_status": "permanent",
           "name": "hue.scenes",
           "description": "Hue scenes",
@@ -907,7 +892,7 @@
           }
         },
         {
-          "id": "tool-hue-activate-scene",
+          "id": "t20",
           "id_status": "permanent",
           "name": "hue.activate_scene",
           "description": "Activate scene",
@@ -952,7 +937,7 @@
           }
         },
         {
-          "id": "tool-hue-status",
+          "id": "t21",
           "id_status": "permanent",
           "name": "hue.status",
           "description": "Hue status",
@@ -988,7 +973,7 @@
           }
         },
         {
-          "id": "tool-tuya-devices",
+          "id": "t22",
           "id_status": "permanent",
           "name": "tuya.devices",
           "description": "Tuya devices",
@@ -1024,7 +1009,7 @@
           }
         },
         {
-          "id": "tool-tuya-state",
+          "id": "t23",
           "id_status": "permanent",
           "name": "tuya.state",
           "description": "Tuya state",
@@ -1069,7 +1054,7 @@
           }
         },
         {
-          "id": "tool-tuya-command",
+          "id": "t24",
           "id_status": "permanent",
           "name": "tuya.command",
           "description": "Tuya command",
@@ -1121,7 +1106,7 @@
           }
         },
         {
-          "id": "tool-tuya-functions",
+          "id": "t25",
           "id_status": "permanent",
           "name": "tuya.device_functions",
           "description": "Tuya functions",
@@ -1166,7 +1151,7 @@
           }
         },
         {
-          "id": "tool-tuya-status",
+          "id": "t26",
           "id_status": "permanent",
           "name": "tuya.status",
           "description": "Tuya status",
@@ -1202,7 +1187,7 @@
           }
         },
         {
-          "id": "tool-google-devices",
+          "id": "t27",
           "id_status": "permanent",
           "name": "google.devices",
           "description": "Google devices",
@@ -1238,7 +1223,7 @@
           }
         },
         {
-          "id": "tool-google-state",
+          "id": "t28",
           "id_status": "permanent",
           "name": "google.state",
           "description": "Google state",
@@ -1283,7 +1268,7 @@
           }
         },
         {
-          "id": "tool-google-command",
+          "id": "t29",
           "id_status": "permanent",
           "name": "google.command",
           "description": "Google command",
@@ -1341,7 +1326,7 @@
           }
         },
         {
-          "id": "tool-google-status",
+          "id": "t30",
           "id_status": "permanent",
           "name": "google.status",
           "description": "Google status",
@@ -1377,7 +1362,7 @@
           }
         },
         {
-          "id": "tool-wa-send",
+          "id": "t31",
           "id_status": "permanent",
           "name": "whatsapp.send",
           "description": "Send WhatsApp",
@@ -1429,7 +1414,7 @@
           }
         },
         {
-          "id": "tool-wa-status-hc",
+          "id": "t32",
           "id_status": "permanent",
           "name": "whatsapp.status",
           "description": "WhatsApp status",
@@ -1552,56 +1537,56 @@
           },
           {
             "id": "discover",
-            "description": "Discover LG TV",
+            "description": "Discover TV",
             "examples": [
-              "Discover LG TV",
-              "I need to discover LG TV",
-              "Can you discover LG TV?",
-              "Please discover LG TV"
+              "Discover TV",
+              "I need to discover TV",
+              "Can you discover TV?",
+              "Please discover TV"
             ],
             "maps_to_workflow": "discover_flow"
           },
           {
             "id": "apps",
-            "description": "List TV apps",
+            "description": "TV apps",
             "examples": [
-              "List TV apps",
-              "I need to list TV apps",
-              "Can you list TV apps?",
-              "Please list TV apps"
+              "TV apps",
+              "I need to tV apps",
+              "Can you tV apps?",
+              "Please tV apps"
             ],
             "maps_to_workflow": "apps_flow"
           },
           {
             "id": "inputs",
-            "description": "List TV inputs",
+            "description": "TV inputs",
             "examples": [
-              "List TV inputs",
-              "I need to list TV inputs",
-              "Can you list TV inputs?",
-              "Please list TV inputs"
+              "TV inputs",
+              "I need to tV inputs",
+              "Can you tV inputs?",
+              "Please tV inputs"
             ],
             "maps_to_workflow": "inputs_flow"
           },
           {
             "id": "appliances",
-            "description": "List HC appliances",
+            "description": "HC appliances",
             "examples": [
-              "List HC appliances",
-              "I need to list HC appliances",
-              "Can you list HC appliances?",
-              "Please list HC appliances"
+              "HC appliances",
+              "I need to hC appliances",
+              "Can you hC appliances?",
+              "Please hC appliances"
             ],
             "maps_to_workflow": "appliances_flow"
           },
           {
             "id": "status",
-            "description": "HC appliance status",
+            "description": "HC status",
             "examples": [
-              "HC appliance status",
-              "I need to hC appliance status",
-              "Can you hC appliance status?",
-              "Please hC appliance status"
+              "HC status",
+              "I need to hC status",
+              "Can you hC status?",
+              "Please hC status"
             ],
             "maps_to_workflow": "status_flow",
             "entities": [
@@ -1711,12 +1696,12 @@
           },
           {
             "id": "state",
-            "description": "Hue device state",
+            "description": "Hue state",
             "examples": [
-              "Hue device state",
-              "I need to hue device state",
-              "Can you hue device state?",
-              "Please hue device state"
+              "Hue state",
+              "I need to hue state",
+              "Can you hue state?",
+              "Please hue state"
             ],
             "maps_to_workflow": "state_flow",
             "entities": [
@@ -2054,7 +2039,7 @@
           },
           {
             "id": "discover_flow",
-            "name": "Discover LG TV",
+            "name": "Discover TV",
             "description": "Auto-generated workflow for discover",
             "trigger": "discover",
             "steps": [
@@ -2065,7 +2050,7 @@
           },
           {
             "id": "apps_flow",
-            "name": "List TV apps",
+            "name": "TV apps",
             "description": "Auto-generated workflow for apps",
             "trigger": "apps",
             "steps": [
@@ -2076,7 +2061,7 @@
           },
           {
             "id": "inputs_flow",
-            "name": "List TV inputs",
+            "name": "TV inputs",
             "description": "Auto-generated workflow for inputs",
             "trigger": "inputs",
             "steps": [
@@ -2087,7 +2072,7 @@
           },
           {
             "id": "appliances_flow",
-            "name": "List HC appliances",
+            "name": "HC appliances",
             "description": "Auto-generated workflow for appliances",
             "trigger": "appliances",
             "steps": [
@@ -2098,7 +2083,7 @@
           },
           {
             "id": "status_flow",
-            "name": "HC appliance status",
+            "name": "HC status",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -2175,7 +2160,7 @@
           },
           {
             "id": "state_flow",
-            "name": "Hue device state",
+            "name": "Hue state",
             "description": "Auto-generated workflow for state",
             "trigger": "state",
             "steps": [
@@ -2414,58 +2399,58 @@
         },
         {
           "id": "discover",
-          "title": "Discover LG TV",
-          "description": "User triggers \"Discover LG TV\" (e.g. \"Discover LG TV\") and the agent handles it end-to-end.",
+          "title": "Discover TV",
+          "description": "User triggers \"Discover TV\" (e.g. \"Discover TV\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"Discover LG TV\"",
-            "Agent calls tv.discover — discover lg tv",
+            "User says: \"Discover TV\"",
+            "Agent calls tv.discover — discover tv",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"Discover LG TV\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"Discover TV\" request and presents the result."
         },
         {
           "id": "apps",
-          "title": "List TV apps",
-          "description": "User triggers \"List TV apps\" (e.g. \"List TV apps\") and the agent handles it end-to-end.",
+          "title": "TV apps",
+          "description": "User triggers \"TV apps\" (e.g. \"TV apps\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"List TV apps\"",
-            "Agent calls tv.apps — list tv apps",
+            "User says: \"TV apps\"",
+            "Agent calls tv.apps — tv apps",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"List TV apps\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"TV apps\" request and presents the result."
         },
         {
           "id": "inputs",
-          "title": "List TV inputs",
-          "description": "User triggers \"List TV inputs\" (e.g. \"List TV inputs\") and the agent handles it end-to-end.",
+          "title": "TV inputs",
+          "description": "User triggers \"TV inputs\" (e.g. \"TV inputs\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"List TV inputs\"",
-            "Agent calls tv.inputs — list tv inputs",
+            "User says: \"TV inputs\"",
+            "Agent calls tv.inputs — tv inputs",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"List TV inputs\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"TV inputs\" request and presents the result."
         },
         {
           "id": "appliances",
-          "title": "List HC appliances",
-          "description": "User triggers \"List HC appliances\" (e.g. \"List HC appliances\") and the agent handles it end-to-end.",
+          "title": "HC appliances",
+          "description": "User triggers \"HC appliances\" (e.g. \"HC appliances\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"List HC appliances\"",
-            "Agent calls homeconnect.appliances — list hc appliances",
+            "User says: \"HC appliances\"",
+            "Agent calls homeconnect.appliances — hc appliances",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"List HC appliances\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"HC appliances\" request and presents the result."
         },
         {
           "id": "status",
-          "title": "HC appliance status",
-          "description": "User triggers \"HC appliance status\" (e.g. \"HC appliance status\") and the agent handles it end-to-end.",
+          "title": "HC status",
+          "description": "User triggers \"HC status\" (e.g. \"HC status\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"HC appliance status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "User says: \"HC status\"",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"HC appliance status\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"HC status\" request and presents the result."
         },
         {
           "id": "programs",
@@ -2506,7 +2491,7 @@
           "description": "User triggers \"Provider status\" (e.g. \"Provider status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Provider status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Provider status\" request and presents the result."
@@ -2535,14 +2520,14 @@
         },
         {
           "id": "state",
-          "title": "Hue device state",
-          "description": "User triggers \"Hue device state\" (e.g. \"Hue device state\") and the agent handles it end-to-end.",
+          "title": "Hue state",
+          "description": "User triggers \"Hue state\" (e.g. \"Hue state\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"Hue device state\"",
+            "User says: \"Hue state\"",
             "Agent calls entity.state — get entity state",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"Hue device state\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"Hue state\" request and presents the result."
         },
         {
           "id": "command",
@@ -2583,7 +2568,7 @@
           "description": "User triggers \"Hue status\" (e.g. \"Hue status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Hue status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Hue status\" request and presents the result."
@@ -2638,7 +2623,7 @@
           "description": "User triggers \"Tuya status\" (e.g. \"Tuya status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Tuya status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Tuya status\" request and presents the result."
@@ -2682,7 +2667,7 @@
           "description": "User triggers \"Google status\" (e.g. \"Google status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Google status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Google status\" request and presents the result."
@@ -2704,7 +2689,7 @@
           "description": "User triggers \"WhatsApp status\" (e.g. \"WhatsApp status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"WhatsApp status\"",
-            "Agent calls homeconnect.status — hc appliance status",
+            "Agent calls homeconnect.status — hc status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"WhatsApp status\" request and presents the result."
@@ -2712,10 +2697,9 @@
       ],
       "role": {
         "name": "Smart Home Controller",
-        "persona": "You control smart home devices across multiple providers.",
+        "persona": "You control smart home devices.",
         "goals": [
-          "Execute commands immediately",
-          "Query states accurately"
+          "Execute commands immediately"
         ],
         "communication_style": {
           "tone": "casual",
@@ -2752,7 +2736,7 @@
     {
       "id": "connect-my-home",
       "name": "Connect My Home",
-      "description": "Setup and onboarding for smart home providers.",
+      "description": "Setup for smart home providers.",
       "version": "2.0.0",
       "phase": "TOOL_DEFINITION",
       "ui_capable": false,
@@ -2764,7 +2748,7 @@
       ],
       "tools": [
         {
-          "id": "tool-ha-config-get",
+          "id": "c1",
           "id_status": "permanent",
           "name": "config.get",
           "description": "Get HA config",
@@ -2800,7 +2784,7 @@
           }
         },
         {
-          "id": "tool-ha-config-save",
+          "id": "c2",
           "id_status": "permanent",
           "name": "config.save",
           "description": "Save HA config",
@@ -2852,10 +2836,10 @@
           }
         },
         {
-          "id": "tool-ha-discovery-status",
+          "id": "c3",
           "id_status": "permanent",
           "name": "discovery.status",
-          "description": "Check all providers",
+          "description": "All providers status",
           "inputs": [],
           "output": {
             "type": "object"
@@ -2888,10 +2872,10 @@
           }
         },
         {
-          "id": "tool-ha-discovery-supported",
+          "id": "c4",
           "id_status": "permanent",
           "name": "discovery.supported",
-          "description": "List providers",
+          "description": "Supported providers",
           "inputs": [],
           "output": {
             "type": "object"
@@ -2912,13 +2896,8 @@
                 "id": "tool-discovery-supported-auto",
                 "input": {},
                 "output": {
-                  "results": [
-                    {
-                      "id": 1,
-                      "name": "Example item"
-                    }
-                  ],
-                  "total_count": 1
+                  "success": true,
+                  "data": {}
                 },
                 "description": "Auto-generated example for discovery.supported"
               }
@@ -2929,7 +2908,7 @@
           }
         },
         {
-          "id": "tool-ha-rooms-list",
+          "id": "c5",
           "id_status": "permanent",
           "name": "rooms.list",
           "description": "List rooms",
@@ -2970,7 +2949,7 @@
           }
         },
         {
-          "id": "tool-ha-rooms-sync",
+          "id": "c6",
           "id_status": "permanent",
           "name": "rooms.sync",
           "description": "Sync rooms",
@@ -3006,7 +2985,7 @@
           }
         },
         {
-          "id": "tool-ha-entities-list",
+          "id": "c7",
           "id_status": "permanent",
           "name": "entities.list",
           "description": "List entities",
@@ -3047,7 +3026,7 @@
           }
         },
         {
-          "id": "tool-ha-tv-discover",
+          "id": "c8",
           "id_status": "permanent",
           "name": "tv.discover",
           "description": "Discover TV",
@@ -3083,7 +3062,7 @@
           }
         },
         {
-          "id": "tool-ha-hc-auth",
+          "id": "c9",
           "id_status": "permanent",
           "name": "homeconnect.auth",
           "description": "HC OAuth",
@@ -3119,7 +3098,7 @@
           }
         },
         {
-          "id": "tool-ha-hc-callback",
+          "id": "c10",
           "id_status": "permanent",
           "name": "homeconnect.callback",
           "description": "HC callback",
@@ -3164,7 +3143,7 @@
           }
         },
         {
-          "id": "tool-hue-auth",
+          "id": "c11",
           "id_status": "permanent",
           "name": "hue.auth",
           "description": "Hue pairing",
@@ -3200,7 +3179,7 @@
           }
         },
         {
-          "id": "tool-hue-callback",
+          "id": "c12",
           "id_status": "permanent",
           "name": "hue.callback",
           "description": "Hue callback",
@@ -3236,7 +3215,7 @@
           }
         },
         {
-          "id": "tool-hue-status",
+          "id": "c13",
           "id_status": "permanent",
           "name": "hue.status",
           "description": "Hue status",
@@ -3272,7 +3251,7 @@
           }
         },
         {
-          "id": "tool-hue-devices",
+          "id": "c14",
           "id_status": "permanent",
           "name": "hue.devices",
           "description": "Hue devices",
@@ -3308,7 +3287,7 @@
           }
         },
         {
-          "id": "tool-tuya-auth",
+          "id": "c15",
           "id_status": "permanent",
           "name": "tuya.auth",
           "description": "Tuya auth",
@@ -3360,7 +3339,7 @@
           }
         },
         {
-          "id": "tool-tuya-callback",
+          "id": "c16",
           "id_status": "permanent",
           "name": "tuya.callback",
           "description": "Tuya callback",
@@ -3396,7 +3375,7 @@
           }
         },
         {
-          "id": "tool-tuya-status",
+          "id": "c17",
           "id_status": "permanent",
           "name": "tuya.status",
           "description": "Tuya status",
@@ -3432,7 +3411,7 @@
           }
         },
         {
-          "id": "tool-tuya-devices",
+          "id": "c18",
           "id_status": "permanent",
           "name": "tuya.devices",
           "description": "Tuya devices",
@@ -3468,7 +3447,7 @@
           }
         },
         {
-          "id": "tool-google-auth",
+          "id": "c19",
           "id_status": "permanent",
           "name": "google.auth",
           "description": "Google OAuth",
@@ -3504,7 +3483,7 @@
           }
         },
         {
-          "id": "tool-google-callback",
+          "id": "c20",
           "id_status": "permanent",
           "name": "google.callback",
           "description": "Google callback",
@@ -3549,7 +3528,7 @@
           }
         },
         {
-          "id": "tool-google-status",
+          "id": "c21",
           "id_status": "permanent",
           "name": "google.status",
           "description": "Google status",
@@ -3585,7 +3564,7 @@
           }
         },
         {
-          "id": "tool-google-devices",
+          "id": "c22",
           "id_status": "permanent",
           "name": "google.devices",
           "description": "Google devices",
@@ -3621,7 +3600,7 @@
           }
         },
         {
-          "id": "tool-wa-auth",
+          "id": "c23",
           "id_status": "permanent",
           "name": "whatsapp.auth",
           "description": "WhatsApp auth",
@@ -3679,7 +3658,7 @@
           }
         },
         {
-          "id": "tool-wa-status",
+          "id": "c24",
           "id_status": "permanent",
           "name": "whatsapp.status",
           "description": "WhatsApp status",
@@ -3715,7 +3694,7 @@
           }
         },
         {
-          "id": "tool-wa-test",
+          "id": "c25",
           "id_status": "permanent",
           "name": "whatsapp.test",
           "description": "WhatsApp test",
@@ -3760,7 +3739,7 @@
           }
         },
         {
-          "id": "tool-wa-disconnect",
+          "id": "c26",
           "id_status": "permanent",
           "name": "whatsapp.disconnect",
           "description": "WhatsApp disconnect",
@@ -3836,23 +3815,23 @@
           },
           {
             "id": "status",
-            "description": "Check all providers",
+            "description": "All providers status",
             "examples": [
-              "Check all providers",
-              "I need to check all providers",
-              "Can you check all providers?",
-              "Please check all providers"
+              "All providers status",
+              "I need to all providers status",
+              "Can you all providers status?",
+              "Please all providers status"
             ],
             "maps_to_workflow": "status_flow"
           },
           {
             "id": "supported",
-            "description": "List providers",
+            "description": "Supported providers",
             "examples": [
-              "List providers",
-              "I need to list providers",
-              "Can you list providers?",
-              "Please list providers"
+              "Supported providers",
+              "I need to supported providers",
+              "Can you supported providers?",
+              "Please supported providers"
             ],
             "maps_to_workflow": "supported_flow"
           },
@@ -4192,7 +4171,7 @@
           },
           {
             "id": "status_flow",
-            "name": "Check all providers",
+            "name": "All providers status",
             "description": "Auto-generated workflow for status",
             "trigger": "status",
             "steps": [
@@ -4203,7 +4182,7 @@
           },
           {
             "id": "supported_flow",
-            "name": "List providers",
+            "name": "Supported providers",
             "description": "Auto-generated workflow for supported",
             "trigger": "supported",
             "steps": [
@@ -4486,25 +4465,25 @@
         },
         {
           "id": "status",
-          "title": "Check all providers",
-          "description": "User triggers \"Check all providers\" (e.g. \"Check all providers\") and the agent handles it end-to-end.",
+          "title": "All providers status",
+          "description": "User triggers \"All providers status\" (e.g. \"All providers status\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"Check all providers\"",
-            "Agent calls discovery.status — check all providers",
+            "User says: \"All providers status\"",
+            "Agent calls discovery.status — all providers status",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"Check all providers\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"All providers status\" request and presents the result."
         },
         {
           "id": "supported",
-          "title": "List providers",
-          "description": "User triggers \"List providers\" (e.g. \"List providers\") and the agent handles it end-to-end.",
+          "title": "Supported providers",
+          "description": "User triggers \"Supported providers\" (e.g. \"Supported providers\") and the agent handles it end-to-end.",
           "steps": [
-            "User says: \"List providers\"",
-            "Agent calls discovery.supported — list providers",
+            "User says: \"Supported providers\"",
+            "Agent calls discovery.supported — supported providers",
             "Agent presents results to the user"
           ],
-          "expected_outcome": "The agent successfully handles the \"List providers\" request and presents the result."
+          "expected_outcome": "The agent successfully handles the \"Supported providers\" request and presents the result."
         },
         {
           "id": "list",
@@ -4600,7 +4579,7 @@
           "description": "User triggers \"Hue status\" (e.g. \"Hue status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Hue status\"",
-            "Agent calls discovery.status — check all providers",
+            "Agent calls discovery.status — all providers status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Hue status\" request and presents the result."
@@ -4644,7 +4623,7 @@
           "description": "User triggers \"Tuya status\" (e.g. \"Tuya status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Tuya status\"",
-            "Agent calls discovery.status — check all providers",
+            "Agent calls discovery.status — all providers status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Tuya status\" request and presents the result."
@@ -4688,7 +4667,7 @@
           "description": "User triggers \"Google status\" (e.g. \"Google status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"Google status\"",
-            "Agent calls discovery.status — check all providers",
+            "Agent calls discovery.status — all providers status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"Google status\" request and presents the result."
@@ -4721,7 +4700,7 @@
           "description": "User triggers \"WhatsApp status\" (e.g. \"WhatsApp status\") and the agent handles it end-to-end.",
           "steps": [
             "User says: \"WhatsApp status\"",
-            "Agent calls discovery.status — check all providers",
+            "Agent calls discovery.status — all providers status",
             "Agent presents results to the user"
           ],
           "expected_outcome": "The agent successfully handles the \"WhatsApp status\" request and presents the result."
@@ -4751,7 +4730,7 @@
       ],
       "role": {
         "name": "Setup Assistant",
-        "persona": "You guide users through connecting providers.",
+        "persona": "Guide users through connecting providers.",
         "goals": [
           "Connect providers",
           "Verify connections"
@@ -4827,5 +4806,5 @@
       ]
     }
   ],
-  "timestamp": "2026-03-16T23:58:17.258Z"
+  "timestamp": "2026-03-18T17:33:59.345Z"
 }

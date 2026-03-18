@@ -2,7 +2,7 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control with Home Assistant, Philips Hue, Tuya, Google Home, LG TV, and Bosch Home Connect.",
+  "description": "Smart home control.",
   "skills": [
     "connect-my-home",
     "home-control"
