@@ -124,6 +124,13 @@ function isSecurity(eid) {
   const d = getDomain(eid);
   return d === "lock" || d === "cover";
 }
+function haptic(native, type) {
+  var _a, _b;
+  try {
+    (_b = (_a = native == null ? void 0 : native.haptics) == null ? void 0 : _a[type]) == null ? void 0 : _b.call(_a);
+  } catch (e) {
+  }
+}
 var home_layout_panel_default = import_plugin_sdk.PluginSDK.register("home-layout-panel", {
   type: "ui",
   version: "1.0.0",
@@ -178,7 +185,7 @@ var home_layout_panel_default = import_plugin_sdk.PluginSDK.register("home-layou
         setError(null);
       } catch (err) {
         setError(err.message || "Failed to load");
-        native.haptics.error();
+        haptic(native, "error");
       } finally {
         setLoading(false);
         setRefreshing(false);
@@ -191,7 +198,7 @@ var home_layout_panel_default = import_plugin_sdk.PluginSDK.register("home-layou
       var _a2;
       const domain = getDomain(eid);
       if (!["light", "switch", "fan", "media_player", "climate"].includes(domain)) return;
-      native.haptics.selection();
+      haptic(native, "selection");
       const currentState = (_a2 = states[eid]) == null ? void 0 : _a2.state;
       const turnOn = !isOn(eid, currentState);
       const newState = turnOn ? "on" : "off";
@@ -209,7 +216,7 @@ var home_layout_panel_default = import_plugin_sdk.PluginSDK.register("home-layou
         }
       } catch (e) {
         setStates((prev) => __spreadProps(__spreadValues({}, prev), { [eid]: __spreadProps(__spreadValues({}, prev[eid]), { state: currentState || "unknown" }) }));
-        native.haptics.error();
+        haptic(native, "error");
       }
     }), [api, states, native]);
     const toggleRoom = (idx) => {
@@ -338,6 +345,13 @@ var s = import_react_native.StyleSheet.create({
 // plugins/whatsapp-setup/index.tsx
 var import_react2 = __toESM(require("react"));
 var import_react_native2 = require("react-native");
+function haptic2(native, type) {
+  var _a, _b;
+  try {
+    (_b = (_a = native == null ? void 0 : native.haptics) == null ? void 0 : _a[type]) == null ? void 0 : _b.call(_a);
+  } catch (e) {
+  }
+}
 var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setup", {
   type: "ui",
   version: "1.0.0",
@@ -381,7 +395,7 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
     const saveCredentials = (0, import_react2.useCallback)(() => __async(null, null, function* () {
       if (!phoneNumberId.trim() || !accessToken.trim()) {
         setError("Phone Number ID and Access Token are required");
-        native.haptics.error();
+        haptic2(native, "error");
         return;
       }
       setSaving(true);
@@ -393,17 +407,17 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
           business_id: businessId.trim() || void 0
         });
         if (res.connected) {
-          native.haptics.selection();
+          haptic2(native, "selection");
           setStatus(res);
           setStep("verify");
           setSuccess("Credentials saved! Send a test message to verify.");
         } else {
           setError(res.error || "Failed to connect");
-          native.haptics.error();
+          haptic2(native, "error");
         }
       } catch (err) {
         setError(err.message || "Failed to save credentials");
-        native.haptics.error();
+        haptic2(native, "error");
       } finally {
         setSaving(false);
       }
@@ -411,7 +425,7 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
     const sendTest = (0, import_react2.useCallback)(() => __async(null, null, function* () {
       if (!testPhone.trim()) {
         setError("Enter a phone number to send a test message");
-        native.haptics.error();
+        haptic2(native, "error");
         return;
       }
       setTesting(true);
@@ -422,16 +436,16 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
           to: testPhone.trim()
         });
         if (res.sent) {
-          native.haptics.selection();
+          haptic2(native, "selection");
           setSuccess("Test message sent! Check your WhatsApp.");
           setStep("done");
         } else {
           setError(res.error || "Failed to send test message");
-          native.haptics.error();
+          haptic2(native, "error");
         }
       } catch (err) {
         setError(err.message || "Failed to send test message");
-        native.haptics.error();
+        haptic2(native, "error");
       } finally {
         setTesting(false);
       }
@@ -439,14 +453,14 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
     const disconnect = (0, import_react2.useCallback)(() => __async(null, null, function* () {
       try {
         yield api.call("whatsapp.disconnect", {});
-        native.haptics.selection();
+        haptic2(native, "selection");
         setStatus({ connected: false });
         setStep("credentials");
         setAccessToken("");
         setSuccess(null);
       } catch (err) {
         setError(err.message || "Failed to disconnect");
-        native.haptics.error();
+        haptic2(native, "error");
       }
     }), [api, native]);
     if (loading) {
@@ -500,7 +514,7 @@ var whatsapp_setup_default = import_plugin_sdk.PluginSDK.register("whatsapp-setu
         disabled: saving
       },
       saving ? /* @__PURE__ */ import_react2.default.createElement(import_react_native2.ActivityIndicator, { size: "small", color: "#fff" }) : /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: s2.primaryBtnText }, "Save & Connect")
-    ))), (step === "verify" || step === "done") && /* @__PURE__ */ import_react2.default.createElement(import_react_native2.View, { style: [s2.card, { backgroundColor: c.surface, borderColor: c.border }] }, /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.cardTitle, { color: c.text }] }, step === "done" ? "\u2713 Verified" : "2. Send Test Message"), /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.helpText, { color: c.textMuted }] }, step === "done" ? "WhatsApp is connected and ready. You'll receive smart home alerts here." : "Enter your phone number (with country code) to receive a test message."), step === "verify" && /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.inputLabel, { color: c.textMuted }] }, "Your Phone Number"), /* @__PURE__  */ import_react2.default.createElement(
+    ))), (step === "verify" || step === "done") && /* @__PURE__ */ import_react2.default.createElement(import_react_native2.View, { style: [s2.card, { backgroundColor: c.surface, borderColor: c.border }] }, /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.cardTitle, { color: c.text }] }, step === "done" ? "\u2713 Verified" : "2. Send Test Message"), /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.helpText, { color: c.textMuted }] }, step === "done" ? "WhatsApp is connected and ready. You'll receive smart home alerts here." : "Enter your phone number (with country code) to receive a test message."), step === "verify" && /* @__PURE__ */ import_react2.default.createElement(import_react2.default.Fragment, null, /* @__PURE__ */ import_react2.default.createElement(import_react_native2.Text, { style: [s2.inputLabel, { color: c.textMuted }] }, "Your Phone Number"), /* @__PURE__ */ import_react2.default.createElement(
       import_react_native2.TextInput,
       {
         style: [s2.input, { color: c.text, borderColor: c.border, backgroundColor: c.bg }],
