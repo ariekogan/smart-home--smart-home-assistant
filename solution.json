@@ -2,45 +2,17 @@
   "id": "smart-home-assistant",
   "name": "Smart Home Assistant",
   "version": "1.0.0",
-  "description": "Smart home control.",
+  "description": "",
   "identity": {
     "actor_types": [],
     "admin_roles": [],
     "default_actor_type": "",
     "default_roles": []
   },
-  "skills": [
-    "connect-my-home",
-    "home-control"
-  ],
+  "skills": [],
   "grants": [],
   "handoffs": [],
   "routing": {},
-  "platform_connectors": [
-    {
-      "id": "home-assistant-mcp",
-      "description": "",
-      "required": true,
-      "used_by": []
-    },
-    {
-      "id": "hue-mcp",
-      "description": "",
-      "required": true,
-      "used_by": []
-    },
-    {
-      "id": "tuya-mcp",
-      "description": "",
-      "required": true,
-      "used_by": []
-    },
-    {
-      "id": "google-home-mcp",
-      "description": "",
-      "required": true,
-      "used_by": []
-    }
-  ],
+  "platform_connectors": [],
   "security_contracts": []
 }
