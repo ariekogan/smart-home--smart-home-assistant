@@ -929,14 +929,14 @@ async function callTool(name, args = {}) {
       return await syncRooms(actorId);
     case "ui.listPlugins":
       return { plugins: [
-        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html", reactNative: { component: "HomeLayoutPanel" } } },
-        { id: "mcp:home-assistant-mcp:whatsapp-setup", name: "WhatsApp Setup", version: "1.0.0", description: "Setup wizard for WhatsApp Business API", render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/1.0.0/index.html", reactNative: { component: "WhatsAppSetup" } } }
+        { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard with rooms, devices, quick controls, and multi-provider status", render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/index.html", reactNative: { component: "HomeLayoutPanel" } } },
+        { id: "mcp:home-assistant-mcp:whatsapp-setup", name: "WhatsApp Setup", version: "1.0.0", description: "Setup wizard for WhatsApp Business API", render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/index.html", reactNative: { component: "WhatsAppSetup" } } }
       ]};
     case "ui.getPlugin": {
       const pluginId = args.id || "home-layout-panel";
       const plugins = {
-        "home-layout-panel": { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard", render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/1.0.0/index.html", reactNative: { component: "HomeLayoutPanel" } }, channels: ["command"], capabilities: { haptics: true, commands: [] } },
-        "whatsapp-setup": { id: "mcp:home-assistant-mcp:whatsapp-setup", name: "WhatsApp Setup", version: "1.0.0", description: "WhatsApp Business API setup wizard", render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/1.0.0/index.html", reactNative: { component: "WhatsAppSetup" } }, channels: ["command"], capabilities: { haptics: false, commands: [] } }
+        "home-layout-panel": { id: "mcp:home-assistant-mcp:home-layout-panel", name: "Home Layout Panel", version: "1.0.0", description: "Smart home dashboard", render: { mode: "adaptive", iframeUrl: "/ui/home-layout-panel/index.html", reactNative: { component: "HomeLayoutPanel" } }, channels: ["command"], capabilities: { haptics: true, commands: [] } },
+        "whatsapp-setup": { id: "mcp:home-assistant-mcp:whatsapp-setup", name: "WhatsApp Setup", version: "1.0.0", description: "WhatsApp Business API setup wizard", render: { mode: "adaptive", iframeUrl: "/ui/whatsapp-setup/index.html", reactNative: { component: "WhatsAppSetup" } }, channels: ["command"], capabilities: { haptics: false, commands: [] } }
       };
       const plugin = plugins[pluginId] || plugins["home-layout-panel"];
       return plugin;
